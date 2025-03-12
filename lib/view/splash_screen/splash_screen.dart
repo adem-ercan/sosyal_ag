@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class IntroScreen extends StatefulWidget {
-  const IntroScreen({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<IntroScreen> createState() => _IntroScreenState();
+  State<SplashScreen> createState() => _IntroScreenState();
 }
 
-class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStateMixin {
+class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
@@ -66,10 +67,15 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
               opacity: _fadeAnimation,
               child: Text(
                 'MEYDAN',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                style: GoogleFonts.aBeeZee(
+                  letterSpacing: 4,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32,
+                )
+              /*   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   letterSpacing: 4,
-                ),
+                ), */
               ),
             ),
             const SizedBox(height: 16),
@@ -78,7 +84,7 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
               child: Text(
                 'Tartışmaya Açık Ol',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.white,
                 ),
               ),
             ),
