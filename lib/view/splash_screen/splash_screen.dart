@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
+
   const SplashScreen({super.key});
 
   @override
@@ -12,6 +13,7 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
+  late Animation<double> _subtitleFadeAnimation;  // Yeni animasyon
 
   @override
   void initState() {
@@ -29,7 +31,16 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
       CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
     );
 
+    // Alt başlık için gecikmeli animasyon
+    _subtitleFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
+      ),
+    );
+
     _controller.forward();
+    
   }
 
   @override
@@ -62,13 +73,15 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
                 ),
               ),
             ),
+
             const SizedBox(height: 24),
+
             FadeTransition(
               opacity: _fadeAnimation,
               child: Text(
                 'MEYDAN',
                 style: GoogleFonts.aBeeZee(
-                  letterSpacing: 4,
+                  letterSpacing: 6,
                   fontWeight: FontWeight.bold,
                   fontSize: 32,
                 )
@@ -78,14 +91,22 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
                 ), */
               ),
             ),
+             
             const SizedBox(height: 16),
+
             FadeTransition(
-              opacity: _fadeAnimation,
+              opacity: _subtitleFadeAnimation,  // _fadeAnimation yerine _subtitleFadeAnimation kullan
               child: Text(
-                'Tartışmaya Açık Ol',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.white,
-                ),
+                'Tartışmaya Açık Ol!',
+                style: GoogleFonts.aBeeZee(
+                  //letterSpacing: 2,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.amber.shade200,
+                )
+               /*  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Colors.amber.shade200,
+                ), */
               ),
             ),
           ],

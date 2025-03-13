@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/firebase_options.dart';
 import 'package:sosyal_ag/meydan_app.dart';
+import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
 
 
@@ -14,6 +15,11 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
 );
+
+
+setupLocator();
+
+
 runApp(
     ChangeNotifierProvider(
       create: (_) => ThemeProvider(),
