@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
-
   const SplashScreen({super.key});
 
   @override
@@ -40,7 +39,6 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
     );
 
     _controller.forward();
-    
   }
 
   @override
@@ -73,7 +71,6 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
                 ),
               ),
             ),
-
             const SizedBox(height: 24),
 
             FadeTransition(
@@ -93,7 +90,6 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
             ),
              
             const SizedBox(height: 16),
-
             FadeTransition(
               opacity: _subtitleFadeAnimation,  // _fadeAnimation yerine _subtitleFadeAnimation kullan
               child: Text(

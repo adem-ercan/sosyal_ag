@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
+import 'package:sosyal_ag/viewmodel/user_view_model.dart';
 import 'utils/routes.dart';
 
 class MeydanApp extends StatelessWidget {
@@ -8,16 +9,22 @@ class MeydanApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
-
-
-    return MaterialApp.router(
-      routerConfig: router,
-      debugShowCheckedModeBanner: false,
-      title: 'Meydan App',
-      theme: themeProvider.themeDataLight,
-      darkTheme: themeProvider.themeDataDark,
-      themeMode: themeProvider.themeMode,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserViewModel()),
+      ],
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp.router(
+            routerConfig: router,
+            debugShowCheckedModeBanner: false,
+            title: 'Meydan App',
+            theme: themeProvider.themeDataLight,
+            darkTheme: themeProvider.themeDataDark,
+            themeMode: themeProvider.themeMode,
+          );
+        },
+      ),
     );
   }
 }

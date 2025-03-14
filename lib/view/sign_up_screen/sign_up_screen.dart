@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () => context.pop(context),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -17,7 +25,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 50),
               Text(
-                'Meydan\'a\nHoş Geldin',
+                'Meydan\'da\nYeni misin?',
                 style: GoogleFonts.aBeeZee(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
@@ -25,12 +33,26 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Tartışmaya katılmak için giriş yap',
+                'Hemen hesap oluştur ve tartışmaya başla',
                 style: GoogleFonts.aBeeZee(
                   color: Colors.grey,
                 ),
               ),
               const SizedBox(height: 40),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Ad Soyad',
+                  prefixIcon: const Icon(Icons.person_outline),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey.shade300),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
               TextField(
                 decoration: InputDecoration(
                   hintText: 'E-posta',
@@ -60,15 +82,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text('Şifremi Unuttum'),
-                ),
-              ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -81,7 +95,7 @@ class LoginScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Giriş Yap'),
+                  child: const Text('Kayıt Ol'),
                 ),
               ),
               const SizedBox(height: 16),
@@ -94,7 +108,7 @@ class LoginScreen extends StatelessWidget {
                     'https://www.google.com/favicon.ico',
                     height: 24,
                   ),
-                  label: const Text('Google ile devam et'),
+                  label: const Text('Google ile kayıt ol'),
                   style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -104,29 +118,15 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               Row(
-                children: [
-                  Expanded(child: Divider(color: Colors.grey.shade300)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'veya',
-                      style: TextStyle(color: Colors.grey.shade600),
-                    ),
-                  ),
-                  Expanded(child: Divider(color: Colors.grey.shade300)),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Hesabın yok mu?',
+                    'Zaten hesabın var mı?',
                     style: TextStyle(color: Colors.grey.shade600),
                   ),
                   TextButton(
-                    onPressed: () => context.go('/signup'),
-                    child: const Text('Kayıt Ol'),
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Giriş Yap'),
                   ),
                 ],
               ),
