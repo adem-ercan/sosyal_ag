@@ -51,9 +51,7 @@ class _SignUpScreenContent extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 'Hemen hesap oluştur ve tartışmaya başla',
-                style: GoogleFonts.aBeeZee(
-                  color: Colors.grey,
-                ),
+                style: GoogleFonts.aBeeZee(color: Colors.grey),
               ),
               const SizedBox(height: 40),
               TextField(
@@ -67,6 +65,13 @@ class _SignUpScreenContent extends StatelessWidget {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.grey.shade300),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.tertiary,
+                      width: 2,
+                    ),
                   ),
                   errorText: viewModel.nameError,
                 ),
@@ -83,6 +88,13 @@ class _SignUpScreenContent extends StatelessWidget {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.grey.shade300),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.tertiary,
+                      width: 2,
+                    ),
                   ),
                   errorText: viewModel.emailError,
                 ),
@@ -109,6 +121,13 @@ class _SignUpScreenContent extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.grey.shade300),
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.tertiary,
+                      width: 2,
+                    ),
+                  ),
                   errorText: viewModel.passwordError,
                 ),
               ),
@@ -117,9 +136,10 @@ class _SignUpScreenContent extends StatelessWidget {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: viewModel.isLoading
-                      ? null
-                      : () => viewModel.signup(context),
+                  onPressed:
+                      viewModel.isLoading
+                          ? null
+                          : () => viewModel.signup(context),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -129,22 +149,23 @@ class _SignUpScreenContent extends StatelessWidget {
                     foregroundColor: Colors.black87,
                     disabledBackgroundColor: Colors.tealAccent.withOpacity(0.5),
                   ),
-                  child: viewModel.isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.black87,
+                  child:
+                      viewModel.isLoading
+                          ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.black87,
+                            ),
+                          )
+                          : Text(
+                            'Kayıt Ol',
+                            style: GoogleFonts.aBeeZee(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
-                        )
-                      : Text(
-                          'Kayıt Ol',
-                          style: GoogleFonts.aBeeZee(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -169,7 +190,10 @@ class _SignUpScreenContent extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    side: BorderSide(color: Colors.tealAccent.withOpacity(0.5), width: 2),
+                    side: BorderSide(
+                      color: Colors.tealAccent.withOpacity(0.5),
+                      width: 2,
+                    ),
                     backgroundColor: theme.colorScheme.surface.withOpacity(0.8),
                     foregroundColor: Colors.white,
                     elevation: 4,
@@ -187,7 +211,13 @@ class _SignUpScreenContent extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () => context.go('/login'),
-                    child: const Text('Giriş Yap'),
+                    child: Text(
+                      'Giriş Yap',
+                      style: GoogleFonts.aBeeZee(
+                        color: theme.colorScheme.tertiary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),

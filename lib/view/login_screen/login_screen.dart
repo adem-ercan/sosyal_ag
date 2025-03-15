@@ -60,6 +60,10 @@ class _LoginScreenContent extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.grey.shade300),
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: theme.colorScheme.tertiary, width: 2),
+                  ),
                   errorText: viewModel.emailError,
                 ),
               ),
@@ -85,6 +89,10 @@ class _LoginScreenContent extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.grey.shade300),
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: theme.colorScheme.tertiary, width: 2),
+                  ),
                   errorText: viewModel.passwordError,
                 ),
               ),
@@ -93,7 +101,10 @@ class _LoginScreenContent extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {},
-                  child: const Text('Şifremi Unuttum'),
+                  child: Text('Şifremi Unuttum', style: GoogleFonts.aBeeZee(
+                    color: theme.colorScheme.tertiary,
+                    fontWeight: FontWeight.bold,
+                  ),),
                 ),
               ),
               const SizedBox(height: 16),
@@ -185,7 +196,10 @@ class _LoginScreenContent extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () => context.go('/signup'),
-                    child: const Text('Kayıt Ol'),
+                    child: Text('Kayıt Ol',style: GoogleFonts.aBeeZee(
+                    color: theme.colorScheme.tertiary,
+                    fontWeight: FontWeight.bold,
+                  )),
                   ),
                 ],
               ),
