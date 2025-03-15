@@ -1,0 +1,118 @@
+import 'package:flutter/material.dart';
+
+class SignupViewModel extends ChangeNotifier {
+  // Form controllers
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  
+  // Form validation states
+  String? nameError;
+  String? emailError;
+  String? passwordError;
+  bool isLoading = false;
+  bool obscurePassword = true;
+  
+  // Form validation methods
+  bool validateName() {
+    if (nameController.text.isEmpty) {
+      nameError = 'Ad Soyad alanı boş bırakılamaz';
+      notifyListeners();
+      return false;
+    } else if (nameController.text.length < 3) {
+      nameError = 'Ad Soyad en az 3 karakter olmalıdır';
+      notifyListeners();
+      return false;
+    } else {
+      nameError = null;
+      notifyListeners();
+      return true;
+    }
+  }
+  
+  bool validateEmail() {
+    if (emailController.text.isEmpty) {
+      emailError = 'E-posta alanı boş bırakılamaz';
+      notifyListeners();
+      return false;
+    } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(emailController.text)) {
+      emailError = 'Geçerli bir e-posta adresi giriniz';
+      notifyListeners();
+      return false;
+    } else {
+      emailError = null;
+      notifyListeners();
+      return true;
+    }
+  }
+  
+  bool validatePassword() {
+    if (passwordController.text.isEmpty) {
+      passwordError = 'Şifre alanı boş bırakılamaz';
+      notifyListeners();
+      return false;
+    } else if (passwordController.text.length < 6) {
+      passwordError = 'Şifre en az 6 karakter olmalıdır';
+      notifyListeners();
+      return false;
+    } else {
+      passwordError = null;
+      notifyListeners();
+      return true;
+    }
+  }
+  
+  bool validateForm() {
+    return validateName() && validateEmail() && validatePassword();
+  }
+  
+  // Toggle password visibility
+  void togglePasswordVisibility() {
+    obscurePassword = !obscurePassword;
+    notifyListeners();
+  }
+  
+  // Signup method
+  Future<bool> signup() async {
+    if (!validateForm()) {
+      return false;
+    }
+    
+    isLoading = true;
+    notifyListeners();
+    
+    try {
+      // Burada gerçek signup işlemi yapılacak
+      // Örnek olarak 2 saniyelik bir bekleme ekledim
+      await Future.delayed(const Duration(seconds: 2));
+      
+      isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+  
+  // Reset form
+  void resetForm() {
+    nameController.clear();
+    emailController.clear();
+    passwordController.clear();
+    nameError = null;
+    emailError = null;
+    passwordError = null;
+    isLoading = false;
+    notifyListeners();
+  }
+  
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+}

@@ -90,6 +90,7 @@ class LoginScreen extends StatelessWidget {
                 height: 50,
                 child: OutlinedButton.icon(
                   onPressed: () {},
+                  // Burada google icon'u local bir dosyadan alınacak.
                   icon: Image.network(
                     'https://www.google.com/favicon.ico',
                     height: 24,

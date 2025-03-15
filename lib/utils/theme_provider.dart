@@ -3,8 +3,9 @@
 // Bu sayede uygulama içerisindeki tüm widgetlar aynı anda temalarını değiştirebilir.
 
 
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sosyal_ag/utils/constants.dart';
 
 class ThemeProvider with ChangeNotifier {
 // VARIABLES
@@ -15,11 +16,45 @@ class ThemeProvider with ChangeNotifier {
   );
 
   final ThemeData _themeDataDark = ThemeData(
-    primaryColor: Colors.black87,
-    primarySwatch: Colors.blue,
+    primaryColor: Constants.themeColor1,
+    scaffoldBackgroundColor: Constants.themeColor1,
     brightness: Brightness.dark,
-
+    colorScheme: ColorScheme.dark(
+      primary: Constants.themeColor1,
+      secondary: Constants.themeColor2,
+      surface: Constants.themeColor3,
+      onPrimary: Constants.themeColor4,
+      onSecondary: Constants.themeColor5,
+      onSurface: Constants.themeColor6,
+      tertiary: Colors.tealAccent,
+      onError: Colors.pinkAccent,
+      error: Colors.pinkAccent,
+      brightness: Brightness.dark,
+    ),
+    
+    appBarTheme: AppBarTheme(
+      backgroundColor: Constants.themeColor2,
+      elevation: 0,
+    ),
+    cardTheme: CardTheme(
+      color: Constants.themeColor2,
+      elevation: 4,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Constants.themeColor3,
+        foregroundColor: Constants.themeColor6,
+      ),
+    ),
+    textTheme: TextTheme(
+      titleLarge: GoogleFonts.aBeeZee(color: Constants.themeColor6, fontWeight: FontWeight.bold),
+      bodyLarge: GoogleFonts.aBeeZee(color: Constants.themeColor5),
+      bodyMedium: GoogleFonts.aBeeZee(color: Constants.themeColor5),
+    ),
+    
   );
+
+
 
   ThemeMode _themeMode = ThemeMode.dark;
 

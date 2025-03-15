@@ -11,7 +11,7 @@ class SignUpScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
-          onPressed: () => context.pop(context),
+          onPressed: () => context.go('/login'),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -125,7 +125,7 @@ class SignUpScreen extends StatelessWidget {
                     style: TextStyle(color: Colors.grey.shade600),
                   ),
                   TextButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => context.go('/login'),
                     child: const Text('Giriş Yap'),
                   ),
                 ],
