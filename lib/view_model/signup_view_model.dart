@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SignupViewModel extends ChangeNotifier {
   // Form controllers
@@ -73,9 +74,9 @@ class SignupViewModel extends ChangeNotifier {
   }
   
   // Signup method
-  Future<bool> signup() async {
+  Future<void> signup(BuildContext context) async {
     if (!validateForm()) {
-      return false;
+      return;
     }
     
     isLoading = true;
@@ -86,13 +87,15 @@ class SignupViewModel extends ChangeNotifier {
       // Örnek olarak 2 saniyelik bir bekleme ekledim
       await Future.delayed(const Duration(seconds: 2));
       
+      if (context.mounted) {
+        context.go('/main');
+      }
+      
       isLoading = false;
       notifyListeners();
-      return true;
     } catch (e) {
       isLoading = false;
       notifyListeners();
-      return false;
     }
   }
   

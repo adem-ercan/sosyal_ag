@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import '../../view_model/signup_view_model.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => SignupViewModel(),
+      child: const _SignUpScreenContent(),
+    );
+  }
+}
+
+class _SignUpScreenContent extends StatelessWidget {
+  const _SignUpScreenContent();
+
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = context.watch<SignupViewModel>();
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -16,7 +33,7 @@ class SignUpScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
@@ -40,6 +57,7 @@ class SignUpScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               TextField(
+                controller: viewModel.nameController,
                 decoration: InputDecoration(
                   hintText: 'Ad Soyad',
                   prefixIcon: const Icon(Icons.person_outline),
@@ -50,10 +68,12 @@ class SignUpScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.grey.shade300),
                   ),
+                  errorText: viewModel.nameError,
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
+                controller: viewModel.emailController,
                 decoration: InputDecoration(
                   hintText: 'E-posta',
                   prefixIcon: const Icon(Icons.email_outlined),
@@ -64,15 +84,24 @@ class SignUpScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.grey.shade300),
                   ),
+                  errorText: viewModel.emailError,
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
-                obscureText: true,
+                controller: viewModel.passwordController,
+                obscureText: viewModel.obscurePassword,
                 decoration: InputDecoration(
                   hintText: 'Şifre',
                   prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: const Icon(Icons.visibility_outlined),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      viewModel.obscurePassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                    ),
+                    onPressed: viewModel.togglePasswordVisibility,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -80,6 +109,7 @@ class SignUpScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.grey.shade300),
                   ),
+                  errorText: viewModel.passwordError,
                 ),
               ),
               const SizedBox(height: 24),
@@ -87,15 +117,34 @@ class SignUpScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: viewModel.isLoading
+                      ? null
+                      : () => viewModel.signup(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    elevation: 8,
+                    backgroundColor: Colors.tealAccent,
+                    foregroundColor: Colors.black87,
+                    disabledBackgroundColor: Colors.tealAccent.withOpacity(0.5),
                   ),
-                  child: const Text('Kayıt Ol'),
+                  child: viewModel.isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.black87,
+                          ),
+                        )
+                      : Text(
+                          'Kayıt Ol',
+                          style: GoogleFonts.aBeeZee(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -108,11 +157,23 @@ class SignUpScreen extends StatelessWidget {
                     'https://www.google.com/favicon.ico',
                     height: 24,
                   ),
-                  label: const Text('Google ile kayıt ol'),
+                  label: Text(
+                    'Google ile kayıt ol',
+                    style: GoogleFonts.aBeeZee(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
                   style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    side: BorderSide(color: Colors.tealAccent.withOpacity(0.5), width: 2),
+                    backgroundColor: theme.colorScheme.surface.withOpacity(0.8),
+                    foregroundColor: Colors.white,
+                    elevation: 4,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                 ),
               ),
