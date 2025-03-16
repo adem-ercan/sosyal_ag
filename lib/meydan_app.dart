@@ -20,8 +20,8 @@ class MeydanApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Meydan App',
             theme: themeProvider.themeDataLight,
-            //darkTheme: themeProvider.themeDataDark,
-            //themeMode: themeProvider.themeMode,
+            darkTheme: themeProvider.themeDataDark,
+            themeMode: themeProvider.themeMode,
           );
         },
       ),

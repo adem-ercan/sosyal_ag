@@ -7,7 +7,6 @@ import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
 
 
-
 void main() async{
   
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,19 +14,13 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform);
 
+  setupLocator();
 
-setupLocator();
-
-
-
-runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
-      child: const MeydanApp(),
-    ),
+  runApp(
+      ChangeNotifierProvider(
+        create: (_) => ThemeProvider(),
+        child: const MeydanApp(),
+      ),
   );
+
 }
-
-
-
-

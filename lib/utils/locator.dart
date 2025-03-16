@@ -1,9 +1,12 @@
 import 'package:get_it/get_it.dart';
+import 'package:sosyal_ag/services/firebase/firebase_auth_services.dart';
 
 GetIt locator = GetIt.instance;
 
 void setupLocator() {
-  // locator.registerLazySingleton(() => AuthService());
+
+
+  locator.registerLazySingleton(() => FirebaseAuthServices());
   // locator.registerLazySingleton(() => FirestoreService());
   // locator.registerLazySingleton(() => NavigationService());
   // locator.registerLazySingleton(() => DialogService());

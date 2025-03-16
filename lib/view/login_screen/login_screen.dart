@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sosyal_ag/services/firebase/firebase_auth_services.dart';
 import '../../view_model/login_view_model.dart';
+
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -21,8 +23,10 @@ class _LoginScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final viewModel = context.watch<LoginViewModel>();
     final theme = Theme.of(context);
+
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -147,7 +151,11 @@ class _LoginScreenContent extends StatelessWidget {
                 width: double.infinity,
                 height: 50,
                 child: OutlinedButton.icon(
-                  onPressed: () {},
+                  onPressed: () async{
+
+                    FirebaseAuthServices firebaseAuthServices = FirebaseAuthServices();
+                   await firebaseAuthServices.signInWithApple();
+                  },
                   icon: Image.network(
                     'https://www.google.com/favicon.ico',
                     height: 24,
