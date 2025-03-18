@@ -6,10 +6,11 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class FirebaseAuthServices implements AuthBase {
+  final FirebaseAuth _instance = FirebaseAuth.instance;
+
   @override
   Stream<User?> authStateChanges() {
     // TODO: implement authStateChanges
@@ -23,16 +24,17 @@ class FirebaseAuthServices implements AuthBase {
   }
 
   @override
-  Future<User?> createUserWithEmailAndPassword(
+  Future<UserCredential?> createUserWithEmailAndPassword(
     String email,
     String password,
   ) async {
     try {
-      final credential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      final credential = await _instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-      User? user = credential.user;
-      return user;
+      return credential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -46,8 +48,28 @@ class FirebaseAuthServices implements AuthBase {
   }
 
   @override
-  Future loginWithGoogle() async {
+  Future<UserCredential?> signInWithEmailAndPassword(String email, String password) async {
+    try {
+      final UserCredential credential = await _instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      return credential;
+
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
+
+  @override
+  Future<UserCredential?> loginWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
@@ -62,6 +84,8 @@ class FirebaseAuthServices implements AuthBase {
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
+
+
 
   @override
   Future signOut() {

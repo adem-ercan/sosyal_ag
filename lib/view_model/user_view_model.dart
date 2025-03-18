@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:sosyal_ag/model/user_model.dart';
+import 'package:sosyal_ag/repositories/repository.dart';
+import 'package:sosyal_ag/utils/locator.dart';
 
 
 class UserViewModel extends ChangeNotifier {
-  String _userName = '';
-  String _userEmail = '';
-  String _userPhotoUrl = '';
 
-  String get userName => _userName;
-  String get userEmail => _userEmail;
-  String get userPhotoUrl => _userPhotoUrl;
 
-  void setUserName(String userName) {
-    _userName = userName;
-    notifyListeners();
+  final Repository _repository = locator<Repository>();
+
+  Future<void> createUserWithEmailAndPassword() async {
+    try {
+      await _repository.createUserWithEmailAndPassword("email", "password");
+    } catch (e) {
+      
+    }
   }
 
-  void setUserEmail(String userEmail) {
-    _userEmail = userEmail;
-    notifyListeners();
+
+  Future<UserModel?> signInWithEmailAndPassword(String email, String password) async {
+    try {
+      //Veri tabanı işlemleri repository içerisinde yapılacak.
+      await _repository.signInWithEmailAndPassword(email, password);
+    } catch (e) {
+      print("ERROR on UserViewModel: $e");
+    }
   }
 
-  void setUserPhotoUrl(String userPhotoUrl) {
-    _userPhotoUrl = userPhotoUrl;
-    notifyListeners();
-  }
+
+
+
+
 }

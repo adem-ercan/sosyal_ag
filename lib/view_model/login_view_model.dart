@@ -11,6 +11,17 @@ class LoginViewModel extends ChangeNotifier {
   String? passwordError;
   bool isLoading = false;
   bool obscurePassword = true;
+
+
+  // VARIABLES
+
+
+  // GETTERS
+
+  // SETTERS
+  
+
+
   
   // Form validation methods
   bool validateEmail() {
@@ -82,6 +93,8 @@ class LoginViewModel extends ChangeNotifier {
       return false;
     }
   }
+
+
   
   // Reset form
   void resetForm() {

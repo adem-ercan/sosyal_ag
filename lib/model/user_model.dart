@@ -1,3 +1,4 @@
+
 class UserModel {
   final String? uid;
   final String name;
@@ -8,6 +9,7 @@ class UserModel {
   final DateTime? updatedAt;
   final List<String>? followers;
   final List<String>? following;
+
 
   UserModel({
     this.uid,
@@ -20,6 +22,7 @@ class UserModel {
     this.followers,
     this.following,
   });
+
 
   // JSON'dan UserModel'e dönüştürme
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -39,6 +42,7 @@ class UserModel {
       following: (json['following'] as List<dynamic>?)?.cast<String>(),
     );
   }
+
 
   // UserModel'i JSON'a dönüştürme
   Map<String, dynamic> toJson() {
