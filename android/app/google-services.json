@@ -12,7 +12,20 @@
           "package_name": "com.example.sosyal_ag"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "773711910836-hqj164l8jog3u3b926vk2nkh99vgf5vq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sosyal_ag",
+            "certificate_hash": "8175363ee51728301ed3d5bae0ff772bb14d16f3"
+          }
+        },
+        {
+          "client_id": "773711910836-36f5cvdc2sqg609lsndklu3nb9hqb4cg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDSK1IWxkCF9FGHiwFc0Xel9OJHchN2z2o"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773711910836-36f5cvdc2sqg609lsndklu3nb9hqb4cg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "773711910836-4u16bhlo2jq9bfrhl2is9jh4avg39iqf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sosyalAg"
+              }
+            }
+          ]
         }
       }
     }
