@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:sosyal_ag/view_model/user_view_model.dart';
 
 class LoginViewModel extends ChangeNotifier {
   // Form controllers
@@ -68,6 +69,9 @@ class LoginViewModel extends ChangeNotifier {
   
   // Login method
   Future<bool> login(BuildContext context) async {
+
+    UserViewModel userViewModel = Provider.of<UserViewModel>(context, listen: false);
+
     if (!validateForm()) {
       return false;
     }
@@ -78,11 +82,8 @@ class LoginViewModel extends ChangeNotifier {
     try {
       // Burada gerçek login işlemi yapılacak
       // Örnek olarak 2 saniyelik bir bekleme ekledim
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (context.mounted) {
-        context.go('/main');
-      }
+      //await Future.delayed(const Duration(seconds: 2));
+      await userViewModel.signInWithEmailAndPassword(emailController.text, passwordController.text);     
       
       isLoading = false;
       notifyListeners();
@@ -90,6 +91,7 @@ class LoginViewModel extends ChangeNotifier {
     } catch (e) {
       isLoading = false;
       notifyListeners();
+      print("ERROR on LoginViewModel: $e");
       return false;
     }
   }

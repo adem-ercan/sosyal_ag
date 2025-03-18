@@ -34,5 +34,9 @@ class Repository {
       print("Oturum açılamadı");
     }
   }
+
+  Future<void> signOut() async {
+    await _firebaseAuthServices.signOut();
+  }
   
 }

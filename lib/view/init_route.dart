@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sosyal_ag/init.dart';
-import 'package:sosyal_ag/view/login_screen/login_screen.dart';
+import 'package:sosyal_ag/view/auth_route.dart';
 import 'package:sosyal_ag/view/splash_screen/splash_screen.dart';
 
 class InitRoute extends StatelessWidget {
@@ -12,7 +12,7 @@ class InitRoute extends StatelessWidget {
       future: Init.start(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return const LoginScreen();
+          return const AuthRoute();
         } else {
           return const SplashScreen();
         }

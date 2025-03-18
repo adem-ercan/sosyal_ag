@@ -9,11 +9,11 @@ class UserViewModel extends ChangeNotifier {
 
   final Repository _repository = locator<Repository>();
 
-  Future<void> createUserWithEmailAndPassword() async {
+  Future<void> createUserWithEmailAndPassword(String email, String password) async {
     try {
-      await _repository.createUserWithEmailAndPassword("email", "password");
+      await _repository.createUserWithEmailAndPassword(email, password);
     } catch (e) {
-      
+      print("ERROR on UserViewModel: $e");
     }
   }
 
@@ -27,8 +27,15 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> signOut() async {
+    try {
+      await _repository.signOut();
+    } catch (e) {
+      print("ERROR on UserViewModel: $e");
+    }
+  }
+  }
 
 
 
 
-}

@@ -23,7 +23,7 @@ class _LoginScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LoginViewModel viewModel = Provider.of(context);
+    final LoginViewModel loginViewModel = Provider.of<LoginViewModel>(context);
 
     final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
 
@@ -55,7 +55,7 @@ class _LoginScreenContent extends StatelessWidget {
                   ),
                   const SizedBox(height: 40),
                   TextField(
-                    controller: viewModel.emailController,
+                    controller: loginViewModel.emailController,
                     decoration: InputDecoration(
                       hintText: 'E-posta',
                       prefixIcon: const Icon(Icons.email_outlined),
@@ -73,23 +73,23 @@ class _LoginScreenContent extends StatelessWidget {
                           width: 2,
                         ),
                       ),
-                      errorText: viewModel.emailError,
+                      errorText: loginViewModel.emailError,
                     ),
                   ),
                   const SizedBox(height: 16),
                   TextField(
-                    controller: viewModel.passwordController,
-                    obscureText: viewModel.obscurePassword,
+                    controller: loginViewModel.passwordController,
+                    obscureText: loginViewModel.obscurePassword,
                     decoration: InputDecoration(
                       hintText: 'Şifre',
                       prefixIcon: const Icon(Icons.lock_outline),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          viewModel.obscurePassword
+                          loginViewModel.obscurePassword
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
                         ),
-                        onPressed: viewModel.togglePasswordVisibility,
+                        onPressed: loginViewModel.togglePasswordVisibility,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -105,7 +105,7 @@ class _LoginScreenContent extends StatelessWidget {
                           width: 2,
                         ),
                       ),
-                      errorText: viewModel.passwordError,
+                      errorText: loginViewModel.passwordError,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -128,9 +128,9 @@ class _LoginScreenContent extends StatelessWidget {
                     height: 50,
                     child: ElevatedButton(
                       onPressed:
-                          viewModel.isLoading
+                          loginViewModel.isLoading
                               ? null
-                              : () => viewModel.login(context),
+                              : () => loginViewModel.login(context),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -143,7 +143,7 @@ class _LoginScreenContent extends StatelessWidget {
                         ),
                       ),
                       child:
-                          viewModel.isLoading
+                          loginViewModel.isLoading
                               ? const SizedBox(
                                 height: 20,
                                 width: 20,
@@ -169,7 +169,7 @@ class _LoginScreenContent extends StatelessWidget {
                       onPressed: () async {
                         FirebaseAuthServices firebaseAuthServices =
                             FirebaseAuthServices();
-                        await firebaseAuthServices.signInWithApple();
+                        await firebaseAuthServices.loginWithGoogle();
                       },
                       icon: Image.network(
                         'https://www.google.com/favicon.ico',
@@ -208,7 +208,7 @@ class _LoginScreenContent extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
                           'veya',
-                          style: TextStyle(color: Colors.grey.shade600),
+                          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                         ),
                       ),
                       Expanded(child: Divider(color: Colors.grey.shade300)),

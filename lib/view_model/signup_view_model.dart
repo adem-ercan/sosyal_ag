@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:sosyal_ag/view_model/user_view_model.dart';
 
 class SignupViewModel extends ChangeNotifier {
   // Form controllers
@@ -75,8 +77,16 @@ class SignupViewModel extends ChangeNotifier {
   
   // Signup method
   Future<void> signup(BuildContext context) async {
-    if (!validateForm()) {
-      return;
+    UserViewModel userViewModel = Provider.of<UserViewModel>(context, listen: false);
+
+    if (validateForm()) {
+      try {
+        print("validdate çalıştı");
+        await userViewModel.createUserWithEmailAndPassword(emailController.text, passwordController.text);
+      } catch (e) {
+        print("ERROR on SignupViewModel: $e");
+      }
+      
     }
     
     isLoading = true;
