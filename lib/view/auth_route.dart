@@ -16,7 +16,7 @@ class AuthRoute extends StatelessWidget {
         } else if (snapshot.hasData) {
           User? user = snapshot.data;
           if (user != null) {
-           return const MainScreen();
+           return MainScreen(context: context,);
           }else{
             return const LoginScreen();
           }

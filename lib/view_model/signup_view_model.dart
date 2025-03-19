@@ -78,32 +78,43 @@ class SignupViewModel extends ChangeNotifier {
   // Signup method
   Future<void> signup(BuildContext context) async {
     UserViewModel userViewModel = Provider.of<UserViewModel>(context, listen: false);
+     isLoading = true;
+    notifyListeners();
+
 
     if (validateForm()) {
       try {
-        print("validdate çalıştı");
-        await userViewModel.createUserWithEmailAndPassword(emailController.text, passwordController.text);
-      } catch (e) {
-        print("ERROR on SignupViewModel: $e");
-      }
+      // Burada gerçek signup işlemi yapılacak
+      // Örnek olarak 2 saniyelik bir bekleme ekledim
       
+      print("validdate çalıştı");
+      await userViewModel.createUserWithEmailAndPassword(emailController.text, passwordController.text);
+
+      isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      print("ERROR on SignupViewModel: $e");
+      isLoading = false;
+      notifyListeners();
+    }
+      
+    } else {
+      isLoading = false;
     }
     
-    isLoading = true;
-    notifyListeners();
+   
     
     try {
       // Burada gerçek signup işlemi yapılacak
       // Örnek olarak 2 saniyelik bir bekleme ekledim
-      await Future.delayed(const Duration(seconds: 2));
       
-      if (context.mounted) {
-        context.go('/main');
-      }
-      
+      print("validdate çalıştı");
+      await userViewModel.createUserWithEmailAndPassword(emailController.text, passwordController.text);
+
       isLoading = false;
       notifyListeners();
     } catch (e) {
+      print("ERROR on SignupViewModel: $e");
       isLoading = false;
       notifyListeners();
     }
