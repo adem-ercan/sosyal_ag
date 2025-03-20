@@ -5,8 +5,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sosyal_ag/core/db_base.dart';
 
-
-
 class FirestoreService implements DataBaseCore {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -15,6 +13,14 @@ class FirestoreService implements DataBaseCore {
     CollectionReference usersRef = _firestore.collection('users');
      await usersRef.doc(userJsonData['uid']).set(userJsonData);
   }
+  
 
+  Future<Map<String, dynamic>?> getCurrentUserAllData(String userID) async {
+    CollectionReference usersRef = _firestore.collection('users');
+    DocumentSnapshot doc = await usersRef.doc(userID).get();
 
+    if (!doc.exists) return null;
+
+    return doc.data() as Map<String, dynamic>;
+  }
 }

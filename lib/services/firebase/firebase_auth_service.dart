@@ -21,9 +21,8 @@ class FirebaseAuthService implements AuthBase {
   }
 
   @override
-  Future currentUser() {
-    // TODO: implement currentUser
-    throw UnimplementedError();
+  Future<User?> currentUser() async{
+    User? user =_auth.currentUser;
   }
 
   @override

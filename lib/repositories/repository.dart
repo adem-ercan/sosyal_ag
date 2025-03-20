@@ -6,35 +6,66 @@ import 'package:sosyal_ag/utils/extensions/string_extensions.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 
 class Repository {
-
-
-  final FirebaseAuthService _firebaseAuthService = locator<FirebaseAuthService>();
+  final FirebaseAuthService _firebaseAuthService =
+      locator<FirebaseAuthService>();
   final FirestoreService _firestoreService = locator<FirestoreService>();
-  
-  
 
-  Future<void> createUserWithEmailAndPassword(String email, String password, String userName) async { 
-    UserCredential? credential = await _firebaseAuthService.createUserWithEmailAndPassword(email, password);
+  Future<void> createUserWithEmailAndPassword(
+    String email,
+    String password,
+    String userName,
+  ) async {
+    UserCredential? credential = await _firebaseAuthService
+        .createUserWithEmailAndPassword(email, password);
     User? user = credential?.user;
 
     if (user != null) {
-      UserModel userModel = UserModel(userName: userName, email: email);
+      UserModel userModel = UserModel(
+        userName: userName,
+        email: email,
+        uid: user.uid,
+      );
       await _firestoreService.createNewUser(userModel.toJson());
-      
     } else {
       print("Oturum açılamadı");
     }
   }
 
+  Future<UserModel?> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    UserCredential? credential = await _firebaseAuthService
+        .signInWithEmailAndPassword(email, password);
+    User? user = credential?.user;
 
-  Future<UserModel?> signInWithEmailAndPassword(String email, String password) async {
-    UserCredential? credential = await _firebaseAuthService.signInWithEmailAndPassword(email, password);
+    /* if (user != null) {
+      // Burada uid null kontrolüde yapılacak
+      Map<String, dynamic>? mapData = await _firestoreService
+          .getCurrentUserAllData(user.uid);
+      if (mapData != null) {
+        pragma("Veriyi oku: $mapData");
+        return UserModel.fromJson(mapData);
+      } else {
+        print("data yok!");
+      }
+    } else {
+      print("Oturum açılamadı");
+    } */
+  }
+
+  // Burada iş bitmedi hala, düzeltilecek
+  Future<UserModel?> signInWithGoogle(String email, String password) async {
+    UserCredential? credential = await _firebaseAuthService
+        .signInWithEmailAndPassword(email, password);
     User? user = credential?.user;
 
     if (user != null) {
-      UserModel userModel = UserModel(userName: email.getEmailPrefix(), email: email);
-      await _firestoreService.createNewUser(userModel.toJson());
-      
+      UserModel userModel = UserModel(
+        userName: email.getEmailPrefix(),
+        email: email,
+      );
+      //await _firestoreService.getCurrentUserAllData(userID)
     } else {
       print("Oturum açılamadı");
     }
@@ -47,5 +78,4 @@ class Repository {
   Stream<bool> authStateChanges() {
     return _firebaseAuthService.authStateChanges();
   }
-  
 }
