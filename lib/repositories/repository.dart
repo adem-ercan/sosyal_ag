@@ -1,21 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sosyal_ag/model/user_model.dart';
 import 'package:sosyal_ag/services/firebase/firebase_auth_service.dart';
+import 'package:sosyal_ag/services/firebase/firebase_firestore_service.dart';
+import 'package:sosyal_ag/utils/extensions/string_extensions.dart';
+import 'package:sosyal_ag/utils/locator.dart';
 
 class Repository {
 
 
-  final FirebaseAuthServices _firebaseAuthServices = FirebaseAuthServices();
+  final FirebaseAuthService _firebaseAuthService = locator<FirebaseAuthService>();
+  final FirestoreService _firestoreService = locator<FirestoreService>();
   
-  // Burada bir geri dönüş değerine gerek yok. 
-  // Geri dönüş değeri oturum açıldıktan sonra çağırılan veritabanı fonksiyonunda olacak.
+  
 
-  Future<void> createUserWithEmailAndPassword(String email, String password) async { 
-    UserCredential? credential = await _firebaseAuthServices.createUserWithEmailAndPassword(email, password);
+  Future<void> createUserWithEmailAndPassword(String email, String password, String userName) async { 
+    UserCredential? credential = await _firebaseAuthService.createUserWithEmailAndPassword(email, password);
     User? user = credential?.user;
 
     if (user != null) {
-      // Burada veritabanı işlemleri yapılacak.
+      UserModel userModel = UserModel(userName: userName, email: email);
+      await _firestoreService.createNewUser(userModel.toJson());
       
     } else {
       print("Oturum açılamadı");
@@ -24,11 +28,12 @@ class Repository {
 
 
   Future<UserModel?> signInWithEmailAndPassword(String email, String password) async {
-    UserCredential? credential = await _firebaseAuthServices.signInWithEmailAndPassword(email, password);
+    UserCredential? credential = await _firebaseAuthService.signInWithEmailAndPassword(email, password);
     User? user = credential?.user;
 
     if (user != null) {
-      // Burada veritabanı işlemleri yapılacak.
+      UserModel userModel = UserModel(userName: email.getEmailPrefix(), email: email);
+      await _firestoreService.createNewUser(userModel.toJson());
       
     } else {
       print("Oturum açılamadı");
@@ -36,7 +41,11 @@ class Repository {
   }
 
   Future<void> signOut() async {
-    await _firebaseAuthServices.signOut();
+    await _firebaseAuthService.signOut();
+  }
+
+  Stream<bool> authStateChanges() {
+    return _firebaseAuthService.authStateChanges();
   }
   
 }

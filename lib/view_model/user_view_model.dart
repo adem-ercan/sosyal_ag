@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sosyal_ag/model/user_model.dart';
 import 'package:sosyal_ag/repositories/repository.dart';
@@ -9,9 +10,9 @@ class UserViewModel extends ChangeNotifier {
 
   final Repository _repository = locator<Repository>();
 
-  Future<void> createUserWithEmailAndPassword(String email, String password) async {
+  Future<void> createUserWithEmailAndPassword(String email, String password, String userName) async {
     try {
-      await _repository.createUserWithEmailAndPassword(email, password);
+      await _repository.createUserWithEmailAndPassword(email, password, userName);
     } catch (e) {
       print("ERROR on UserViewModel: $e");
     }
@@ -34,6 +35,11 @@ class UserViewModel extends ChangeNotifier {
       print("ERROR on UserViewModel: $e");
     }
   }
+
+  Stream<bool> authStateChanges() {
+    return _repository.authStateChanges();
+  } 
+
   }
 
 

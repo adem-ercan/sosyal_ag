@@ -4,20 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../view_model/signup_view_model.dart';
 
+
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => SignupViewModel(),
-      child: const _SignUpScreenContent(),
-    );
-  }
-}
-
-class _SignUpScreenContent extends StatelessWidget {
-  const _SignUpScreenContent();
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +199,7 @@ class _SignUpScreenContent extends StatelessWidget {
                     style: TextStyle(color: Colors.grey.shade600),
                   ),
                   TextButton(
-                    onPressed: () => context.go('/login'),
+                    onPressed: () => context.go('/authRoute'),
                     child: Text(
                       'Giriş Yap',
                       style: GoogleFonts.aBeeZee(

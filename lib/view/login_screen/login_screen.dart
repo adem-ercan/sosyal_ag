@@ -6,20 +6,10 @@ import 'package:sosyal_ag/services/firebase/firebase_auth_service.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
 import '../../view_model/login_view_model.dart';
 
+
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => LoginViewModel(),
-      child: const _LoginScreenContent(),
-    );
-  }
-}
-
-class _LoginScreenContent extends StatelessWidget {
-  const _LoginScreenContent();
 
   @override
   Widget build(BuildContext context) {
@@ -167,8 +157,8 @@ class _LoginScreenContent extends StatelessWidget {
                     height: 50,
                     child: OutlinedButton.icon(
                       onPressed: () async {
-                        FirebaseAuthServices firebaseAuthServices =
-                            FirebaseAuthServices();
+                        FirebaseAuthService firebaseAuthServices =
+                            FirebaseAuthService();
                         await firebaseAuthServices.loginWithGoogle();
                       },
                       icon: Image.network(

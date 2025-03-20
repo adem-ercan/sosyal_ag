@@ -90,8 +90,9 @@ class LoginViewModel extends ChangeNotifier {
       return true;
     } catch (e) {
       isLoading = false;
-      notifyListeners();
+      
       print("ERROR on LoginViewModel: $e");
+      //notifyListeners();
       return false;
     }
   }

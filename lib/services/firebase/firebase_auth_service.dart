@@ -8,13 +8,16 @@ import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-class FirebaseAuthServices implements AuthBase {
-  final FirebaseAuth _instance = FirebaseAuth.instance;
+class FirebaseAuthService implements AuthBase {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
-  Stream<User?> authStateChanges() {
-    // TODO: implement authStateChanges
-    throw UnimplementedError();
+  Stream<bool> authStateChanges() {
+    return _auth.authStateChanges().asyncMap((user) async {
+      if (user != null) {
+        return true;
+      } else{return false;} 
+    });
   }
 
   @override
@@ -28,30 +31,29 @@ class FirebaseAuthServices implements AuthBase {
     String email,
     String password,
   ) async {
-      final credential = await _instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      return credential;
+    final credential = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return credential;
   }
 
   @override
-  Future<UserCredential?> signInWithEmailAndPassword(String email, String password) async {
-  
-      final UserCredential credential = await _instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+  Future<UserCredential?> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    final UserCredential credential = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-      return credential;
-
-    
+    return credential;
   }
 
   @override
   Future<UserCredential?> loginWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
@@ -67,11 +69,9 @@ class FirebaseAuthServices implements AuthBase {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-
-
   @override
-  Future<void> signOut() async{
-    await _instance.signOut();
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 
   // Apple Sign In

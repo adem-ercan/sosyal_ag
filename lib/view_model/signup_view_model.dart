@@ -84,11 +84,10 @@ class SignupViewModel extends ChangeNotifier {
 
     if (validateForm()) {
       try {
-      // Burada gerçek signup işlemi yapılacak
-      // Örnek olarak 2 saniyelik bir bekleme ekledim
+    
       
       print("validdate çalıştı");
-      await userViewModel.createUserWithEmailAndPassword(emailController.text, passwordController.text);
+      await userViewModel.createUserWithEmailAndPassword(emailController.text, passwordController.text, nameController.text);
 
       isLoading = false;
       notifyListeners();
@@ -103,21 +102,6 @@ class SignupViewModel extends ChangeNotifier {
     }
     
    
-    
-    try {
-      // Burada gerçek signup işlemi yapılacak
-      // Örnek olarak 2 saniyelik bir bekleme ekledim
-      
-      print("validdate çalıştı");
-      await userViewModel.createUserWithEmailAndPassword(emailController.text, passwordController.text);
-
-      isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      print("ERROR on SignupViewModel: $e");
-      isLoading = false;
-      notifyListeners();
-    }
   }
   
   // Reset form
