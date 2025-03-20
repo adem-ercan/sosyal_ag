@@ -45,7 +45,7 @@ class Repository {
           .getCurrentUserAllData(user.uid);
       if (mapData != null) {
         pragma("Veriyi oku: $mapData");
-        return UserModel.fromJson(mapData);
+        return UserModel.fromJson(mapData); 
       } else {
         print("data yok!");
       }
