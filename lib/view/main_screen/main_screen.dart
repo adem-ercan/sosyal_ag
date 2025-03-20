@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:sosyal_ag/model/post_model.dart';
+import 'package:sosyal_ag/model/user_model.dart';
+import 'package:sosyal_ag/view/main_screen/main_page/post_card.dart';
 import 'package:sosyal_ag/view_model/user_view_model.dart';
 
 /* import 'package:flutter/material.dart';
@@ -60,14 +63,7 @@ class MainScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.all(8),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            height: 50,
-            child: Text("index : $index"),
-          ),
+          child: PostCard(post: PostModel(authorId: "dsfsdf", content: "content"), author: UserModel(userName: "userName", email: "email"))
         );
       },
     ),
