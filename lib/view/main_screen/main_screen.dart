@@ -94,7 +94,7 @@ class MainScreen extends StatelessWidget {
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Colors.grey,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
-      scrollController: _scrollControllers.last,
+      //scrollController: _scrollControllers.last,
     
     ),
   ];
@@ -112,90 +112,95 @@ class MainScreen extends StatelessWidget {
 
       drawer: MeydanDrawer(),
 
-      body: PersistentTabView(
-        context,
-        controller: _controller,
-        screens: _buildScreens(),
-    
-        items: _navBarsItems(mainScreenViewModel),
-        handleAndroidBackButtonPress: true,
-        resizeToAvoidBottomInset: false,
-        stateManagement: true,
-        hideNavigationBarWhenKeyboardAppears: true,
-        popBehaviorOnSelectedNavBarItemPress: PopBehavior.once,
-        hideOnScrollSettings: HideOnScrollSettings(
-          hideNavBarOnScroll: true,
-          scrollControllers: _scrollControllers,
-        ),
-        padding: const EdgeInsets.only(top: 8),
-        onItemSelected: (index) => mainScreenViewModel.isAppBarVisible(index),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(right: 10, bottom: 30),
-          child: Container(
-            height: 50,
-            width: 50,
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  shape: BoxShape.rectangle,
-                  color: Theme.of(context).colorScheme.onSurface
-                  ,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          Future.delayed(Duration(seconds: 2));
+        },
+        child: PersistentTabView(
+          context,
+          controller: _controller,
+          screens: _buildScreens(),
+            
+          items: _navBarsItems(mainScreenViewModel),
+          handleAndroidBackButtonPress: true,
+          resizeToAvoidBottomInset: false,
+          stateManagement: true,
+          hideNavigationBarWhenKeyboardAppears: true,
+          popBehaviorOnSelectedNavBarItemPress: PopBehavior.once,
+          hideOnScrollSettings: HideOnScrollSettings(
+            hideNavBarOnScroll: true,
+            scrollControllers: _scrollControllers,
+          ),
+          padding: const EdgeInsets.only(top: 8),
+          onItemSelected: (index) => mainScreenViewModel.isAppBarVisible(index),
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.only(right: 10, bottom: 30),
+            child: Container(
+              height: 50,
+              width: 50,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    shape: BoxShape.rectangle,
+                    color: Theme.of(context).colorScheme.onSurface
+                    ,
+                  ),
+              child: IconButton(
+                padding: EdgeInsets.only(bottom: 30, right: 10),
+                icon: Icon(
+                  Icons.add_comment_rounded,
+                  color: Theme.of(context).primaryColor,
                 ),
-            child: IconButton(
-              padding: EdgeInsets.only(bottom: 30, right: 10),
-              icon: Icon(
-                Icons.add_comment_rounded,
-                color: Theme.of(context).primaryColor,
+                onPressed: () {},
               ),
-              onPressed: () {},
             ),
           ),
-        ),
-        onWillPop: (final context) async {
-          await showDialog(
-            context: context ?? this.context,
-            useSafeArea: true,
-            builder:
-                (final context) => Container(
-                  height: 50,
-                  width: 50,
-                  color: Colors.white,
-                  child: ElevatedButton(
-                    child: const Text("Close"),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+          onWillPop: (final context) async {
+            await showDialog(
+              context: context ?? this.context,
+              useSafeArea: true,
+              builder:
+                  (final context) => Container(
+                    height: 50,
+                    width: 50,
+                    color: Colors.white,
+                    child: ElevatedButton(
+                      child: const Text("Close"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
-                ),
-          );
-          return false;
-        },
-        selectedTabScreenContext: (final context) {
-          //testContext = context;
-        },
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        isVisible: !_hideNavBar,
-        animationSettings: const NavBarAnimationSettings(
-          navBarItemAnimation: ItemAnimationSettings(
-            // Navigation Bar's items animation properties.
-            duration: Duration(milliseconds: 400),
-            curve: Curves.ease,
+            );
+            return false;
+          },
+          selectedTabScreenContext: (final context) {
+            //testContext = context;
+          },
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          isVisible: !_hideNavBar,
+          animationSettings: const NavBarAnimationSettings(
+            navBarItemAnimation: ItemAnimationSettings(
+              // Navigation Bar's items animation properties.
+              duration: Duration(milliseconds: 400),
+              curve: Curves.ease,
+            ),
+            screenTransitionAnimation: ScreenTransitionAnimationSettings(
+              // Screen transition animation on change of selected tab.
+              animateTabTransition: true,
+              duration: Duration(milliseconds: 300),
+              screenTransitionAnimationType: ScreenTransitionAnimationType.fadeIn,
+            ),
+            onNavBarHideAnimation: OnHideAnimationSettings(
+              duration: Duration(milliseconds: 100),
+              curve: Curves.bounceInOut,
+            ),
           ),
-          screenTransitionAnimation: ScreenTransitionAnimationSettings(
-            // Screen transition animation on change of selected tab.
-            animateTabTransition: true,
-            duration: Duration(milliseconds: 300),
-            screenTransitionAnimationType: ScreenTransitionAnimationType.fadeIn,
-          ),
-          onNavBarHideAnimation: OnHideAnimationSettings(
-            duration: Duration(milliseconds: 100),
-            curve: Curves.bounceInOut,
-          ),
+          confineToSafeArea: true,
+          navBarHeight: kBottomNavigationBarHeight,
+          navBarStyle:
+              _navBarStyle, // Choose the nav bar style with this property
         ),
-        confineToSafeArea: true,
-        navBarHeight: kBottomNavigationBarHeight,
-        navBarStyle:
-            _navBarStyle, // Choose the nav bar style with this property
       ),
     );
   }
