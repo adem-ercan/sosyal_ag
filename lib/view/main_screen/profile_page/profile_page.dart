@@ -28,7 +28,7 @@ class ProfilePage extends StatelessWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                         theme.colorScheme.tertiary,
-                        theme.colorScheme.surface,
+                        theme.scaffoldBackgroundColor,
                       ],
                     ),
                   ),
@@ -36,87 +36,95 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
             SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 40,
-                          backgroundColor: theme.colorScheme.tertiary,
-                          child: const Icon(Icons.person, size: 40),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    'Kullanıcı Adı',
-                                    style: GoogleFonts.aBeeZee(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Icon(
-                                    Icons.verified,
-                                    color: theme.colorScheme.tertiary,
-                                    size: 20,
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                '@kullaniciadi',
-                                style: GoogleFonts.aBeeZee(
-                                  color: theme.colorScheme.onSurface.withOpacity(0.6),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: theme.scaffoldBackgroundColor
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 40,
                             backgroundColor: theme.colorScheme.tertiary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                            child: const Icon(Icons.person, size: 40),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Kullanıcı Adı',
+                                      style: GoogleFonts.aBeeZee(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Icon(
+                                      Icons.verified,
+                                      color: theme.colorScheme.tertiary,
+                                      size: 20,
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  '@kullaniciadi',
+                                  style: GoogleFonts.aBeeZee(
+                                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          child: Text(
-                            'Düzenle',
-                            style: GoogleFonts.aBeeZee(color: Colors.black),
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: theme.colorScheme.onSurface,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            child: Text(
+                              'Düzenle',
+                              style: GoogleFonts.aBeeZee(color: theme.primaryColor),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Biyografi yazısı burada yer alacak. Kullanıcının kendisi hakkında yazdığı kısa bilgi.',
-                      style: GoogleFonts.aBeeZee(
-                        fontSize: 14,
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildStatColumn('Gönderi', '156'),
-                        _buildStatColumn('Takipçi', '1.2K'),
-                        _buildStatColumn('Takip', '843'),
-                      ],
-                    ),
-                  ],
+                      const SizedBox(height: 16),
+                      Text(
+                        'Biyografi yazısı burada yer alacak. Kullanıcının kendisi hakkında yazdığı kısa bilgi.',
+                        style: GoogleFonts.aBeeZee(
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildStatColumn('Gönderi', '156'),
+                          _buildStatColumn('Takipçi', '1.2K'),
+                          _buildStatColumn('Takip', '843'),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
             SliverPersistentHeader(
               delegate: _SliverAppBarDelegate(
                 TabBar(
+                  dividerColor: theme.colorScheme.onSecondary,
+                  labelColor: theme.colorScheme.tertiary,
+                  overlayColor: WidgetStateProperty.all(Colors.red),
                   tabs: [
                     Tab(
                       child: Text(
@@ -140,8 +148,8 @@ class ProfilePage extends StatelessWidget {
         },
         body: TabBarView(
           children: [
-            _buildPostsList(),
-            _buildLikedList(),
+            _buildPostsList(context),
+            _buildLikedList(context),
           ],
         ),
       ),
@@ -168,25 +176,30 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildPostsList() {
-    return ListView.builder(
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        return PostCard(
-          post: PostModel(
-            authorId: "test_id",
-            content: "Test içerik $index",
-          ),
-          author: UserModel(
-            userName: "Test Kullanıcı",
-            email: "test@example.com",
-          ),
-        );
-      },
+  Widget _buildPostsList(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor
+      ),
+      child: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return PostCard(
+            post: PostModel(
+              authorId: "test_id",
+              content: "Test içerik $index",
+            ),
+            author: UserModel(
+              userName: "Test Kullanıcı",
+              email: "test@example.com",
+            ),
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildLikedList() {
+  Widget _buildLikedList(BuildContext context) {
     return ListView.builder(
       itemCount: 5,
       itemBuilder: (context, index) {
