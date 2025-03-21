@@ -1,7 +1,6 @@
 // Bu ekran test için oluşturuldu
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/model/post_model.dart';
@@ -10,39 +9,9 @@ import 'package:sosyal_ag/view/main_screen/drawer/drawer.dart';
 import 'package:sosyal_ag/view/main_screen/main_page/post_card.dart';
 import 'package:sosyal_ag/view/main_screen/profile_page/profile_page.dart';
 import 'package:sosyal_ag/view/main_screen/search_page/search_page.dart';
+import 'package:sosyal_ag/view_model/main_screen_view_model.dart';
 import 'package:sosyal_ag/view_model/user_view_model.dart';
 
-/* import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:sosyal_ag/view_model/user_view_model.dart';
-
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    UserViewModel userViewModel = Provider.of<UserViewModel>(context);
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          
-          children: [
-            Text('Main Screen' , style: GoogleFonts.aBeeZee(color: Theme.of(context).colorScheme.onSurface,fontSize: 20),),
-            SizedBox(height: 20),
-            ElevatedButton(onPressed: () async => await userViewModel.signOut(), 
-            child: Text('Sign Out')),
-          ],
-        ),
-      ),
-    );
-  }
-} */
-
-// ----------------------------------------- Provided Style ----------------------------------------- //
 
 class MainScreen extends StatelessWidget {
   final BuildContext context;
@@ -93,7 +62,7 @@ class MainScreen extends StatelessWidget {
     ProfilePage(),
   ];
 
-  List<PersistentBottomNavBarItem> _navBarsItems() => [
+  List<PersistentBottomNavBarItem> _navBarsItems(MainScreenViewModel mainScreenViewModel) => [
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.home),
       title: "Home",
@@ -101,6 +70,8 @@ class MainScreen extends StatelessWidget {
       activeColorPrimary: Colors.blue,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
       inactiveColorPrimary: Colors.grey,
+     
+     
     ),
 
     PersistentBottomNavBarItem(
@@ -109,6 +80,7 @@ class MainScreen extends StatelessWidget {
       activeColorPrimary: Colors.teal,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
       inactiveColorPrimary: Colors.grey,
+      
     ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.message),
@@ -124,19 +96,20 @@ class MainScreen extends StatelessWidget {
       inactiveColorPrimary: Colors.grey,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
       scrollController: _scrollControllers.last,
+     
     ),
   ];
 
   @override
   Widget build(final BuildContext context) {
-    UserViewModel userViewModel = Provider.of<UserViewModel>(context);
     ThemeData theme = Theme.of(context);
+    MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context);
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: mainScreenViewModel.isVisibleAppBar ? AppBar(
         title: Text("MEYDAN", style: GoogleFonts.aBeeZee(color: theme.colorScheme.onSurface, fontSize: 26, fontWeight: FontWeight.bold, letterSpacing: 2),),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      ),
+      ) : null,
 
       drawer: MeydanDrawer(),
 
@@ -144,7 +117,7 @@ class MainScreen extends StatelessWidget {
         context,
         controller: _controller,
         screens: _buildScreens(),
-        items: _navBarsItems(),
+        items: _navBarsItems(mainScreenViewModel),
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: false,
         stateManagement: true,
