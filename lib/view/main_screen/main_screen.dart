@@ -86,11 +86,6 @@ class MainScreen extends StatelessWidget {
 
     Container(
       color: Theme.of(context).colorScheme.secondary,
-      child: Center(child: Text("Screen3")),
-    ),
-
-    Container(
-      color: Theme.of(context).colorScheme.secondary,
       child: Center(child: Text("Screen4")),
     ),
 
@@ -116,13 +111,6 @@ class MainScreen extends StatelessWidget {
       activeColorPrimary: Colors.teal,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
       inactiveColorPrimary: Colors.grey,
-    ),
-    PersistentBottomNavBarItem(
-      icon: const Icon(Icons.add),
-      title: "Add",
-      activeColorPrimary: Colors.blueAccent,
-      inactiveColorPrimary: Colors.grey,
-      activeColorSecondary: Theme.of(context).colorScheme.tertiary,
     ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.message),
