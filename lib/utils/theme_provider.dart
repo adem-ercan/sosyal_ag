@@ -58,6 +58,7 @@ class ThemeProvider with ChangeNotifier {
       onPrimary: Constants.themeColor4,
       onSecondary: Constants.themeColor5,
       onSurface: Constants.themeColor6,
+      onTertiary: Constants.themeColor7,
       tertiary: Colors.tealAccent,
       onError: Colors.pinkAccent,
       error: Colors.pinkAccent,

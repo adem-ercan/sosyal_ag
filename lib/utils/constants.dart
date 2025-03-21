@@ -8,5 +8,6 @@ class Constants {
   static const Color themeColor4 = Color(0xFF4A5C6A);
   static const Color themeColor5 = Color(0xFF9BA8AB);
   static const Color themeColor6 = Color(0xFFCCD0CF);
+  static const Color themeColor7 = Color(0xFFF8F8FF);
   
 }

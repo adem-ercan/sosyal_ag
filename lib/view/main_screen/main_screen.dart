@@ -42,9 +42,9 @@ class MainScreen extends StatelessWidget {
 class MainScreen extends StatelessWidget {
   final BuildContext context;
 
-  MainScreen({required this.context, final Key? key}) : super(key: key);
+  MainScreen({required this.context, super.key});
 
-  late PersistentTabController _controller = PersistentTabController(
+  final PersistentTabController _controller = PersistentTabController(
     initialIndex: 0,
   );
   bool _hideNavBar = false;
@@ -57,15 +57,22 @@ class MainScreen extends StatelessWidget {
   final NavBarStyle _navBarStyle = NavBarStyle.simple;
 
   List<Widget> _buildScreens() => [
-    ListView.builder(
-      controller: _scrollControllers[0],
-      itemCount: 30,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: EdgeInsets.all(8),
-          child: PostCard(post: PostModel(authorId: "dsfsdf", content: "content"), author: UserModel(userName: "userName", email: "email"))
-        );
-      },
+    Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor
+      ),
+      child: ListView.builder(
+        controller: _scrollControllers[0],
+        itemCount: 30,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.all(8),
+            child: PostCard(
+              post: PostModel(authorId: "dsfsdf", content: "content"), 
+              author: UserModel(userName: "userName", email: "email"))
+          );
+        },
+      ),
     ),
 
     Container(

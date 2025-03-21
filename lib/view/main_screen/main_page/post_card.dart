@@ -64,6 +64,7 @@ class PostCard extends StatelessWidget {
                             style: GoogleFonts.aBeeZee(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
+                              color: theme.colorScheme.onTertiary,
                             ),
                           ),
                           if (author.isVerified)
@@ -79,7 +80,7 @@ class PostCard extends StatelessWidget {
                           Text(
                             '2s', // Burada gerçek zaman formatlaması yapılacak
                             style: TextStyle(
-                              color: theme.colorScheme.onSurface.withOpacity(0.5),
+                              color: theme.colorScheme.onTertiary,
                               fontSize: 14,
                             ),
                           ),
@@ -88,7 +89,7 @@ class PostCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         post.content,
-                        style: GoogleFonts.aBeeZee(fontSize: 15),
+                        style: GoogleFonts.aBeeZee(fontSize: 15, color: theme.colorScheme.onTertiary),
                       ),
                     ],
                   ),
