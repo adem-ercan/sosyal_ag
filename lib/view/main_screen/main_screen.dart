@@ -1,9 +1,12 @@
 // Bu ekran test için oluşturuldu
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/model/post_model.dart';
 import 'package:sosyal_ag/model/user_model.dart';
+import 'package:sosyal_ag/view/main_screen/drawer/drawer.dart';
 import 'package:sosyal_ag/view/main_screen/main_page/post_card.dart';
 import 'package:sosyal_ag/view/main_screen/search_page/search_page.dart';
 import 'package:sosyal_ag/view_model/user_view_model.dart';
@@ -141,31 +144,15 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     UserViewModel userViewModel = Provider.of<UserViewModel>(context);
+    ThemeData theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Main Screen"),
+        title: Text("MEYDAN", style: GoogleFonts.aBeeZee(color: theme.colorScheme.onSurface, fontSize: 26, fontWeight: FontWeight.bold, letterSpacing: 2),),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
 
-      drawer: Drawer(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text("This is the Drawer"),
-              ElevatedButton(
-                onPressed: () async {
-                  await userViewModel.signOut();
-                },
-                child: const Row(
-                  children: [Icon(Icons.logout_outlined), Text("Sign Out")],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      drawer: MeydanDrawer(),
 
       body: PersistentTabView(
         context,
