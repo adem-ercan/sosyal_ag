@@ -49,6 +49,7 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Center(
@@ -98,7 +99,7 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
                   //letterSpacing: 2,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  color: Colors.amber.shade200,
+                  color: theme.colorScheme.tertiary,
                 )
                /*  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: Colors.amber.shade200,

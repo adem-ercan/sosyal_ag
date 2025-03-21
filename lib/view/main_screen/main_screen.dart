@@ -8,6 +8,7 @@ import 'package:sosyal_ag/model/post_model.dart';
 import 'package:sosyal_ag/model/user_model.dart';
 import 'package:sosyal_ag/view/main_screen/drawer/drawer.dart';
 import 'package:sosyal_ag/view/main_screen/main_page/post_card.dart';
+import 'package:sosyal_ag/view/main_screen/profile_page/profile_page.dart';
 import 'package:sosyal_ag/view/main_screen/search_page/search_page.dart';
 import 'package:sosyal_ag/view_model/user_view_model.dart';
 
@@ -89,10 +90,7 @@ class MainScreen extends StatelessWidget {
       child: Center(child: Text("Screen4")),
     ),
 
-    Container(
-      color: Theme.of(context).colorScheme.secondary,
-      child: Center(child: Text("Screen5")),
-    ),
+    ProfilePage(),
   ];
 
   List<PersistentBottomNavBarItem> _navBarsItems() => [
