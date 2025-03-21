@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sosyal_ag/model/post_model.dart';
 import 'package:sosyal_ag/model/user_model.dart';
 import 'package:sosyal_ag/view/main_screen/main_page/post_card.dart';
+import 'package:sosyal_ag/view/main_screen/search_page/search_page.dart';
 import 'package:sosyal_ag/view_model/user_view_model.dart';
 
 /* import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class MainScreen extends StatelessWidget {
   final PersistentTabController _controller = PersistentTabController(
     initialIndex: 0,
   );
-  bool _hideNavBar = false;
+  final bool _hideNavBar = false;
 
   final List<ScrollController> _scrollControllers = [
     ScrollController(),
@@ -76,11 +77,8 @@ class MainScreen extends StatelessWidget {
     ),
 
     Container(
-      color: Theme.of(context).colorScheme.secondary,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(child: TextField()),
-      ),
+      color: Theme.of(context).colorScheme.primary,
+      child: SearchPage()
     ),
 
     Container(
