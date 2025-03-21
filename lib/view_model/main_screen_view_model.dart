@@ -15,12 +15,18 @@ class MainScreenViewModel extends ChangeNotifier {
 
 
   //SETTERS
-  void set isVisibleAppBar(bool v){
+  set isVisibleAppBar(bool v){
     _isVisibleAppBar = v;
     notifyListeners();
   }
 
 
   //METHOD
-
+  void isAppBarVisible(int index){
+    if(index==0){
+      isVisibleAppBar = true;
+    }else{
+      isVisibleAppBar = false;
+    }
+  }
 }

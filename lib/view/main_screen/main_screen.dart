@@ -10,7 +10,6 @@ import 'package:sosyal_ag/view/main_screen/main_page/post_card.dart';
 import 'package:sosyal_ag/view/main_screen/profile_page/profile_page.dart';
 import 'package:sosyal_ag/view/main_screen/search_page/search_page.dart';
 import 'package:sosyal_ag/view_model/main_screen_view_model.dart';
-import 'package:sosyal_ag/view_model/user_view_model.dart';
 
 
 class MainScreen extends StatelessWidget {
@@ -96,7 +95,7 @@ class MainScreen extends StatelessWidget {
       inactiveColorPrimary: Colors.grey,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
       scrollController: _scrollControllers.last,
-     
+    
     ),
   ];
 
@@ -117,6 +116,7 @@ class MainScreen extends StatelessWidget {
         context,
         controller: _controller,
         screens: _buildScreens(),
+    
         items: _navBarsItems(mainScreenViewModel),
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: false,
@@ -128,6 +128,7 @@ class MainScreen extends StatelessWidget {
           scrollControllers: _scrollControllers,
         ),
         padding: const EdgeInsets.only(top: 8),
+        onItemSelected: (index) => mainScreenViewModel.isAppBarVisible(index),
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(right: 10, bottom: 30),
           child: Container(
@@ -137,7 +138,8 @@ class MainScreen extends StatelessWidget {
             decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   shape: BoxShape.rectangle,
-                  color: Theme.of(context).colorScheme.tertiary,
+                  color: Theme.of(context).colorScheme.onSurface
+                  ,
                 ),
             child: IconButton(
               padding: EdgeInsets.only(bottom: 30, right: 10),
