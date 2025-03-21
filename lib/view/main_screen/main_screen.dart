@@ -64,7 +64,6 @@ class MainScreen extends StatelessWidget {
   List<PersistentBottomNavBarItem> _navBarsItems(MainScreenViewModel mainScreenViewModel) => [
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.home),
-      title: "Home",
       opacity: 0.7,
       activeColorPrimary: Colors.blue,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
@@ -75,22 +74,45 @@ class MainScreen extends StatelessWidget {
 
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.search),
-      title: "Search",
       activeColorPrimary: Colors.teal,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
       inactiveColorPrimary: Colors.grey,
       
     ),
     PersistentBottomNavBarItem(
-      icon: const Icon(Icons.message),
-      title: "Messages",
+      icon: Stack(
+        alignment: Alignment.center,
+        children: [
+          
+          Icon(Icons.message),
+          Positioned(
+            right: 0,
+            top: 10,
+            child: Container(
+              height: 10,
+              width: 10,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.error,
+                borderRadius: BorderRadius.circular(2)
+              ),
+              child: Text("4", 
+              style: GoogleFonts.aBeeZee(
+                fontSize: 8,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onTertiary),
+                
+                ),
+            ),
+          ),
+        ],
+      ),
       activeColorPrimary: Colors.deepOrange,
       inactiveColorPrimary: Colors.grey,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
     ),
     PersistentBottomNavBarItem(
       icon: Icon(Icons.person),
-      title: "Profile",
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Colors.grey,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
