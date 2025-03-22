@@ -6,8 +6,6 @@ import 'package:sosyal_ag/services/firebase/firebase_auth_service.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
 import '../../view_model/login_view_model.dart';
 
-
-
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -41,7 +39,9 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     'Tartışmaya katılmak için giriş yap',
-                    style: GoogleFonts.aBeeZee(color: Theme.of(context).colorScheme.onSecondary),
+                    style: GoogleFonts.aBeeZee(
+                      color: Theme.of(context).colorScheme.onSecondary,
+                    ),
                   ),
                   const SizedBox(height: 40),
                   TextField(
@@ -54,7 +54,9 @@ class LoginScreen extends StatelessWidget {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.onSecondary),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -86,7 +88,9 @@ class LoginScreen extends StatelessWidget {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.onSecondary),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -147,6 +151,10 @@ class LoginScreen extends StatelessWidget {
                                 style: GoogleFonts.aBeeZee(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? theme.colorScheme.primary
+                                          : theme.colorScheme.onTertiary,
                                 ),
                               ),
                     ),
@@ -168,7 +176,7 @@ class LoginScreen extends StatelessWidget {
                       label: Text(
                         'Google ile devam et',
                         style: GoogleFonts.aBeeZee(
-                          color: Colors.white,
+                          color: theme.colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
@@ -198,7 +206,9 @@ class LoginScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
                           'veya',
-                          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                         ),
                       ),
                       Expanded(child: Divider(color: Colors.grey.shade300)),
@@ -236,7 +246,10 @@ class LoginScreen extends StatelessWidget {
                   themeProvider.themeMode == ThemeMode.dark
                       ? Icons.light_mode
                       : Icons.dark_mode,
-                  color: themeProvider.themeMode == ThemeMode.dark ? Theme.of(context).colorScheme.tertiary : Theme.of(context).colorScheme.onSurface
+                  color:
+                      themeProvider.themeMode == ThemeMode.dark
+                          ? theme.colorScheme.tertiary
+                          : theme.colorScheme.onSurface,
                 ),
               ),
             ),

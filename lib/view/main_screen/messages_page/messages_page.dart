@@ -66,13 +66,15 @@ class _MessageTile extends StatelessWidget {
   const _MessageTile({
     required this.theme,
     this.isOnline = false,
-    this.hasUnread = false,
+    this.hasUnread = false,    
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {},
+      onTap: () {
+        
+      },
       leading: Stack(
         children: [
           CircleAvatar(

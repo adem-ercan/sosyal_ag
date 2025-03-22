@@ -92,6 +92,34 @@ class PostCard extends StatelessWidget {
                         post.content,
                         style: GoogleFonts.aBeeZee(fontSize: 15, color: theme.colorScheme.onTertiary),
                       ),
+                      if (post.mediaUrls != null && post.mediaUrls!.isNotEmpty) ...[
+                        const SizedBox(height: 8),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            post.mediaUrls!.first,
+                            width: double.infinity,
+                            height: 200,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Container(
+                                width: double.infinity,
+                                height: 200,
+                                color: theme.colorScheme.surface,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded / 
+                                          loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),

@@ -42,8 +42,14 @@ class MainScreen extends StatelessWidget {
           return Padding(
             padding: EdgeInsets.all(8),
             child: PostCard(
-              post: PostModel(authorId: "dsfsdf", content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "), 
-              author: UserModel(userName: "userName", email: "email"))
+              post: PostModel(
+                authorId: "dsfsdf", 
+                content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+                mediaUrls: index % 3 == 0 
+                    ? ["https://picsum.photos/500/300?random=$index"]
+                    : null,
+              ), 
+              author: UserModel(userName: "userName", email: "email")),
           );
         },
       ),

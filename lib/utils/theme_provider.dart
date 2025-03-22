@@ -10,38 +10,42 @@ import 'package:sosyal_ag/utils/constants.dart';
 class ThemeProvider with ChangeNotifier {
 // VARIABLES
   final ThemeData _themeDataLight = ThemeData(
-    primaryColor: Colors.white,
-    scaffoldBackgroundColor: Colors.white,
+    primaryColor: Constants.themeColor7, // En açık renk
+    scaffoldBackgroundColor: Constants.themeColor7,
     brightness: Brightness.light,
     colorScheme: ColorScheme.light(
-      primary: Constants.themeColor6,
-      secondary: Colors.grey[100]!,
-      surface: Colors.grey[200]!,
-      onPrimary: Colors.black87,
-      onSecondary: Colors.black54,
-      onSurface: Colors.black,
+      primary: Constants.themeColor7,
+      secondary: Constants.themeColor6,
+      surface: Constants.themeColor5,
+      onPrimary: Constants.themeColor1,
+      onSecondary: Constants.themeColor2,
+      onSurface: Constants.themeColor1,
+      onTertiary: Constants.themeColor1,
       tertiary: Colors.tealAccent[700]!,
       onError: Colors.redAccent,
       error: Colors.redAccent,
       brightness: Brightness.light,
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Constants.themeColor6,
       elevation: 0,
-      iconTheme: const IconThemeData(color: Colors.black87),
+      iconTheme: IconThemeData(color: Constants.themeColor1),
     ),
     cardTheme: CardTheme(
-      color: Colors.grey[100],
+      color: Constants.themeColor6,
       elevation: 4,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Constants.themeColor4,
-        foregroundColor: Constants.themeColor1,
+        backgroundColor: Constants.themeColor5,
+        foregroundColor: Constants.themeColor7,
       ),
     ),
-    textTheme:  TextTheme(
-      titleLarge: GoogleFonts.aBeeZee(color: Constants.themeColor1, fontWeight: FontWeight.bold),
+    textTheme: TextTheme(
+      titleLarge: GoogleFonts.aBeeZee(
+        color: Constants.themeColor1, 
+        fontWeight: FontWeight.bold
+      ),
       bodyLarge: GoogleFonts.aBeeZee(color: Constants.themeColor2),
       bodyMedium: GoogleFonts.aBeeZee(color: Constants.themeColor2),
     ),
