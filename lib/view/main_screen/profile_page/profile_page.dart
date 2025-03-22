@@ -17,7 +17,8 @@ class ProfilePage extends StatelessWidget {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
-              expandedHeight: 200,
+              foregroundColor: theme.primaryColor,
+              expandedHeight: 100,
               floating: true,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
@@ -124,7 +125,8 @@ class ProfilePage extends StatelessWidget {
                 TabBar(
                   dividerColor: theme.colorScheme.onSecondary,
                   labelColor: theme.colorScheme.tertiary,
-                  overlayColor: WidgetStateProperty.all(Colors.red),
+                  overlayColor: WidgetStateProperty.all(theme.colorScheme.primary),
+                  unselectedLabelColor: theme.colorScheme.onSurface,
                   tabs: [
                     Tab(
                       child: Text(

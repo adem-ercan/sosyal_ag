@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sosyal_ag/model/post_model.dart';
 import 'package:sosyal_ag/model/user_model.dart';
 import 'package:sosyal_ag/view/main_screen/drawer/drawer.dart';
-import 'package:sosyal_ag/view/main_screen/main_page/messages_page/messages_page.dart';
+import 'package:sosyal_ag/view/main_screen/messages_page/messages_page.dart';
 import 'package:sosyal_ag/view/main_screen/main_page/post_card.dart';
 import 'package:sosyal_ag/view/main_screen/profile_page/profile_page.dart';
 import 'package:sosyal_ag/view/main_screen/search_page/search_page.dart';
@@ -42,7 +42,7 @@ class MainScreen extends StatelessWidget {
           return Padding(
             padding: EdgeInsets.all(8),
             child: PostCard(
-              post: PostModel(authorId: "dsfsdf", content: "content"), 
+              post: PostModel(authorId: "dsfsdf", content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "), 
               author: UserModel(userName: "userName", email: "email"))
           );
         },

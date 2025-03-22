@@ -43,6 +43,7 @@ class PostCard extends StatelessWidget {
               children: [
                 // Profil fotoğrafı
                 CircleAvatar(
+                  backgroundColor: theme.colorScheme.surface,
                   radius: 24,
                   backgroundImage: author.photoUrl != null
                       ? NetworkImage(author.photoUrl!)

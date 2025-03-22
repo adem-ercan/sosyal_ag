@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sosyal_ag/model/user_model.dart';
 
@@ -17,81 +18,84 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(70),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SafeArea(
-            child: TextField(
-              controller: _searchController,
-              onChanged: (value) {
-                setState(() {
-                  _isSearching = value.isNotEmpty;
-                });
-                // TODO: Arama işlemi yapılacak
-              },
-              decoration: InputDecoration(
-                hintText: 'Kullanıcı ara...',
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: _isSearching
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          setState(() {
-                            _isSearching = false;
-                          });
-                        },
-                      )
-                    : null,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  borderSide: BorderSide.none,
+    return SafeArea(
+      bottom: false,
+      child: Scaffold(
+        backgroundColor: theme.scaffoldBackgroundColor,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(70),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SafeArea(
+              child: TextField(
+                controller: _searchController,
+                onChanged: (value) {
+                  setState(() {
+                    _isSearching = value.isNotEmpty;
+                  });
+                  // TODO: Arama işlemi yapılacak
+                },
+                decoration: InputDecoration(
+                  hintText: 'Kullanıcı ara...',
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: _isSearching
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            _searchController.clear();
+                            setState(() {
+                              _isSearching = false;
+                            });
+                          },
+                        )
+                      : null,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: theme.colorScheme.surface,
                 ),
-                filled: true,
-                fillColor: theme.colorScheme.surface,
               ),
             ),
           ),
         ),
-      ),
-      body: _isSearching
-          ? ListView.builder(
-              itemCount: 10, // TODO: Gerçek veri sayısı kullanılacak
-              itemBuilder: (context, index) {
-                return _buildUserListItem(
-                  UserModel(
-                    userName: "Test User $index",
-                    email: "test$index@example.com",
-                    isVerified: index % 3 == 0,
-                  ),
-                  theme,
-                );
-              },
-            )
-          : Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.search,
-                    size: 100,
-                    color: theme.colorScheme.onSurface.withOpacity(0.2),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Kullanıcı aramak için yukarıdaki\narama çubuğunu kullan',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.aBeeZee(
-                      fontSize: 16,
-                      color: theme.colorScheme.onSurface.withOpacity(0.5),
+        body: _isSearching
+            ? ListView.builder(
+                itemCount: 10, // TODO: Gerçek veri sayısı kullanılacak
+                itemBuilder: (context, index) {
+                  return _buildUserListItem(
+                    UserModel(
+                      userName: "Test User $index",
+                      email: "test$index@example.com",
+                      isVerified: index % 3 == 0,
                     ),
-                  ),
-                ],
+                    theme,
+                  );
+                },
+              )
+            : Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.search,
+                      size: 100,
+                      color: theme.colorScheme.onSurface.withOpacity(0.2),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Kullanıcı aramak için yukarıdaki\narama çubuğunu kullan',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.aBeeZee(
+                        fontSize: 16,
+                        color: theme.colorScheme.onSurface.withOpacity(0.5),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 
@@ -133,7 +137,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
       trailing: TextButton(
         onPressed: () {
-          // TODO: Profil görüntüleme işlemi
+          context.push('/otherUserProfile', extra: UserModel(userName: "Adem", email: "ademercan@gmail.com"));
         },
         child: Text(
           'Profili Gör',
