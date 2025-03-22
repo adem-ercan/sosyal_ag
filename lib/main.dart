@@ -15,7 +15,6 @@ void main() async{
     options: DefaultFirebaseOptions.currentPlatform);
 
   setupLocator();
-
  
   runApp(
       ChangeNotifierProvider(
