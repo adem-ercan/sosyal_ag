@@ -87,7 +87,7 @@ class SignupViewModel extends ChangeNotifier {
     
       
       print("validdate çalıştı");
-      await userViewModel.createUserWithEmailAndPassword(emailController.text, passwordController.text, nameController.text);
+      await userViewModel.createUserWithEmailAndPassword(emailController.text, passwordController.text, nameController.text, context);
 
       isLoading = false;
       notifyListeners();

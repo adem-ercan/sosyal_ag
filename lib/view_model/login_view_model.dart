@@ -83,7 +83,7 @@ class LoginViewModel extends ChangeNotifier {
       // Burada gerçek login işlemi yapılacak
       // Örnek olarak 2 saniyelik bir bekleme ekledim
       //await Future.delayed(const Duration(seconds: 2));
-      await userViewModel.signInWithEmailAndPassword(emailController.text, passwordController.text);     
+      await userViewModel.signInWithEmailAndPassword(emailController.text, passwordController.text, context);     
       
       isLoading = false;
       notifyListeners();

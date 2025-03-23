@@ -71,7 +71,7 @@ class MainScreen extends StatelessWidget {
       opacity: 0.7,
       activeColorPrimary: Colors.blue,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
-      inactiveColorPrimary: Colors.grey,
+      inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
      
      
     ),
@@ -80,7 +80,7 @@ class MainScreen extends StatelessWidget {
       icon: const Icon(Icons.search),
       activeColorPrimary: Colors.teal,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
-      inactiveColorPrimary: Colors.grey,
+      inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
       
     ),
     PersistentBottomNavBarItem(
@@ -112,13 +112,13 @@ class MainScreen extends StatelessWidget {
         ],
       ),
       activeColorPrimary: Colors.deepOrange,
-      inactiveColorPrimary: Colors.grey,
+      inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
     ),
     PersistentBottomNavBarItem(
       icon: Icon(Icons.person),
       activeColorPrimary: Colors.indigo,
-      inactiveColorPrimary: Colors.grey,
+      inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
       //scrollController: _scrollControllers.last,
     
@@ -132,6 +132,9 @@ class MainScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: mainScreenViewModel.isVisibleAppBar ? AppBar(
+        actions: [
+          IconButton(onPressed: (){}, icon: Icon(Icons.notifications))
+        ],
         title: Text("MEYDAN", style: GoogleFonts.aBeeZee(color: theme.colorScheme.onSurface, fontSize: 26, fontWeight: FontWeight.bold, letterSpacing: 2),),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ) : null,

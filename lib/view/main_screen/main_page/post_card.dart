@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sosyal_ag/model/post_model.dart';
 import 'package:sosyal_ag/model/user_model.dart';
@@ -26,7 +27,12 @@ class PostCard extends StatelessWidget {
     final theme = Theme.of(context);
     
     return InkWell(
-      onTap: onTap,
+      onTap: onTap ?? (){
+        context.push("/postScreen", extra: {
+          'pots' : post,
+          'author' : author 
+        });
+      },
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
