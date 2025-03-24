@@ -1,4 +1,3 @@
-// Bu ekran test için oluşturuldu
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
@@ -10,7 +9,9 @@ import 'package:sosyal_ag/view/main_screen/messages_page/messages_page.dart';
 import 'package:sosyal_ag/view/main_screen/main_page/post_card.dart';
 import 'package:sosyal_ag/view/main_screen/profile_page/profile_page.dart';
 import 'package:sosyal_ag/view/main_screen/search_page/search_page.dart';
+import 'package:sosyal_ag/view/widgets/post_share_bottom_sheet.dart';
 import 'package:sosyal_ag/view_model/main_screen_view_model.dart';
+
 
 
 class MainScreen extends StatelessWidget {
@@ -21,6 +22,7 @@ class MainScreen extends StatelessWidget {
   final PersistentTabController _controller = PersistentTabController(
     initialIndex: 0,
   );
+
   final bool _hideNavBar = false;
 
   final List<ScrollController> _scrollControllers = [
@@ -162,25 +164,30 @@ class MainScreen extends StatelessWidget {
           ),
           padding: const EdgeInsets.only(top: 8),
           onItemSelected: (index) => mainScreenViewModel.isAppBarVisible(index),
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.only(right: 10, bottom: 30),
-            child: Container(
-              height: 50,
-              width: 50,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    shape: BoxShape.rectangle,
-                    color: Theme.of(context).colorScheme.onSurface
-                    ,
+          floatingActionButton: Visibility(
+            visible: mainScreenViewModel.isVisibleFloatingButton,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10, bottom: 30),
+              child: Container(
+                height: 50,
+                width: 50,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      shape: BoxShape.rectangle,
+                      color: Theme.of(context).colorScheme.onSurface
+                      ,
+                    ),
+                child: IconButton(
+                  padding: EdgeInsets.only(bottom: 30, right: 10),
+                  icon: Icon(
+                    Icons.add_comment_rounded,
+                    color: Theme.of(context).primaryColor,
                   ),
-              child: IconButton(
-                padding: EdgeInsets.only(bottom: 30, right: 10),
-                icon: Icon(
-                  Icons.add_comment_rounded,
-                  color: Theme.of(context).primaryColor,
+                  onPressed: () {
+                    PostShareBottomSheet.show(context);
+                  },
                 ),
-                onPressed: () {},
               ),
             ),
           ),
@@ -318,4 +325,5 @@ class CustomNavBarWidget extends StatelessWidget {
       ),
     ),
   );
+
 }
