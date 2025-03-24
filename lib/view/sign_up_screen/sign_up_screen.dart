@@ -46,7 +46,7 @@ class SignUpScreen extends StatelessWidget {
               TextField(
                 controller: viewModel.nameController,
                 decoration: InputDecoration(
-                  hintText: 'Ad Soyad',
+                  hintText: 'Kullanıcı adı',
                   prefixIcon: const Icon(Icons.person_outline),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),

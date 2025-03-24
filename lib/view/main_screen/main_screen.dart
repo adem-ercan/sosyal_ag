@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
@@ -135,7 +136,10 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       appBar: mainScreenViewModel.isVisibleAppBar ? AppBar(
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.notifications))
+          IconButton(onPressed: ()async{
+            await context.push("/notificationScreen");
+          }, 
+          icon: Icon(Icons.notifications))
         ],
         title: Text("MEYDAN", style: GoogleFonts.aBeeZee(color: theme.colorScheme.onSurface, fontSize: 26, fontWeight: FontWeight.bold, letterSpacing: 2),),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
