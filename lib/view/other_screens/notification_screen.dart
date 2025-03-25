@@ -152,8 +152,10 @@ class NotificationScreen extends StatelessWidget {
   }
 
   Widget _buildNotificationIcon(NotificationType type, ColorScheme colorScheme) {
+    
     IconData icon;
     Color color;
+
 
     switch (type) {
       case NotificationType.like:
@@ -162,11 +164,11 @@ class NotificationScreen extends StatelessWidget {
         break;
       case NotificationType.comment:
         icon = Icons.comment;
-        color = colorScheme.primary; // Yorum için primary rengi
+        color = colorScheme.onSecondary; // Yorum için primary rengi
         break;
       case NotificationType.follow:
         icon = Icons.person_add;
-        color = colorScheme.secondary; // Takip için secondary rengi
+        color = colorScheme.tertiary; // Takip için secondary rengi
         break;
     }
 

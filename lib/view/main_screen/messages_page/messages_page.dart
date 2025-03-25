@@ -15,7 +15,9 @@ class MessagesPage extends StatelessWidget {
         backgroundColor: theme.scaffoldBackgroundColor,
         body: Column(
           children: [
+
             // Arama Çubuğu
+            
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: TextField(
@@ -47,12 +49,15 @@ class MessagesPage extends StatelessWidget {
             ),
           ],
         ),
+
         // Yeni Mesaj FAB
+
        /*  floatingActionButton: FloatingActionButton(
           onPressed: () {},
           backgroundColor: theme.colorScheme.tertiary,
           child: const Icon(Icons.edit, color: Colors.white),
         ), */
+
       ),
     );
   }

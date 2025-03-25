@@ -1,6 +1,6 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 
 class PostShareBottomSheet extends StatelessWidget {
@@ -98,6 +98,7 @@ class PostShareBottomSheet extends StatelessWidget {
                     ),
                   ],
                 ),
+                
                 const Divider(),
                 // İçerik
                 TextField(
@@ -175,6 +176,7 @@ class PostShareBottomSheet extends StatelessWidget {
     );
   }
 
+
   Widget _buildAddMediaButton(ThemeData theme, List<String> selectedMediaUrls) {
     return Container(
       width: 100,
@@ -233,7 +235,7 @@ class PostShareBottomSheet extends StatelessWidget {
 
   void _pickImage(List<String> selectedMediaUrls) {
     // TODO: Implement image picking
-    
+
     selectedMediaUrls.add('https://picsum.photos/200');
   }
 

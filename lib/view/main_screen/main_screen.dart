@@ -38,23 +38,71 @@ class MainScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor
       ),
-      child: ListView.builder(
-        controller: _scrollControllers[0],
-        itemCount: 30,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.all(8),
-            child: PostCard(
-              post: PostModel(
-                authorId: "dsfsdf", 
-                content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                mediaUrls: index % 3 == 0 
-                    ? ["https://picsum.photos/500/300?random=$index"]
-                    : null,
-              ), 
-              author: UserModel(userName: "userName", email: "email")),
-          );
-        },
+      child: Column(
+        children: [
+          // Story section
+          Container(
+            height: 100,
+            margin: EdgeInsets.symmetric(vertical: 8),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.symmetric(horizontal: 4),
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.blue,
+                            width: 2,
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          radius: 35,
+                          backgroundImage: NetworkImage(
+                            "https://picsum.photos/100/100?random=$index",
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        "User $index",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          // Post list
+          Expanded(
+            child: ListView.builder(
+              controller: _scrollControllers[0],
+              itemCount: 30,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.all(8),
+                  child: PostCard(
+                    post: PostModel(
+                      authorId: "dsfsdf", 
+                      content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+                      mediaUrls: index % 3 == 0 
+                          ? ["https://picsum.photos/500/300?random=$index"]
+                          : null,
+                    ), 
+                    author: UserModel(userName: "userName", email: "email")),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     ),
 
