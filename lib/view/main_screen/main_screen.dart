@@ -13,96 +13,40 @@ import 'package:sosyal_ag/view/main_screen/search_page/search_page.dart';
 import 'package:sosyal_ag/view/widgets/post_share_bottom_sheet.dart';
 import 'package:sosyal_ag/view_model/main_screen_view_model.dart';
 
-
-
 class MainScreen extends StatelessWidget {
   final BuildContext context;
+ MainScreen({required this.context, super.key});
 
-  MainScreen({required this.context, super.key});
-
-  final PersistentTabController _controller = PersistentTabController(
-    initialIndex: 0,
-  );
-
+  final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
   final bool _hideNavBar = false;
-
-  final List<ScrollController> _scrollControllers = [
-    ScrollController(),
-    ScrollController(),
-  ];
-
   final NavBarStyle _navBarStyle = NavBarStyle.simple;
 
   List<Widget> _buildScreens() => [
     Container(
+      height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor
       ),
-      child: Column(
-        children: [
-          // Story section
-          Container(
-            height: 100,
-            margin: EdgeInsets.symmetric(vertical: 8),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 4),
-                  child: Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Colors.blue,
-                            width: 2,
-                          ),
-                        ),
-                        child: CircleAvatar(
-                          radius: 35,
-                          backgroundImage: NetworkImage(
-                            "https://picsum.photos/100/100?random=$index",
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        "User $index",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-          // Post list
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollControllers[0],
-              itemCount: 30,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.all(8),
-                  child: PostCard(
-                    post: PostModel(
-                      authorId: "dsfsdf", 
-                      content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                      mediaUrls: index % 3 == 0 
-                          ? ["https://picsum.photos/500/300?random=$index"]
-                          : null,
-                    ), 
-                    author: UserModel(userName: "userName", email: "email")),
-                );
-              },
-            ),
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: 30,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: EdgeInsets.all(8),
+              child: PostCard(
+                post: PostModel(
+                  authorId: "dsfsdf", 
+                  content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+                  mediaUrls: index % 3 == 0 
+                      ? ["https://picsum.photos/500/300?random=$index"]
+                      : null,
+                ), 
+                author: UserModel(userName: "userName", email: "email")),
+            );
+          },
+        ),
       ),
     ),
 
@@ -212,7 +156,7 @@ class MainScreen extends StatelessWidget {
           popBehaviorOnSelectedNavBarItemPress: PopBehavior.once,
           hideOnScrollSettings: HideOnScrollSettings(
             hideNavBarOnScroll: true,
-            scrollControllers: _scrollControllers,
+            scrollControllers: [],
           ),
           padding: const EdgeInsets.only(top: 8),
           onItemSelected: (index) => mainScreenViewModel.isAppBarVisible(index),
@@ -353,6 +297,7 @@ class CustomNavBarWidget extends StatelessWidget {
       ],
     ),
   );
+
 
   @override
   Widget build(final BuildContext context) => Container(

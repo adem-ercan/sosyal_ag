@@ -23,4 +23,11 @@ class FirestoreService implements DataBaseCore {
 
     return doc.data() as Map<String, dynamic>;
   }
+
+  Future<void> createNewPost(Map<String, dynamic> postJsonData) async {
+    CollectionReference postRef = _firestore.collection("posts");
+    String id = postRef.id;
+    print("id: $id");
+    await postRef.doc(id).set(postJsonData);
+  }
 }

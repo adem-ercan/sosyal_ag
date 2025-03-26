@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sosyal_ag/model/post_model.dart';
 import 'package:sosyal_ag/model/user_model.dart';
 import 'package:sosyal_ag/services/firebase/firebase_auth_service.dart';
 import 'package:sosyal_ag/services/firebase/firebase_firestore_service.dart';
@@ -77,5 +78,29 @@ class Repository {
 
   Stream<bool> authStateChanges() {
     return _firebaseAuthService.authStateChanges();
+  }
+
+  Future<UserModel?> getCurrentUserAllData() async {
+    User? user = await _firebaseAuthService.currentUser();
+    if (user != null) {
+      
+      Map<String, dynamic>? mapData =
+          await _firestoreService.getCurrentUserAllData(user.uid);
+          
+      if (mapData != null) {
+        // Test edildi çalıştı. Burası düzenlenecek.
+        UserModel userModel = UserModel(userName: mapData["name"], email: mapData["email"]);
+        return userModel;
+        //return UserModel.fromJson(mapData);
+      }else{
+        return null;
+      }
+    }else{
+      return null;
+    }
+  }
+
+  Future<void> createNewPost(PostModel postModel) async {
+    await _firestoreService.createNewPost(postModel.toJson());
   }
 }

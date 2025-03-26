@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sosyal_ag/view_model/main_screen_view_model.dart';
 
 
 class PostShareBottomSheet extends StatelessWidget {
@@ -25,6 +27,9 @@ class PostShareBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context);
+
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
     final TextEditingController contentController = TextEditingController();
@@ -243,8 +248,19 @@ class PostShareBottomSheet extends StatelessWidget {
     selectedMediaUrls.remove(url);
   }
 
-  void _handlePost(BuildContext context, String content, List<String> mediaUrls) async {
-    if (content.isEmpty) return;
+  void _handlePost(BuildContext context, String content, List<String>? mediaUrls) async {
+
+    final MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context, listen: false);
+
+    if (content.isEmpty){
+      // Şimdilik sadece text paylaşımı yapalım.
+      
+      print("boş");
+      return;
+    }else{
+      print("boş değil");
+      await mainScreenViewModel.createNewPost(context, content);
+    }
 
     try {
       await onPost?.call(content, mediaUrls);
