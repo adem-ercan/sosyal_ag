@@ -120,10 +120,13 @@ class MainScreen extends StatelessWidget {
     ),
   ];
 
+  
+
   @override
   Widget build(final BuildContext context) {
     ThemeData theme = Theme.of(context);
     MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context);
+
 
     return Scaffold(
       appBar: mainScreenViewModel.isVisibleAppBar ? AppBar(
@@ -141,7 +144,7 @@ class MainScreen extends StatelessWidget {
 
       body: RefreshIndicator(
         onRefresh: () async {
-          Future.delayed(Duration(seconds: 2));
+          await Future.delayed(Duration(seconds: 2));
         },
         child: PersistentTabView(
           context,

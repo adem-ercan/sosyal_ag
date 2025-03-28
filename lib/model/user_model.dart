@@ -45,9 +45,10 @@ class UserModel {
 
   // JSON'dan UserModel'e dönüştürme
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    print("object xx");
     return UserModel(
       uid: json['uid'] as String?,
-      userName: json['userName'] as String,
+      userName: json['name'] as String,
       email: json['email'] as String,
       photoUrl: json['photoUrl'] as String?,
       bio: json['bio'] as String?,

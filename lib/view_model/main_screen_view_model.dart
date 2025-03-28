@@ -62,7 +62,7 @@ class MainScreenViewModel extends ChangeNotifier {
       UserModel? userModel = await _repository.getCurrentUserAllData();
       if (userModel != null) {
         PostModel postModel = PostModel(
-          authorId: userModel.uid ?? "", 
+          authorId: userModel.uid ?? "boş", 
           content: content);
           print("$postModel");
         await _repository.createNewPost(postModel);

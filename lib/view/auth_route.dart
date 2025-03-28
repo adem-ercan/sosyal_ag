@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/view/login_screen/login_screen.dart';
@@ -10,13 +9,13 @@ class AuthRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    UserViewModel userViewModel = Provider.of<UserViewModel>(context);
+    UserViewModel userViewModel = Provider.of<UserViewModel>(context, listen: false);
 
 
     return StreamBuilder<bool>(
       stream: userViewModel.authStateChanges(),
       builder: (context, snapshot) {
+        
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else if (snapshot.hasData) {

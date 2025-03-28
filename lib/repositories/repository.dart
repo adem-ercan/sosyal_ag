@@ -89,7 +89,7 @@ class Repository {
           
       if (mapData != null) {
         // Test edildi çalıştı. Burası düzenlenecek.
-        UserModel userModel = UserModel(userName: mapData["name"], email: mapData["email"]);
+        UserModel userModel = UserModel.fromJson(mapData);
         return userModel;
         //return UserModel.fromJson(mapData);
       }else{

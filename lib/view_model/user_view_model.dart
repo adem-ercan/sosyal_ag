@@ -46,6 +46,15 @@ class UserViewModel extends ChangeNotifier {
     return _repository.authStateChanges();
   } 
 
+
+  Future<UserModel?> getCurrentUserAllData(BuildContext context) async {
+    try {
+     return await _repository.getCurrentUserAllData();
+    } catch (e) {
+      ErrorHandlerWidget.showError(context, e.toString());
+    }
+  }
+
   }
 
 

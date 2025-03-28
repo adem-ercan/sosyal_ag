@@ -26,8 +26,14 @@ class FirestoreService implements DataBaseCore {
 
   Future<void> createNewPost(Map<String, dynamic> postJsonData) async {
     CollectionReference postRef = _firestore.collection("posts");
-    String id = postRef.id;
-    print("id: $id");
-    await postRef.doc(id).set(postJsonData);
+    DocumentReference docRef = postRef.doc(); // Rastgele ID oluşturur
+    await docRef.set(postJsonData);
+
+    // Post ID'sini kullanıcının posts array'ine ekle
+    String userId = postJsonData['authorId'];
+    print("kullanıcı id: $userId");
+    await _firestore.collection('users').doc(userId).update({
+      'posts': FieldValue.arrayUnion([docRef.id])
+    }); 
   }
 }

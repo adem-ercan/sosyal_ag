@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sosyal_ag/init.dart';
+import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
-import 'package:sosyal_ag/model/user_model.dart';
 import 'package:sosyal_ag/view_model/user_view_model.dart';
 
 class MeydanDrawer extends StatelessWidget {
-  final UserModel? user;
   final VoidCallback? onProfileTap;
   final VoidCallback? onSettingsTap;
 
-  const MeydanDrawer({
+   MeydanDrawer({
     super.key,
-    this.user,
     this.onProfileTap,
     this.onSettingsTap,
   });
+
+  final Init _init = locator<Init>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +34,12 @@ class MeydanDrawer extends StatelessWidget {
             ),
             currentAccountPicture: CircleAvatar(
               backgroundColor: theme.colorScheme.tertiary,
-              backgroundImage: user?.photoUrl != null 
-                ? NetworkImage(user!.photoUrl!) 
+              backgroundImage: _init.user?.photoUrl != null 
+                ? NetworkImage(_init.user!.photoUrl!) 
                 : null,
-              child: user?.photoUrl == null
+              child: _init.user?.photoUrl == null
                   ? Text(
-                      user?.userName.substring(0, 1).toUpperCase() ?? 'A',
+                      _init.user?.userName.substring(0, 1).toUpperCase() ?? 'A',
                       style: const TextStyle(fontSize: 32),
                     )
                   : null,
@@ -46,13 +47,13 @@ class MeydanDrawer extends StatelessWidget {
             accountName: Row(
               children: [
                 Text(
-                  user?.userName ?? 'Kullanıcı Adı',
+                  _init.user?.userName ?? 'Kullanıcı Adı',
                   style: GoogleFonts.aBeeZee(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                if (user?.isVerified ?? false)
+                if (_init.user?.isVerified ?? false)
                   Padding(
                     padding: const EdgeInsets.only(left: 4),
                     child: Icon(
@@ -64,7 +65,7 @@ class MeydanDrawer extends StatelessWidget {
               ],
             ),
             accountEmail: Text(
-              user?.email ?? 'email@example.com',
+              _init.user?.email ?? 'email@example.com',
               style: GoogleFonts.aBeeZee(),
             ),
           ),
@@ -77,7 +78,7 @@ class MeydanDrawer extends StatelessWidget {
             leading: const Icon(Icons.favorite_border),
             title: Text('Beğendiklerim', style: GoogleFonts.aBeeZee()),
             trailing: Text(
-              '${user?.likedPosts?.length ?? 0}',
+              '${_init.user?.likedPosts?.length ?? 0}',
               style: GoogleFonts.aBeeZee(),
             ),
             onTap: () {},
@@ -86,7 +87,7 @@ class MeydanDrawer extends StatelessWidget {
             leading: const Icon(Icons.bookmark_border),
             title: Text('Favorilerim', style: GoogleFonts.aBeeZee()),
             trailing: Text(
-              '${user?.favoritedPosts?.length ?? 0}',
+              '${_init.user?.favoritedPosts?.length ?? 0}',
               style: GoogleFonts.aBeeZee(),
             ),
             onTap: () {},
