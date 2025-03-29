@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/init.dart';
@@ -93,7 +94,9 @@ class ProfilePage extends StatelessWidget {
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.push('/profileEdit');
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: theme.colorScheme.onSurface,
                               shape: RoundedRectangleBorder(
