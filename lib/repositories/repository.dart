@@ -10,6 +10,7 @@ class Repository {
   final FirebaseAuthService _firebaseAuthService =
       locator<FirebaseAuthService>();
   final FirestoreService _firestoreService = locator<FirestoreService>();
+  List<PostModel> _postModelList = [];
 
   Future<void> createUserWithEmailAndPassword(
     String email,
@@ -83,24 +84,39 @@ class Repository {
   Future<UserModel?> getCurrentUserAllData() async {
     User? user = await _firebaseAuthService.currentUser();
     if (user != null) {
-      
-      Map<String, dynamic>? mapData =
-          await _firestoreService.getCurrentUserAllData(user.uid);
-          
+      Map<String, dynamic>? mapData = await _firestoreService
+          .getCurrentUserAllData(user.uid);
+
       if (mapData != null) {
         // Test edildi çalıştı. Burası düzenlenecek.
         UserModel userModel = UserModel.fromJson(mapData);
         return userModel;
         //return UserModel.fromJson(mapData);
-      }else{
+      } else {
         return null;
       }
-    }else{
+    } else {
       return null;
     }
   }
 
   Future<void> createNewPost(PostModel postModel) async {
     await _firestoreService.createNewPost(postModel.toJson());
+  }
+
+
+  Future<List<PostModel?>> getLastFivePosts() async {
+
+    List<Map<String, dynamic>?> mapList =
+        await _firestoreService.currentUserGetLastFivePosts();
+
+    if (mapList.isNotEmpty) {
+      for (Map<String, dynamic>? v in mapList) {
+          PostModel p = PostModel.fromJson(v!);
+          _postModelList.add(p);
+      }
+      
+    }
+    return _postModelList;
   }
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/model/post_model.dart';
 import 'package:sosyal_ag/model/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/view/main_screen/main_page/post_card.dart';
+import 'package:sosyal_ag/view_model/post_view_model.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -80,7 +82,7 @@ class ProfilePage extends StatelessWidget {
                                   ],
                                 ),
                                 Text(
-                                  '@${_init.user!.userName}',
+                                  '@${_init.user?.userName}',
                                   style: GoogleFonts.aBeeZee(
                                     color: theme.colorScheme.onSurface
                                         .withOpacity(0.6),
@@ -118,7 +120,7 @@ class ProfilePage extends StatelessWidget {
                         children: [
                           _buildStatColumn(
                             'Gönderi',
-                            '${_init.user?.posts?.length}',
+                            '${_init.user?.posts?.length ?? "0"}',
                           ),
                           _buildStatColumn(
                             'Takipçi',
@@ -177,49 +179,84 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildPostsList(BuildContext context) {
-    if (_init.user?.posts == null) {
-      return Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.help_center_outlined, size: 100, color: Theme.of(context).colorScheme.onSecondary,),
-            SizedBox(
-              height: 40,
-            ),
-            Text(
-              "Hiç paylaşımınız yok",
-              style: GoogleFonts.aBeeZee(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Container(
-        decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-        child: ListView.builder(
-          itemCount: _init.user?.posts?.length,
-          itemBuilder: (context, index) {
-            return PostCard(
-              post: PostModel(
-                authorId: "test_id",
-                content:
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. $index",
-              ),
-              author: UserModel(
-                userName: _init.user!.userName,
-                email: _init.user!.email,
-              ),
-            );
-          },
-        ),
-      );
-    }
+    PostViewModel postViewModel = Provider.of<PostViewModel>(context);
+    return FutureBuilder<List<PostModel?>>(
+      future: postViewModel.getLastFivePosts(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            if (_init.user?.posts == null) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.help_center_outlined,
+                      size: 100,
+                      color: Theme.of(context).colorScheme.onSecondary,
+                    ),
+                    SizedBox(height: 40),
+                    Text(
+                      "Hiç paylaşımınız yok",
+                      style: GoogleFonts.aBeeZee(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                ),
+                child: ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return PostCard(
+                      post: PostModel(
+                        authorId: "test_id",
+                        content: snapshot.data!.isNotEmpty ? snapshot.data![index]!.content : "boş",
+                            
+                      ),
+                      author: UserModel(
+                        userName: _init.user!.userName,
+                        email: _init.user!.email,
+                      ),
+                    );
+                  },
+                ),
+              );
+            }
+          } else {
+            return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error,
+                      size: 100,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                    SizedBox(height: 40),
+                    Text(
+                      "Veriler getirilemedi!",
+                      style: GoogleFonts.aBeeZee(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                );
+          }
+        } else {
+          return Center(child: const CircularProgressIndicator());
+        }
+      },
+    );
   }
 
   Widget _buildLikedList(BuildContext context) {

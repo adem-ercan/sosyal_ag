@@ -50,6 +50,7 @@ class UserViewModel extends ChangeNotifier {
     try {
      return await _repository.getCurrentUserAllData();
     } catch (e) {
+      print("bura mı?");
       ErrorHandlerWidget.showError(context, e.toString());
       return null;
     }

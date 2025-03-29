@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
   final String? uid;
   final String userName;
@@ -55,10 +57,10 @@ class UserModel {
       photoUrl: json['photoUrl'] as String?,
       bio: json['bio'] as String?,
       createdAt: json['createdAt'] != null 
-          ? DateTime.parse(json['createdAt'] as String) 
+          ? (json['createdAt'] as Timestamp).toDate()
           : null,
       updatedAt: json['updatedAt'] != null 
-          ? DateTime.parse(json['updatedAt'] as String) 
+          ? (json['createdAt'] as Timestamp).toDate()
           : null,
       followers: (json['followers'] as List<dynamic>?)?.cast<String>(),
       following: (json['following'] as List<dynamic>?)?.cast<String>(),

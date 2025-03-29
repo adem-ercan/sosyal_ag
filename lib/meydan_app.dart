@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
 import 'package:sosyal_ag/view_model/login_view_model.dart';
 import 'package:sosyal_ag/view_model/main_screen_view_model.dart';
+import 'package:sosyal_ag/view_model/post_view_model.dart';
 import 'package:sosyal_ag/view_model/signup_view_model.dart';
 import 'package:sosyal_ag/view_model/user_view_model.dart';
 import 'utils/routes.dart';
@@ -18,6 +19,7 @@ class MeydanApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MainScreenViewModel()),
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
         ChangeNotifierProvider(create: (_) => SignupViewModel()),
+        ChangeNotifierProvider(create: (_) => PostViewModel()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
