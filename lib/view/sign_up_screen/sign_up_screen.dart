@@ -17,7 +17,7 @@ class SignUpScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
-          onPressed: () => context.go('/login'),
+          onPressed: () => context.go('/authRoute'),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,

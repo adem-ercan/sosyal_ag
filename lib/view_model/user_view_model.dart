@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sosyal_ag/model/user_model.dart';
 import 'package:sosyal_ag/repositories/repository.dart';
@@ -25,12 +24,12 @@ class UserViewModel extends ChangeNotifier {
   Future<UserModel?> signInWithEmailAndPassword(String email, String password, BuildContext context) async {
     try {
       //Veri tabanı işlemleri repository içerisinde yapılacak.
-      await _repository.signInWithEmailAndPassword(email, password);
+      return await _repository.signInWithEmailAndPassword(email, password);
     } catch (e) {
-      print("ERROR on UserViewModel: $e");
        if (context.mounted) {
         ErrorHandlerWidget.showError(context, "HATA: $e");
       }
+      return null;
     }
   }
 
@@ -52,6 +51,7 @@ class UserViewModel extends ChangeNotifier {
      return await _repository.getCurrentUserAllData();
     } catch (e) {
       ErrorHandlerWidget.showError(context, e.toString());
+      return null;
     }
   }
 

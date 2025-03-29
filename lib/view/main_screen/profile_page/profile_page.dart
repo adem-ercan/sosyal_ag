@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/model/post_model.dart';
 import 'package:sosyal_ag/model/user_model.dart';
+import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/view/main_screen/main_page/post_card.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  ProfilePage({super.key});
+
+  final Init _init = locator<Init>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +42,7 @@ class ProfilePage extends StatelessWidget {
             ),
             SliverToBoxAdapter(
               child: Container(
-                decoration: BoxDecoration(
-                  color: theme.scaffoldBackgroundColor
-                ),
+                decoration: BoxDecoration(color: theme.scaffoldBackgroundColor),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -60,11 +62,13 @@ class ProfilePage extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    Text(
-                                      'Kullanıcı Adı',
-                                      style: GoogleFonts.aBeeZee(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
+                                    FittedBox(
+                                      child: Text(
+                                        _init.user?.name ?? "",
+                                        style: GoogleFonts.aBeeZee(
+                                          //fontWeight: FontWeight.bold,
+                                          color: theme.colorScheme.onPrimary,
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(width: 4),
@@ -76,9 +80,10 @@ class ProfilePage extends StatelessWidget {
                                   ],
                                 ),
                                 Text(
-                                  '@kullaniciadi',
+                                  '@${_init.user!.userName}',
                                   style: GoogleFonts.aBeeZee(
-                                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                    color: theme.colorScheme.onSurface
+                                        .withOpacity(0.6),
                                   ),
                                 ),
                               ],
@@ -94,25 +99,35 @@ class ProfilePage extends StatelessWidget {
                             ),
                             child: Text(
                               'Düzenle',
-                              style: GoogleFonts.aBeeZee(color: theme.primaryColor),
+                              style: GoogleFonts.aBeeZee(
+                                color: theme.primaryColor,
+                              ),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Biyografi yazısı burada yer alacak. Kullanıcının kendisi hakkında yazdığı kısa bilgi.',
-                        style: GoogleFonts.aBeeZee(
-                          fontSize: 14,
-                        ),
+                        '${_init.user?.bio ?? " "} ',
+                        //'Biyografi yazısı burada yer alacak. Kullanıcının kendisi hakkında yazdığı kısa bilgi.',
+                        style: GoogleFonts.aBeeZee(fontSize: 14),
                       ),
                       const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          _buildStatColumn('Gönderi', '156'),
-                          _buildStatColumn('Takipçi', '1.2K'),
-                          _buildStatColumn('Takip', '843'),
+                          _buildStatColumn(
+                            'Gönderi',
+                            '${_init.user?.posts?.length}',
+                          ),
+                          _buildStatColumn(
+                            'Takipçi',
+                            '${_init.user?.followersCount}',
+                          ),
+                          _buildStatColumn(
+                            'Takip',
+                            '${_init.user?.followingCount}',
+                          ),
                         ],
                       ),
                     ],
@@ -125,21 +140,15 @@ class ProfilePage extends StatelessWidget {
                 TabBar(
                   dividerColor: theme.colorScheme.onSecondary,
                   labelColor: theme.colorScheme.tertiary,
-                  overlayColor: WidgetStateProperty.all(theme.colorScheme.primary),
+                  overlayColor: WidgetStateProperty.all(
+                    theme.colorScheme.primary,
+                  ),
                   unselectedLabelColor: theme.colorScheme.onSurface,
                   tabs: [
                     Tab(
-                      child: Text(
-                        'Gönderiler',
-                        style: GoogleFonts.aBeeZee(),
-                      ),
+                      child: Text('Gönderiler', style: GoogleFonts.aBeeZee()),
                     ),
-                    Tab(
-                      child: Text(
-                        'Beğeniler',
-                        style: GoogleFonts.aBeeZee(),
-                      ),
-                    ),
+                    Tab(child: Text('Beğeniler', style: GoogleFonts.aBeeZee())),
                   ],
                   indicatorColor: theme.colorScheme.tertiary,
                 ),
@@ -149,10 +158,7 @@ class ProfilePage extends StatelessWidget {
           ];
         },
         body: TabBarView(
-          children: [
-            _buildPostsList(context),
-            _buildLikedList(context),
-          ],
+          children: [_buildPostsList(context), _buildLikedList(context)],
         ),
       ),
     );
@@ -163,42 +169,57 @@ class ProfilePage extends StatelessWidget {
       children: [
         Text(
           count,
-          style: GoogleFonts.aBeeZee(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          style: GoogleFonts.aBeeZee(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        Text(
-          label,
-          style: GoogleFonts.aBeeZee(
-            fontSize: 14,
-          ),
-        ),
+        Text(label, style: GoogleFonts.aBeeZee(fontSize: 14)),
       ],
     );
   }
 
   Widget _buildPostsList(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor
-      ),
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return PostCard(
-            post: PostModel(
-              authorId: "test_id",
-              content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. $index",
+    if (_init.user?.posts == null) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.help_center_outlined, size: 100, color: Theme.of(context).colorScheme.onSecondary,),
+            SizedBox(
+              height: 40,
             ),
-            author: UserModel(
-              userName: "Test Kullanıcı",
-              email: "test@example.com",
+            Text(
+              "Hiç paylaşımınız yok",
+              style: GoogleFonts.aBeeZee(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          );
-        },
-      ),
-    );
+          ],
+        ),
+      );
+    } else {
+      return Container(
+        decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+        child: ListView.builder(
+          itemCount: _init.user?.posts?.length,
+          itemBuilder: (context, index) {
+            return PostCard(
+              post: PostModel(
+                authorId: "test_id",
+                content:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. $index",
+              ),
+              author: UserModel(
+                userName: _init.user!.userName,
+                email: _init.user!.email,
+              ),
+            );
+          },
+        ),
+      );
+    }
   }
 
   Widget _buildLikedList(BuildContext context) {
@@ -208,7 +229,8 @@ class ProfilePage extends StatelessWidget {
         return PostCard(
           post: PostModel(
             authorId: "test_id",
-            content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. $index",
+            content:
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. $index",
           ),
           author: UserModel(
             userName: "Test Kullanıcı",
@@ -235,5 +257,6 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get minExtent => _tabBar.preferredSize.height;
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => false;
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      false;
 }

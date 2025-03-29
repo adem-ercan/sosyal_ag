@@ -2,6 +2,7 @@ class UserModel {
   final String? uid;
   final String userName;
   final String email;
+  final String? name;
   final String? photoUrl;
   final String? bio;
   final DateTime? createdAt;
@@ -24,6 +25,7 @@ class UserModel {
     this.uid,
     required this.userName,
     required this.email,
+    this.name,
     this.photoUrl,
     this.bio,
     this.createdAt,
@@ -45,10 +47,10 @@ class UserModel {
 
   // JSON'dan UserModel'e dönüştürme
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    print("object xx");
     return UserModel(
       uid: json['uid'] as String?,
-      userName: json['name'] as String,
+      userName: json['userName'] as String,
+      name: json['name'] as String?,
       email: json['email'] as String,
       photoUrl: json['photoUrl'] as String?,
       bio: json['bio'] as String?,
@@ -80,7 +82,8 @@ class UserModel {
   Map<String, dynamic> toJson() {
     return {
       'uid': uid,
-      'name': userName,
+      'userName': userName,
+      'name' : name,
       'email': email,
       'photoUrl': photoUrl,
       'bio': bio,
@@ -106,6 +109,7 @@ class UserModel {
   UserModel copyWith({
     String? uid,
     String? userName,
+    String? name,
     String? email,
     String? photoUrl,
     String? bio,
