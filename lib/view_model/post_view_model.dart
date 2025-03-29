@@ -9,6 +9,10 @@ class PostViewModel extends ChangeNotifier {
 
   final Repository _repository = locator<Repository>();
 
+  void refresh(){
+    notifyListeners();
+  }
+
    Future<List<PostModel?>> getLastFivePosts() async {
     try {
       return await _repository.getLastFivePosts();

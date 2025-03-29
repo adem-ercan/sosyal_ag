@@ -12,6 +12,7 @@ class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
 
   final Init _init = locator<Init>();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -180,6 +181,16 @@ class ProfilePage extends StatelessWidget {
 
   Widget _buildPostsList(BuildContext context) {
     PostViewModel postViewModel = Provider.of<PostViewModel>(context);
+
+    // Add scroll listener
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        print("Listenin en altına ulaşıldı! Yeni veriler yüklenebilir.");
+        postViewModel.getLastFivePosts();
+        postViewModel.refresh();
+      }
+    });
+
     return FutureBuilder<List<PostModel?>>(
       future: postViewModel.getLastFivePosts(),
       builder: (context, snapshot) {
@@ -215,13 +226,13 @@ class ProfilePage extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 ),
                 child: ListView.builder(
+                  controller: _scrollController, // Add scroll controller here
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     return PostCard(
                       post: PostModel(
                         authorId: "test_id",
                         content: snapshot.data!.isNotEmpty ? snapshot.data![index]!.content : "boş",
-                            
                       ),
                       author: UserModel(
                         userName: _init.user!.userName,
@@ -234,23 +245,23 @@ class ProfilePage extends StatelessWidget {
             }
           } else {
             return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error,
-                      size: 100,
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-                    SizedBox(height: 40),
-                    Text(
-                      "Veriler getirilemedi!",
-                      style: GoogleFonts.aBeeZee(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                );
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error,
+                  size: 100,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                SizedBox(height: 40),
+                Text(
+                  "Veriler getirilemedi!",
+                  style: GoogleFonts.aBeeZee(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            );
           }
         } else {
           return Center(child: const CircularProgressIndicator());
