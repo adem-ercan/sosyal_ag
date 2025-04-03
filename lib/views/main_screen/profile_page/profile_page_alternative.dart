@@ -6,12 +6,16 @@ import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 
 class PaginationPostList extends StatelessWidget {
+
+  
+
   const PaginationPostList({super.key});
 
   @override
   Widget build(BuildContext context) {
     return FirestorePagination(
-      limit: 8, // Defaults to 10.
+      limit: 2,
+      isLive: true,
       viewType: ViewType.list,
       bottomLoader: const Center(
         child: CircularProgressIndicator(strokeWidth: 3, color: Colors.blue),
@@ -20,6 +24,9 @@ class PaginationPostList extends StatelessWidget {
           .collection('posts')
           .orderBy('createdAt', descending: true),
       itemBuilder: (context, documentSnapshot, index) {
+
+        print(" ${index + 1} ${documentSnapshot[index].id}}");
+
         if (documentSnapshot.isEmpty){
            return Center(child: CircularProgressIndicator());
         }

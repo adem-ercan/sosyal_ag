@@ -188,13 +188,13 @@ class ProfilePage extends StatelessWidget {
     PostViewModel postViewModel = Provider.of<PostViewModel>(context);
 
     // Add scroll listener
-    _scrollController.addListener(() {
+   /*  _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         print("Listenin en altına ulaşıldı! Yeni veriler yüklenebilir.");
         postViewModel.getLastFivePosts();
         postViewModel.refresh();
       }
-    });
+    }); */
 
     return FutureBuilder<List<PostModel?>>(
       future: postViewModel.getLastFivePosts(),
@@ -230,7 +230,10 @@ class ProfilePage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                 ),
-                child: PaginationPostList(),/* ListView.builder(
+                child: PaginationPostList(),
+                
+             /*    
+                 ListView.builder(
                   controller: _scrollController, // Add scroll controller here
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
@@ -245,7 +248,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                     );
                   },
-                ), */
+                ),  */
               );
             }
           } else {

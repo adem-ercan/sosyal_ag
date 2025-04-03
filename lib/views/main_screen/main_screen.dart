@@ -58,7 +58,7 @@ class MainScreen extends StatelessWidget {
 
     MessagesPage(),
 
-    PaginationPostList(),
+    ProfilePage(),
   ];
 
   List<PersistentBottomNavBarItem> _navBarsItems(MainScreenViewModel mainScreenViewModel) => [
