@@ -1,9 +1,9 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:sosyal_ag/model/user_model.dart';
+import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
-import 'package:sosyal_ag/view_model/user_view_model.dart';
+import 'package:sosyal_ag/view_models/user_view_model.dart';
 
 class Init {
 
@@ -31,6 +31,7 @@ class Init {
     // singleton UserModel ataması yapıyoruz.
     // UserViewModel'de zaten hata yakalandığı için try-catch yapılmadı.
     user = await userViewModel.getCurrentUserAllData(context);
+    return null;
   }
 
 

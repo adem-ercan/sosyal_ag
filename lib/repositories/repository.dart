@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sosyal_ag/model/post_model.dart';
-import 'package:sosyal_ag/model/user_model.dart';
+import 'package:sosyal_ag/models/post_model.dart';
+import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/services/firebase/firebase_auth_service.dart';
 import 'package:sosyal_ag/services/firebase/firebase_firestore_service.dart';
 import 'package:sosyal_ag/utils/extensions/string_extensions.dart';
@@ -10,7 +10,8 @@ class Repository {
   final FirebaseAuthService _firebaseAuthService =
       locator<FirebaseAuthService>();
   final FirestoreService _firestoreService = locator<FirestoreService>();
-  List<PostModel> _postModelList = [];
+  final List<PostModel> _postModelList = [];
+  String lastPostId = "";
 
   Future<void> createUserWithEmailAndPassword(
     String email,
@@ -40,6 +41,7 @@ class Repository {
     UserCredential? credential = await _firebaseAuthService
         .signInWithEmailAndPassword(email, password);
     User? user = credential?.user;
+    return null;
 
     /* if (user != null) {
       // Burada uid null kontrolüde yapılacak
@@ -71,6 +73,7 @@ class Repository {
     } else {
       print("Oturum açılamadı");
     }
+    return null;
   }
 
   Future<void> signOut() async {
@@ -104,18 +107,32 @@ class Repository {
     await _firestoreService.createNewPost(postModel.toJson());
   }
 
-
   Future<List<PostModel?>> getLastFivePosts() async {
-
     List<Map<String, dynamic>?> mapList =
         await _firestoreService.currentUserGetLastFivePosts();
 
     if (mapList.isNotEmpty) {
       for (Map<String, dynamic>? v in mapList) {
-          PostModel p = PostModel.fromJson(v!);
-          _postModelList.add(p);
+        PostModel p = PostModel.fromJson(v!);
+        _postModelList.add(p);
       }
-      
+    }
+    return _postModelList;
+  }
+
+  Future<List<PostModel>> getMoreUserPosts(String userId, String lastPostId, int limit) async {
+    List<Map<String, dynamic>?> mapList =
+        await _firestoreService.getMoreUserPosts(lastPostId, limit);
+
+    List<PostModel> newPosts = [];
+    if (mapList.isNotEmpty) {
+      for (Map<String, dynamic>? v in mapList) {
+        if (v != null) {
+          PostModel p = PostModel.fromJson(v);
+          newPosts.add(p);
+        }
+      }
+      _postModelList.addAll(newPosts);
     }
     return _postModelList;
   }

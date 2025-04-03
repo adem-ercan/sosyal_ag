@@ -3,14 +3,19 @@
 // Her katmanda ayrı hata yakalamaya gerek yok. Efektif de değil.
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sosyal_ag/core/db_base.dart';
 import 'package:sosyal_ag/init.dart';
+import 'package:sosyal_ag/services/firebase/firebase_auth_service.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 
 class FirestoreService implements DataBaseCore {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Init _init = locator<Init>();
+  FirebaseAuthService _authService = locator<FirebaseAuthService>();
+
+  bool isFirstPost = false;
   
 
 
@@ -52,6 +57,7 @@ class FirestoreService implements DataBaseCore {
    postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
     CollectionReference postRef = _firestore.collection("posts");
     DocumentReference docRef = postRef.doc(); // Rastgele ID oluşturur
+
     await docRef.set(postJsonData);
 
     // Post ID'sini kullanıcının posts array'ine ekle
@@ -83,6 +89,55 @@ class FirestoreService implements DataBaseCore {
     }
 
     // Postları tarihe göre sırala (en yeniden en eskiye)
+    posts.sort((a, b) {
+      Timestamp timeA = a['createdAt'] as Timestamp;
+      Timestamp timeB = b['createdAt'] as Timestamp;
+      return timeB.compareTo(timeA);
+    });
+
+    return posts;
+  }
+
+  Future<List<Map<String, dynamic>>> getMoreUserPosts(String lastPostId, int limit) async {
+    
+    
+   User? user= await _authService.currentUser();
+
+    // Kullanıcı dokümanını al
+    DocumentSnapshot userDoc = await _firestore.collection('users').doc(user?.uid).get();
+    
+    if (!userDoc.exists || !(userDoc.data() as Map<String, dynamic>).containsKey('posts') || isFirstPost) {
+      return [];
+    }
+
+    // Tüm post ID'lerini al
+    List<dynamic> allPosts = (userDoc.data() as Map<String, dynamic>)['posts'];
+    
+    // Son yüklenen postun indeksini bul
+    int lastIndex = allPosts.indexOf(lastPostId);
+    if (lastIndex == -1) return [];
+    
+    // Sonraki postların ID'lerini al
+    List<String> nextPostIds = allPosts
+        .skip(lastIndex)
+        .take(limit)
+        .map((postId) => postId.toString())
+        .toList();
+    
+    if (nextPostIds.isEmpty) return [];
+
+    // Post detaylarını getir
+    List<Map<String, dynamic>> posts = [];
+    CollectionReference postRef = _firestore.collection("posts");
+    
+    for (String postId in nextPostIds) {
+      DocumentSnapshot postDoc = await postRef.doc(postId).get();
+      if (postDoc.exists) {
+        posts.add(postDoc.data() as Map<String, dynamic>);
+      }
+    }
+
+    // Postları tarihe göre sırala
     posts.sort((a, b) {
       Timestamp timeA = a['createdAt'] as Timestamp;
       Timestamp timeB = b['createdAt'] as Timestamp;
