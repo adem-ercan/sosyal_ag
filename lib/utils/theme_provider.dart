@@ -52,6 +52,7 @@ class ThemeProvider with ChangeNotifier {
   );
 
   final ThemeData _themeDataDark = ThemeData(
+    
     primaryColor: Constants.themeColor1,
     scaffoldBackgroundColor: Constants.themeColor1,
     brightness: Brightness.dark,

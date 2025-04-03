@@ -3,73 +3,44 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:sosyal_ag/models/post_model.dart';
-import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/views/main_screen/drawer/drawer.dart';
+import 'package:sosyal_ag/views/main_screen/main_page/main_page.dart';
 import 'package:sosyal_ag/views/main_screen/messages_page/messages_page.dart';
-import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/profile_page.dart';
-import 'package:sosyal_ag/views/main_screen/profile_page/profile_page_alternative.dart';
 import 'package:sosyal_ag/views/main_screen/search_page/search_page.dart';
 import 'package:sosyal_ag/views/components/post_share_bottom_sheet.dart';
 import 'package:sosyal_ag/view_models/main_screen_view_model.dart';
 
 class MainScreen extends StatelessWidget {
   final BuildContext context;
- MainScreen({required this.context, super.key});
+  MainScreen({required this.context, super.key});
 
-  final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
+  final PersistentTabController _controller = PersistentTabController(
+    initialIndex: 0,
+  );
   final bool _hideNavBar = false;
   final NavBarStyle _navBarStyle = NavBarStyle.simple;
 
   List<Widget> _buildScreens() => [
-    Container(
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor
-      ),
-      child: SingleChildScrollView(
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: 30,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: EdgeInsets.all(8),
-              child: PostCard(
-                post: PostModel(
-                  authorId: "dsfsdf", 
-                  content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                  mediaUrls: index % 3 == 0 
-                      ? ["https://picsum.photos/500/300?random=$index"]
-                      : null,
-                ), 
-                author: UserModel(userName: "userName", email: "email")),
-            );
-          },
-        ),
-      ),
-    ),
+    
+    MainPage(),
 
-    Container(
-      color: Theme.of(context).colorScheme.primary,
-      child: SearchPage()
-    ),
+    SearchPage(),
 
     MessagesPage(),
 
     ProfilePage(),
   ];
 
-  List<PersistentBottomNavBarItem> _navBarsItems(MainScreenViewModel mainScreenViewModel) => [
+  List<PersistentBottomNavBarItem> _navBarsItems(
+    MainScreenViewModel mainScreenViewModel,
+  ) => [
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.home),
       opacity: 0.7,
       activeColorPrimary: Colors.blue,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
       inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
-     
-     
     ),
 
     PersistentBottomNavBarItem(
@@ -77,13 +48,11 @@ class MainScreen extends StatelessWidget {
       activeColorPrimary: Colors.teal,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
       inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
-      
     ),
     PersistentBottomNavBarItem(
       icon: Stack(
         alignment: Alignment.center,
         children: [
-          
           Icon(Icons.message),
           Positioned(
             right: 0,
@@ -94,15 +63,16 @@ class MainScreen extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.error,
-                borderRadius: BorderRadius.circular(2)
+                borderRadius: BorderRadius.circular(2),
               ),
-              child: Text("4", 
-              style: GoogleFonts.aBeeZee(
-                fontSize: 8,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onTertiary),
-                
+              child: Text(
+                "4",
+                style: GoogleFonts.aBeeZee(
+                  fontSize: 8,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onTertiary,
                 ),
+              ),
             ),
           ),
         ],
@@ -116,42 +86,55 @@ class MainScreen extends StatelessWidget {
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
+
       //scrollController: _scrollControllers.last,
-    
     ),
   ];
-
-  
 
   @override
   Widget build(final BuildContext context) {
     ThemeData theme = Theme.of(context);
-    MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context);
-
+    MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(
+      context,
+    );
 
     return Scaffold(
-      appBar: mainScreenViewModel.isVisibleAppBar ? AppBar(
-        actions: [
-          IconButton(onPressed: ()async{
-            await context.push("/notificationScreen");
-          }, 
-          icon: Icon(Icons.notifications))
-        ],
-        title: Text("MEYDAN", style: GoogleFonts.aBeeZee(color: theme.colorScheme.onSurface, fontSize: 26, fontWeight: FontWeight.bold, letterSpacing: 2),),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      ) : null,
+      appBar:
+          mainScreenViewModel.isVisibleAppBar
+              ? AppBar(
+                actions: [
+                  IconButton(
+                    onPressed: () async {
+                      await context.push("/notificationScreen");
+                    },
+                    icon: Icon(Icons.notifications),
+                  ),
+                ],
+                title: Text(
+                  "MEYDAN",
+                  style: GoogleFonts.aBeeZee(
+                    color: theme.colorScheme.onSurface,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              )
+              : null,
 
       drawer: MeydanDrawer(),
 
       body: RefreshIndicator(
         onRefresh: () async {
+          
           await Future.delayed(Duration(seconds: 2));
         },
         child: PersistentTabView(
           context,
           controller: _controller,
           screens: _buildScreens(),
-            
+
           items: _navBarsItems(mainScreenViewModel),
           handleAndroidBackButtonPress: true,
           resizeToAvoidBottomInset: false,
@@ -173,11 +156,10 @@ class MainScreen extends StatelessWidget {
                 width: 50,
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      shape: BoxShape.rectangle,
-                      color: Theme.of(context).colorScheme.onSurface
-                      ,
-                    ),
+                  borderRadius: BorderRadius.circular(12),
+                  shape: BoxShape.rectangle,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 child: IconButton(
                   padding: EdgeInsets.only(bottom: 30, right: 10),
                   icon: Icon(
@@ -225,7 +207,8 @@ class MainScreen extends StatelessWidget {
               // Screen transition animation on change of selected tab.
               animateTabTransition: true,
               duration: Duration(milliseconds: 300),
-              screenTransitionAnimationType: ScreenTransitionAnimationType.fadeIn,
+              screenTransitionAnimationType:
+                  ScreenTransitionAnimationType.fadeIn,
             ),
             onNavBarHideAnimation: OnHideAnimationSettings(
               duration: Duration(milliseconds: 100),
@@ -302,7 +285,6 @@ class CustomNavBarWidget extends StatelessWidget {
     ),
   );
 
-
   @override
   Widget build(final BuildContext context) => Container(
     color: Colors.grey.shade900,
@@ -326,5 +308,4 @@ class CustomNavBarWidget extends StatelessWidget {
       ),
     ),
   );
-
 }

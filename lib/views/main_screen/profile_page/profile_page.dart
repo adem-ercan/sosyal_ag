@@ -14,14 +14,13 @@ class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
 
   final Init _init = locator<Init>();
-  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
@@ -157,6 +156,7 @@ class ProfilePage extends StatelessWidget {
                       child: Text('Gönderiler', style: GoogleFonts.aBeeZee()),
                     ),
                     Tab(child: Text('Beğeniler', style: GoogleFonts.aBeeZee())),
+                    Tab(child: Text('Kaydedilenler', style: GoogleFonts.aBeeZee())),
                   ],
                   indicatorColor: theme.colorScheme.tertiary,
                 ),
@@ -166,7 +166,11 @@ class ProfilePage extends StatelessWidget {
           ];
         },
         body: TabBarView(
-          children: [_buildPostsList(context), _buildLikedList(context)],
+          children: [
+            _buildPostsList(context),
+            _buildLikedList(context),
+            _buildSavedList(context),
+          ],
         ),
       ),
     );
@@ -296,6 +300,24 @@ class ProfilePage extends StatelessWidget {
       },
     );
   }
+
+  Widget _buildSavedList(BuildContext context) {
+    return ListView.builder(
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return PostCard(
+          post: PostModel(
+            authorId: "test_id",
+            content: "Kaydedilen gönderi içeriği $index",
+          ),
+          author: UserModel(
+            userName: "Test Kullanıcı",
+            email: "test@example.com",
+          ),
+        );
+      },
+    );
+  }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
@@ -304,7 +326,9 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate(this._tabBar);
 
   @override
-  Widget build(context, shrinkOffset, overlapsContent) => _tabBar;
+  Widget build(context, shrinkOffset, overlapsContent) => Container(
+    color: Theme.of(context).scaffoldBackgroundColor,
+    child: _tabBar);
 
   @override
   double get maxExtent => _tabBar.preferredSize.height;
