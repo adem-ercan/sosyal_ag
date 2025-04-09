@@ -13,7 +13,7 @@ class FirestoreService implements DataBaseCore {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Init _init = locator<Init>();
-  FirebaseAuthService _authService = locator<FirebaseAuthService>();
+  final FirebaseAuthService _authService = locator<FirebaseAuthService>();
 
   bool isFirstPost = false;
   

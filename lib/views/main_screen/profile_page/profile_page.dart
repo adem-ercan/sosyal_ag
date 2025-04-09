@@ -7,7 +7,7 @@ import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
-import 'package:sosyal_ag/views/main_screen/profile_page/profile_page_alternative.dart';
+import 'package:sosyal_ag/views/main_screen/profile_page/pagination_post_list.dart';
 import 'package:sosyal_ag/view_models/post_view_model.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -156,7 +156,12 @@ class ProfilePage extends StatelessWidget {
                       child: Text('Gönderiler', style: GoogleFonts.aBeeZee()),
                     ),
                     Tab(child: Text('Beğeniler', style: GoogleFonts.aBeeZee())),
-                    Tab(child: Text('Kaydedilenler', style: GoogleFonts.aBeeZee())),
+                    Tab(
+                      child: Text(
+                        'Kaydedilenler',
+                        style: GoogleFonts.aBeeZee(),
+                      ),
+                    ),
                   ],
                   indicatorColor: theme.colorScheme.tertiary,
                 ),
@@ -192,7 +197,7 @@ class ProfilePage extends StatelessWidget {
     PostViewModel postViewModel = Provider.of<PostViewModel>(context);
 
     // Add scroll listener
-   /*  _scrollController.addListener(() {
+    /*  _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         print("Listenin en altına ulaşıldı! Yeni veriler yüklenebilir.");
         postViewModel.getLastFivePosts();
@@ -235,8 +240,8 @@ class ProfilePage extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 ),
                 child: PaginationPostList(),
-                
-             /*    
+
+                /*    
                  ListView.builder(
                   controller: _scrollController, // Add scroll controller here
                   itemCount: snapshot.data!.length,
@@ -276,7 +281,14 @@ class ProfilePage extends StatelessWidget {
             );
           }
         } else {
-          return Center(child: const CircularProgressIndicator());
+          return Container(
+            color: Theme.of(context).colorScheme.primary,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+          );
         }
       },
     );
@@ -328,7 +340,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(context, shrinkOffset, overlapsContent) => Container(
     color: Theme.of(context).scaffoldBackgroundColor,
-    child: _tabBar);
+    child: _tabBar,
+  );
 
   @override
   double get maxExtent => _tabBar.preferredSize.height;
