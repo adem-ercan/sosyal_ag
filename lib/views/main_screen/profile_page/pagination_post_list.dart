@@ -6,44 +6,56 @@ import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 
 class PaginationPostList extends StatelessWidget {
-
   
+  final ScrollController scrollController = ScrollController();
 
-  const PaginationPostList({super.key});
+   PaginationPostList({
+    super.key});
 
   @override
   Widget build(BuildContext context) {
-    return FirestorePagination(
-      limit: 2,
-      isLive: true,
-      viewType: ViewType.list,
-      bottomLoader: const Center(
-        child: CircularProgressIndicator(strokeWidth: 3, color: Colors.blue),
-      ),
-      query: FirebaseFirestore.instance
-          .collection('posts')
-          .orderBy('createdAt', descending: true),
-      itemBuilder: (context, documentSnapshot, index) {
-
-        print(" ${index + 1} ${documentSnapshot[index].id}}");
-
-        if (documentSnapshot.isEmpty){
-           return Center(child: CircularProgressIndicator());
-        }
-         
+    // Burada SliverAppBar scroll'unun sağlıklı olması için
+    // ListView kullanıyoruz. Yani yukar doğru kaydırdığımızda
+    // SliverAppBar kaybolacak. Aşağı doğru kaydırdığımızda
+    // SliverAppBar açılacak.
+    // FirestorePagination'ı direkt kullandığımızda bu olmuyor.
+    return ListView(
+      children: [
+        FirestorePagination(
+          controller: scrollController,
+          limit: 8,
+          shrinkWrap: true,
+          isLive: true,
+          viewType: ViewType.list,
+          bottomLoader: const Center(
+            child: CircularProgressIndicator(strokeWidth: 3, color: Colors.blue),
+          ),
+          query: FirebaseFirestore.instance
+              .collection('posts')
+              .orderBy('createdAt', descending: true),
+          itemBuilder: (context, documentSnapshot, index) {
         
-        final data = documentSnapshot[index].data() as Map<String, dynamic>;
-
-        final post = PostModel.fromJson(data);
-
-        final authorId = post.authorId;
-
-        // Fetch the author data using the authorId
-        // For example, you can use a Firestore query to get the author data
-        // Here, I'm assuming you have a method to fetch the author data
-
-        return PostCard(post: post, author: UserModel(userName: "userName", email: "email"));
-      },
+            print(" ${index + 1} ${documentSnapshot[index].id}}");
+        
+            if (documentSnapshot.isEmpty){
+               return Center(child: CircularProgressIndicator());
+            }
+             
+            
+            final data = documentSnapshot[index].data() as Map<String, dynamic>;
+        
+            final post = PostModel.fromJson(data);
+        
+            final authorId = post.authorId;
+        
+            // Fetch the author data using the authorId
+            // For example, you can use a Firestore query to get the author data
+            // Here, I'm assuming you have a method to fetch the author data
+        
+            return PostCard(post: post, author: UserModel(userName: "userName", email: "email"));
+          },
+        ),
+      ],
     );
   }
 }
