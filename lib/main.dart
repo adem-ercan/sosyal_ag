@@ -8,7 +8,6 @@ import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
 
 
-
 void main() async{
   
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +16,7 @@ void main() async{
     options: DefaultFirebaseOptions.currentPlatform);
 
   setupLocator();
- 
+  
   runApp(
       ChangeNotifierProvider(
         create: (_) => ThemeProvider(),

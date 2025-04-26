@@ -1,16 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/pagination_post_list.dart';
-import 'package:sosyal_ag/view_models/post_view_model.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -22,16 +18,20 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+
+
+  
+  
     return DefaultTabController(
       length: 3,
       child: NestedScrollView(
+        
         controller: _scrollController,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
               foregroundColor: theme.primaryColor,
               expandedHeight: 100,
-              floating: true,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
@@ -198,104 +198,9 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildPostsList(BuildContext context) {
-    PostViewModel postViewModel = Provider.of<PostViewModel>(context);
-
-    // Add scroll listener
-    /*  _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        print("Listenin en altına ulaşıldı! Yeni veriler yüklenebilir.");
-        postViewModel.getLastFivePosts();
-        postViewModel.refresh();
-      }
-    }); */
-
-    return FutureBuilder<List<PostModel?>>(
-      future: postViewModel.getLastFivePosts(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasData) {
-            if (_init.user?.posts == null) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.help_center_outlined,
-                      size: 100,
-                      color: Theme.of(context).colorScheme.onSecondary,
-                    ),
-                    SizedBox(height: 40),
-                    Text(
-                      "Hiç paylaşımınız yok",
-                      style: GoogleFonts.aBeeZee(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            } else {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                ),
-                child: PaginationPostList(),
-
-                /*    
-                 ListView.builder(
-                  controller: _scrollController, // Add scroll controller here
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    return PostCard(
-                      post: PostModel(
-                        authorId: "test_id",
-                        content: snapshot.data!.isNotEmpty ? snapshot.data![index]!.content : "boş",
-                      ),
-                      author: UserModel(
-                        userName: _init.user!.userName,
-                        email: _init.user!.email,
-                      ),
-                    );
-                  },
-                ),  */
-              );
-            }
-          } else {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.error,
-                  size: 100,
-                  color: Theme.of(context).colorScheme.error,
-                ),
-                SizedBox(height: 40),
-                Text(
-                  "Veriler getirilemedi!",
-                  style: GoogleFonts.aBeeZee(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            );
-          }
-        } else {
-          return Container(
-            color: Theme.of(context).colorScheme.primary,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-          );
-        }
-      },
+    return PaginationPostList( 
     );
+   
   }
 
   Widget _buildLikedList(BuildContext context) {

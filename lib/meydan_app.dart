@@ -9,6 +9,7 @@ import 'package:sosyal_ag/view_models/signup_view_model.dart';
 import 'package:sosyal_ag/view_models/user_view_model.dart';
 import 'utils/routes.dart';
 
+
 class MeydanApp extends StatelessWidget {
   const MeydanApp({super.key});
 

@@ -29,7 +29,7 @@ class PostCard extends StatelessWidget {
     return InkWell(
       onTap: onTap ?? (){
         context.push("/postScreen", extra: {
-          'pots' : post,
+          'post' : post,
           'author' : author 
         });
       },

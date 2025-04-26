@@ -41,21 +41,15 @@ class Repository {
     UserCredential? credential = await _firebaseAuthService
         .signInWithEmailAndPassword(email, password);
     User? user = credential?.user;
-    return null;
-
-    /* if (user != null) {
-      // Burada uid null kontrolüde yapılacak
-      Map<String, dynamic>? mapData = await _firestoreService
-          .getCurrentUserAllData(user.uid);
-      if (mapData != null) {
-        pragma("Veriyi oku: $mapData");
-        return UserModel.fromJson(mapData); 
-      } else {
-        print("data yok!");
-      }
+    if (user != null) {
+      return await getCurrentUserAllData();
+      // Burada kullanıcı giriş yaptıktan sonra init işlemi başlatılıyor.
+      // Bu sayede uygulama açılırken kullanıcı bilgileri alınıyor.
+      // Eğer init işlemi yapılmazsa uygulama açıldığında kullanıcı bilgileri alınamaz.
     } else {
       print("Oturum açılamadı");
-    } */
+    }
+    
   }
 
   // Burada iş bitmedi hala, düzeltilecek

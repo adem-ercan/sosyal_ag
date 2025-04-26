@@ -129,6 +129,7 @@ class MainScreen extends StatelessWidget {
         onRefresh: () async {
           
           await Future.delayed(Duration(seconds: 2));
+          print("main screen refresh");
         },
         child: PersistentTabView(
           context,
