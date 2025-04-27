@@ -34,7 +34,6 @@ class PostShareBottomSheet extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final TextEditingController contentController = TextEditingController();
     final List<String> selectedMediaUrls = [];
-    bool isLoading = false;
 
     return SafeArea(
       child: SizedBox(
@@ -82,8 +81,8 @@ class PostShareBottomSheet extends StatelessWidget {
                     ),
                     TextButton(
                       // ignore: dead_code
-                      onPressed: isLoading ? null : () => _handlePost(context, contentController.text, selectedMediaUrls),
-                      child: isLoading
+                      onPressed: () => _handlePost(context, contentController.text, selectedMediaUrls),
+                      child: mainScreenViewModel.loading == Loading.loading
                           // ignore: dead_code
                           ? SizedBox(
                               height: 20,
@@ -141,7 +140,7 @@ class PostShareBottomSheet extends StatelessWidget {
                   child: Row(
                     children: [
                       IconButton(
-                        onPressed: () => _pickImage(selectedMediaUrls),
+                        onPressed: () async => await mainScreenViewModel.mediaPick(),
                         icon: Icon(
                           Icons.image_outlined,
                           color: theme.colorScheme.primary,
@@ -240,7 +239,7 @@ class PostShareBottomSheet extends StatelessWidget {
 
   void _pickImage(List<String> selectedMediaUrls) {
     // TODO: Implement image picking
-
+    print("Resim seçildi");
     selectedMediaUrls.add('https://picsum.photos/200');
   }
 

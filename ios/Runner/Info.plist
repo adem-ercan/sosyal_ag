@@ -45,6 +45,13 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<key>NSCameraUsageDescription</key>
+		<string>Uygulamanızın kamera kullanım nedeni açıklaması</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+		<string>Uygulamanızın galeri erişim nedeni açıklaması</string>
+	<key>NSMicrophoneUsageDescription</key>
+		<string>Video kaydı için mikrofon kullanımı açıklaması</string>
 	
 	
 </dict>

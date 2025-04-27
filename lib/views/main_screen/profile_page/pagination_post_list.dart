@@ -20,7 +20,6 @@ class PaginationPostList extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(8),
       ),
       child: FirestorePagination(
         limit: 6,

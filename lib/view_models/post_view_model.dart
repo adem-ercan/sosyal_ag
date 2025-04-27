@@ -3,11 +3,20 @@ import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/repositories/repository.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 
+
+
 class PostViewModel extends ChangeNotifier {
+  //VARIABLES
   final Repository _repository = locator<Repository>();
+  
 
+  //GETTERS
+  
 
+  //SETTERS
+ 
 
+  //METHODS
   void refresh() {
     notifyListeners();
   }
