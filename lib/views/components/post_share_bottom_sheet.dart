@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -118,21 +120,15 @@ class PostShareBottomSheet extends StatelessWidget {
                   ),
                 ),
                 // Medya önizleme
-                if (selectedMediaUrls.isNotEmpty) ...[
+                if (mainScreenViewModel.image != null) ...[
                   const SizedBox(height: 8),
-                  SizedBox(
-                    height: 100,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: selectedMediaUrls.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == selectedMediaUrls.length) {
-                          return _buildAddMediaButton(theme, selectedMediaUrls);
-                        }
-                        return _buildMediaPreview(selectedMediaUrls[index], theme, selectedMediaUrls);
-                      },
+                  Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                  ),
+                    child: Image.file(mainScreenViewModel.image!),
+                  )
                 ],
                 // Alt toolbar
                 Padding(

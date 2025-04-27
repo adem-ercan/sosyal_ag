@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sosyal_ag/models/post_model.dart';
@@ -14,6 +16,8 @@ class MainScreenViewModel extends ChangeNotifier {
 
   final Repository _repository = locator<Repository>();
   final ImagePicker _picker = ImagePicker();
+  File? _image;
+  
   
   //VARIABLES
   bool _isVisibleAppBar = true;
@@ -26,9 +30,15 @@ class MainScreenViewModel extends ChangeNotifier {
   bool get isVisibleAppBar => _isVisibleAppBar;
   bool get isVisibleFloatingButton => _isVisibleFloatingButton;
   Loading get loading => _loading;
+  File? get image => _image;
 
 
   //SETTERS
+  set image(File? value) {
+    _image = value;
+    notifyListeners();
+  }
+
    set loading(Loading value) {
     _loading = value;
     notifyListeners();
@@ -92,9 +102,12 @@ class MainScreenViewModel extends ChangeNotifier {
 
 
   Future mediaPick() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    XFile? xFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    image = File(xFile!.path);
+
   if (image != null) {
-    print('Seçilen dosya yolu: ${image.path}');
+    print('Seçilen dosya yolu: ${image?.path}');
   }
   }
   
