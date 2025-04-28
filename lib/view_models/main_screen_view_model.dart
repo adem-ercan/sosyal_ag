@@ -55,7 +55,7 @@ class MainScreenViewModel extends ChangeNotifier {
   }
 
 
-  //METHOD
+  //METHODS
   void isAppBarVisible(int index){
     if(index==0){
       isVisibleAppBar = true;
@@ -66,7 +66,6 @@ class MainScreenViewModel extends ChangeNotifier {
     // UI'da değil burada çalıştıralım zaten aynı UI aynı zamanda çalışması gerekiyor
     isFloatingButtonVisible(index);
   }
-
 
   void isFloatingButtonVisible(int index){
     if(index == 0 || index == 3){
@@ -93,22 +92,21 @@ class MainScreenViewModel extends ChangeNotifier {
     } catch (e) {
       if (context.mounted) {
         ErrorHandlerWidget.showError(context, e.toString());
-      }
-      
+      } 
     }
-    
-    
   }
 
 
   Future mediaPick() async {
-    XFile? xFile = await _picker.pickImage(source: ImageSource.gallery);
-
-    image = File(xFile!.path);
-
-  if (image != null) {
-    print('Seçilen dosya yolu: ${image?.path}');
-  }
+    try {
+      final XFile? xFile = await _picker.pickImage(source: ImageSource.gallery);
+      
+      if (xFile != null) {
+        image = File(xFile.path);
+      }
+    } catch (e) {
+      print('Resim seçme hatası: $e');
+    }
   }
   
 }

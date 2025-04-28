@@ -5,6 +5,7 @@ import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 
 class PostCard extends StatelessWidget {
+  
   final PostModel post;
   final UserModel author;
   final VoidCallback? onTap;

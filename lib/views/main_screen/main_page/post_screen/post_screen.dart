@@ -119,6 +119,7 @@ class PostScreen extends StatelessWidget {
                       ),
                     ),
                   // Zaman bilgisi
+
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Text(
@@ -128,6 +129,7 @@ class PostScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  
                   const Divider(),
                   // Etkileşim sayıları
                   Row(

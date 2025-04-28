@@ -139,23 +139,17 @@ class PostShareBottomSheet extends StatelessWidget {
                         onPressed: () async => await mainScreenViewModel.mediaPick(),
                         icon: Icon(
                           Icons.image_outlined,
-                          color: theme.colorScheme.primary,
+                          color: theme.colorScheme.onSecondary,
                         ),
                       ),
                       IconButton(
                         onPressed: () {},
                         icon: Icon(
                           Icons.gif_box_outlined,
-                          color: theme.colorScheme.primary,
+                          color: theme.colorScheme.onSecondary,
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.tag_outlined,
-                          color: theme.colorScheme.primary,
-                        ),
-                      ),
+                      
                       const Spacer(),
                       if (contentController.text.isNotEmpty)
                         Text(
