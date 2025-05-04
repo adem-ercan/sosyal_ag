@@ -2,11 +2,14 @@
 // Firebase servisleri ve repository'de kullanmıyoruz. 
 // Her katmanda ayrı hata yakalamaya gerek yok. Efektif de değil.
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sosyal_ag/core/db_base.dart';
 import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/services/firebase/firebase_auth_service.dart';
+import 'package:sosyal_ag/services/firebase/firebase_storage_service.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 
 class FirestoreService implements DataBaseCore {
@@ -14,6 +17,7 @@ class FirestoreService implements DataBaseCore {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Init _init = locator<Init>();
   final FirebaseAuthService _authService = locator<FirebaseAuthService>();
+  final FirebaseStorageService _storageService = locator<FirebaseStorageService>();
 
   bool isFirstPost = false;
   
@@ -47,14 +51,19 @@ class FirestoreService implements DataBaseCore {
     List<dynamic> allPosts = (userDoc.data() as Map<String, dynamic>)['posts'];
     return allPosts.take(5).map((postId) => postId.toString()).toList();
   }
-
   
 
-
-
   // POST METHODS
-  Future<void> createNewPost(Map<String, dynamic> postJsonData) async {
+  Future<void> createNewPost(Map<String, dynamic> postJsonData, {File? imageFile}) async {
+    
+    if(imageFile != null){
+      await _storageService.uploadPostMedia(imageFile, "pinhani");
+    }
+    
+
+
    postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
+   
     CollectionReference postRef = _firestore.collection("posts");
     DocumentReference docRef = postRef.doc(); // Rastgele ID oluşturur
 

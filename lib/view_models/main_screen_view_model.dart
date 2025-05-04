@@ -8,10 +8,12 @@ import 'package:sosyal_ag/repositories/repository.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/views/components/error_handler_widget.dart';
 
+
 enum Loading {
   loading,
   loaded,
 }
+
 class MainScreenViewModel extends ChangeNotifier {
 
   final Repository _repository = locator<Repository>();
@@ -83,7 +85,7 @@ class MainScreenViewModel extends ChangeNotifier {
         PostModel postModel = PostModel(
           authorId: userModel.uid ?? "boş", 
           content: content);
-        await _repository.createNewPost(postModel);
+        await _repository.createNewPost(postModel, imageFile: _image);
         loading = Loading.loaded;
       }else{
         print("userModel is null!");
@@ -95,7 +97,6 @@ class MainScreenViewModel extends ChangeNotifier {
       } 
     }
   }
-
 
   Future mediaPick() async {
     try {

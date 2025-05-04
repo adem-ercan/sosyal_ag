@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
@@ -7,6 +9,8 @@ import 'package:sosyal_ag/utils/extensions/string_extensions.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 
 class Repository {
+
+
   final FirebaseAuthService _firebaseAuthService =
       locator<FirebaseAuthService>();
   final FirestoreService _firestoreService = locator<FirestoreService>();
@@ -49,14 +53,17 @@ class Repository {
     } else {
       print("Oturum açılamadı");
     }
+    return null;
     
   }
+
 
   // Burada iş bitmedi hala, düzeltilecek
   Future<UserModel?> signInWithGoogle(String email, String password) async {
     UserCredential? credential = await _firebaseAuthService
         .signInWithEmailAndPassword(email, password);
     User? user = credential?.user;
+
 
     if (user != null) {
       UserModel userModel = UserModel(
@@ -70,13 +77,16 @@ class Repository {
     return null;
   }
 
+
   Future<void> signOut() async {
     await _firebaseAuthService.signOut();
   }
 
+
   Stream<bool> authStateChanges() {
     return _firebaseAuthService.authStateChanges();
   }
+
 
   Future<UserModel?> getCurrentUserAllData() async {
     User? user = await _firebaseAuthService.currentUser();
@@ -97,9 +107,11 @@ class Repository {
     }
   }
 
-  Future<void> createNewPost(PostModel postModel) async {
-    await _firestoreService.createNewPost(postModel.toJson());
+
+  Future<void> createNewPost(PostModel postModel, {File? imageFile}) async {
+    await _firestoreService.createNewPost(postModel.toJson(), imageFile: imageFile);
   }
+
 
   Future<List<PostModel?>> getLastFivePosts() async {
     List<Map<String, dynamic>?> mapList =
@@ -130,4 +142,6 @@ class Repository {
     }
     return _postModelList;
   }
+
+
 }

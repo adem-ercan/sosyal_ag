@@ -1,5 +1,4 @@
 
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -94,13 +93,22 @@ class PostShareBottomSheet extends StatelessWidget {
                                 color: theme.colorScheme.tertiary,
                               ),
                             )
-                          : Text(
-                              'Paylaş',
-                              style: GoogleFonts.aBeeZee(
-                                color: theme.colorScheme.tertiary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                          : Row(
+                            spacing: 5,
+                            children: [
+                              Text(
+                                  'Paylaş',
+                                  style: GoogleFonts.aBeeZee(
+                                    color: theme.colorScheme.tertiary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.share,
+                                  color: theme.colorScheme.tertiary,
+                                ),
+                            ],
+                          ),
                     ),
                   ],
                 ),

@@ -23,8 +23,10 @@ class PostCard extends StatelessWidget {
     this.onRepost,
   });
 
+
   @override
   Widget build(BuildContext context) {
+
     final theme = Theme.of(context);
     
     return InkWell(
@@ -34,6 +36,7 @@ class PostCard extends StatelessWidget {
           'author' : author 
         });
       },
+
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(

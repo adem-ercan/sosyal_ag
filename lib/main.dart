@@ -8,7 +8,7 @@ import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
 
 
-void main() async{
+void main() async{ 
   
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -23,4 +23,6 @@ void main() async{
         child: const MeydanApp(),
       ),
   );
+  
 }
+
