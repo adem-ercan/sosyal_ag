@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:sosyal_ag/utils/theme_provider.dart';
 import 'package:sosyal_ag/views/main_screen/drawer/drawer.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/main_page.dart';
 import 'package:sosyal_ag/views/main_screen/messages_page/messages_page.dart';
@@ -98,6 +99,9 @@ class MainScreen extends StatelessWidget {
       context,
     );
 
+    ThemeProvider themeProvider =
+        Provider.of<ThemeProvider>(context, listen: true);
+
     return Scaffold(
       appBar:
           mainScreenViewModel.isVisibleAppBar
@@ -110,7 +114,18 @@ class MainScreen extends StatelessWidget {
                     icon: Icon(Icons.notifications),
                   ),
                 ],
-                title: Text(
+                title: themeProvider.themeMode != ThemeMode.dark
+                    ? Image.asset(
+                        "assets/logo/meydan_dark.png",
+                        height: 40,
+                        //width: MediaQuery.of(context).size.width * .6,
+                      )
+                    : Image.asset(
+                        "assets/logo/meydan_light.png",
+                        height: 40,
+                        //width: MediaQuery.of(context).size.width * .6,
+                      ),
+                /* Text(
                   "MEYDAN",
                   style: GoogleFonts.aBeeZee(
                     color: theme.colorScheme.onSurface,
@@ -118,7 +133,7 @@ class MainScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2,
                   ),
-                ),
+                ), */
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               )
               : null,

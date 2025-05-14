@@ -17,6 +17,7 @@ class MeydanApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => MainScreenViewModel()),
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
