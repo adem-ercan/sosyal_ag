@@ -65,29 +65,14 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
                   shape: BoxShape.circle,
                   color: Theme.of(context).primaryColor,
                 ),
-                child: const Icon(
-                  Icons.forum_rounded,
-                  size: 60,
-                  color: Colors.white,
-                ),
+                child:  Image.asset("assets/logo/m_light.png"),
               ),
             ),
-            const SizedBox(height: 24),
 
+            const SizedBox(height: 24),
             FadeTransition(
               opacity: _fadeAnimation,
-              child: Text(
-                'MEYDAN',
-                style: GoogleFonts.aBeeZee(
-                  letterSpacing: 6,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 32,
-                )
-              /*   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 4,
-                ), */
-              ),
+              child: Image.asset("assets/logo/meydan_light.png", width: MediaQuery.of(context).size.width*.6,),
             ),
              
             const SizedBox(height: 16),

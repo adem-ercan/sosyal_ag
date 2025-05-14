@@ -49,6 +49,7 @@ dependencies:
   cached_network_image: ^3.4.1
   firebase_pagination: ^4.1.0
   image_picker: ^1.1.2
+  supabase_flutter: ^2.9.0
 
 dev_dependencies:
   flutter_test:
@@ -73,8 +74,11 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/logo/m_dark.png
+    - assets/logo/m_light.png
+    - assets/logo/meydan_dark.png
+    - assets/logo/meydan_light.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
