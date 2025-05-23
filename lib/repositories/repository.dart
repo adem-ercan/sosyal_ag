@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sosyal_ag/models/post_comments.dart';
 import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/services/firebase/firebase_auth_service.dart';
 import 'package:sosyal_ag/services/firebase/firebase_firestore_service.dart';
-import 'package:sosyal_ag/services/supabase/subabase_storage_service.dart';
 import 'package:sosyal_ag/utils/extensions/string_extensions.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 
@@ -14,8 +14,8 @@ class Repository {
   final FirebaseAuthService _firebaseAuthService =
       locator<FirebaseAuthService>();
   final FirestoreService _firestoreService = locator<FirestoreService>();
-  final SupabaseStorageService _supabaseStorageService =
-      locator<SupabaseStorageService>();
+  /* final SupabaseStorageService _supabaseStorageService =
+      locator<SupabaseStorageService>(); */
   final List<PostModel> _postModelList = [];
   String lastPostId = "";
 
@@ -104,13 +104,9 @@ class Repository {
   }
 
   Future<void> createNewPost(PostModel postModel, {File? imageFile}) async {
-    if (imageFile != null) {
-      await _supabaseStorageService.uploadFile(
-        bucketName: "post.medias",
-        filePath: "${postModel.authorId}/${postModel.authorId}",
-        file: imageFile,
-      );
-    }
+    /* if (imageFile != null) {
+      
+    } */
 
     await _firestoreService.createNewPost(
       postModel.toJson(),
@@ -151,4 +147,16 @@ class Repository {
     }
     return _postModelList;
   }
+
+  Future<void> addCommentToPost(String postId, PostCommentModel commetModel) async {
+
+    // Burada post'a yorum ekleniyor
+    
+
+    Map<String, dynamic> commentJson = commetModel.toJson();
+    //commentJson.update("createdAt", (value) => DateTime.now());
+
+    await _firestoreService.addCommentToPost(postId, commetModel.toJson());
+
+   } 
 }

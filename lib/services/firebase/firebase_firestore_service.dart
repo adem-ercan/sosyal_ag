@@ -55,17 +55,17 @@ class FirestoreService implements DataBaseCore {
 
   // POST METHODS
   Future<void> createNewPost(Map<String, dynamic> postJsonData, {File? imageFile}) async {
-    
     if(imageFile != null){
       await _storageService.uploadPostMedia(imageFile, "pinhani");
     }
-    
 
-
-   postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
+    postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
    
     CollectionReference postRef = _firestore.collection("posts");
     DocumentReference docRef = postRef.doc(); // Rastgele ID oluşturur
+    
+    // Post ID'sini postJsonData'ya ekle
+    postJsonData['id'] = docRef.id;
 
     await docRef.set(postJsonData);
 
@@ -148,12 +148,62 @@ class FirestoreService implements DataBaseCore {
 
     // Postları tarihe göre sırala
     posts.sort((a, b) {
+
       Timestamp timeA = a['createdAt'] as Timestamp;
       Timestamp timeB = b['createdAt'] as Timestamp;
       return timeB.compareTo(timeA);
+
     });
 
     return posts;
+  }
+
+
+  Future<void> addCommentToPost(String postId, Map<String, dynamic> commentData) async {
+    print("post id: $postId");
+    DocumentReference postRef = _firestore.collection('posts').doc(postId);
+    
+
+     await postRef.update({
+      'comments': FieldValue.arrayUnion([
+        {
+        'content' : commentData['content'],
+        'userId' : commentData['user_id'],
+        'postId' : commentData['post_id'],
+        'userProfileImage' : commentData['user_profile_image'],
+        'username' : commentData['username'],
+        // Burada Firebase'in sistem saati ayarlanacak. 
+        // FieldValue.serverTimeStamp() hata verdiği için şimdilik kalsın.
+        'createdAt' : DateTime.now(),
+        
+      }]),
+      'commentsCount': FieldValue.increment(1)
+    });  
+  }
+
+
+  Future<List<Map<String, dynamic>>> getPostComments(String postId) async {
+    DocumentSnapshot postDoc = await _firestore.collection('posts').doc(postId).get();
+    
+    if (postDoc.exists && postDoc.data() != null) {
+      List<dynamic> comments = (postDoc.data() as Map<String, dynamic>)['comments'] ?? [];
+      return comments.map((comment) => comment as Map<String, dynamic>).toList();
+    }
+    
+    return [];
+  }
+
+  Future<void> deletePost(String postId) async {
+    DocumentReference postRef = _firestore.collection('posts').doc(postId);
+    await postRef.delete();
+  }
+
+  Future<void> deleteComment(String postId, String commentId) async {
+    DocumentReference postRef = _firestore.collection('posts').doc(postId);
+    await postRef.update({
+      'comments': FieldValue.arrayRemove([commentId]),
+      'commentsCount': FieldValue.increment(-1)
+    });
   }
 
 }

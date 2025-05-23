@@ -8,7 +8,7 @@ class PostModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final List<String>? likes;
-  final List<String>? comments;
+  final List<Map<String, dynamic>>? comments;
   final List<String>? tags;
   final int likesCount;
   final int commentsCount;
@@ -28,7 +28,7 @@ class PostModel {
     this.createdAt,
     this.updatedAt,
     this.likes,
-    this.comments,
+    this.comments= const <Map<String, dynamic>>[{}],
     this.tags,
     this.likesCount = 0,
     this.commentsCount = 0,
@@ -54,7 +54,9 @@ class PostModel {
           ? (json['updatedAt'] as Timestamp).toDate()
           : null,
       likes: (json['likes'] as List<dynamic>?)?.cast<String>(),
-      comments: (json['comments'] as List<dynamic>?)?.cast<String>(),
+      comments: (json['comments'] as List<dynamic>?)
+          ?.map((e) => Map<String, dynamic>.from(e as Map))
+          .toList(), 
       tags: (json['tags'] as List<dynamic>?)?.cast<String>(),
       likesCount: json['likesCount'] as int? ?? 0,
       commentsCount: json['commentsCount'] as int? ?? 0,
@@ -77,7 +79,7 @@ class PostModel {
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
       'likes': likes,
-      'comments': comments,
+      'comments': comments?.map((comment) => comment).toList(),
       'tags': tags,
       'likesCount': likesCount,
       'commentsCount': commentsCount,
@@ -99,7 +101,7 @@ class PostModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     List<String>? likes,
-    List<String>? comments,
+    List<Map<String, dynamic>>? comments,
     List<String>? tags,
     int? likesCount,
     int? commentsCount,

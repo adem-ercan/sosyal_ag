@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -84,7 +82,6 @@ class PostShareBottomSheet extends StatelessWidget {
                       // ignore: dead_code
                       onPressed: () => _handlePost(context, contentController.text, selectedMediaUrls),
                       child: mainScreenViewModel.loading == Loading.loading
-                          // ignore: dead_code
                           ? SizedBox(
                               height: 20,
                               width: 20,
@@ -94,21 +91,23 @@ class PostShareBottomSheet extends StatelessWidget {
                               ),
                             )
                           : Row(
-                            spacing: 5,
-                            children: [
-                              Text(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
                                   'Paylaş',
                                   style: GoogleFonts.aBeeZee(
                                     color: theme.colorScheme.tertiary,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
+                                const SizedBox(width: 4),
                                 Icon(
-                                  Icons.share,
+                                  Icons.send_rounded,
                                   color: theme.colorScheme.tertiary,
+                                  size: 20,
                                 ),
-                            ],
-                          ),
+                              ],
+                            ),
                     ),
                   ],
                 ),

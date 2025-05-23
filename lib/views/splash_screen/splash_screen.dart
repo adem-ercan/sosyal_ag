@@ -76,12 +76,12 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
             ),
              
             const SizedBox(height: 16),
-            FadeTransition(
+            FadeTransition( 
               opacity: _subtitleFadeAnimation,  // _fadeAnimation yerine _subtitleFadeAnimation kullan
               child: Text(
                 'Tartışmaya Açık Ol!',
-                style: GoogleFonts.aBeeZee(
-                  //letterSpacing: 2,
+                style: GoogleFonts.architectsDaughter(
+                  letterSpacing: 5,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                   color: theme.colorScheme.tertiary,

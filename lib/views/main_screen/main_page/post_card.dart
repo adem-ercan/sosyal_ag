@@ -28,7 +28,6 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final theme = Theme.of(context);
-    
     return InkWell(
       onTap: onTap ?? (){
         context.push("/postScreen", extra: {

@@ -24,7 +24,7 @@ class PaginationPostList extends StatelessWidget {
       child: FirestorePagination(
         limit: 6,
         isLive: true,
-        physics: ClampingScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         viewType: ViewType.list,
         shrinkWrap: true,
         query: FirebaseFirestore.instance
