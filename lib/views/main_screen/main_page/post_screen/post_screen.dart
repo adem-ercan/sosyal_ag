@@ -237,17 +237,15 @@ class PostScreen extends StatelessWidget {
 
             Padding(
               padding: EdgeInsets.all(16.0),
-              child: FutureBuilder(
-                future:
-                    FirebaseFirestore.instance
-                        .collection('posts')
-                        .doc(postModel.id)
-                        .get(),
-                builder: (context, snap) {
-                  
-                  if (snap.hasData) {
-                    Map<String, dynamic> a =
-                      snap.data!.data() as Map<String, dynamic>;
+              child: StreamBuilder<DocumentSnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('posts')
+                    .doc(postModel.id)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    Map<String, dynamic> a = 
+                      snapshot.data!.data() as Map<String, dynamic>;
                     return ListView.builder(
                       itemCount: a["comments"].length,
                       physics: const NeverScrollableScrollPhysics(),

@@ -5,7 +5,6 @@ import 'package:sosyal_ag/repositories/repository.dart';
 import 'package:sosyal_ag/services/firebase/firebase_auth_service.dart';
 import 'package:sosyal_ag/services/firebase/firebase_firestore_service.dart';
 import 'package:sosyal_ag/services/firebase/firebase_storage_service.dart';
-import 'package:sosyal_ag/services/supabase/supabase_auth_service.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -18,8 +17,6 @@ void setupLocator() {
   locator.registerLazySingleton(() => UserModel(userName: "userName", email: "email"));
   locator.registerLazySingleton(() => Init());
   locator.registerLazySingleton(() => FirebaseStorageService());
-/*   locator.registerLazySingleton(() => SupabaseStorageService());
- */  locator.registerLazySingleton(() => SupabaseAuthService());
 
 
   
