@@ -181,6 +181,8 @@ class FirestoreService implements DataBaseCore {
     });  
   }
 
+  
+
 
   Future<List<Map<String, dynamic>>> getPostComments(String postId) async {
     DocumentSnapshot postDoc = await _firestore.collection('posts').doc(postId).get();
@@ -205,5 +207,4 @@ class FirestoreService implements DataBaseCore {
       'commentsCount': FieldValue.increment(-1)
     });
   }
-
 }

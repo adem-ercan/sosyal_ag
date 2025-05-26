@@ -32,6 +32,7 @@ class CommentAreaWidget extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
+                        
                         return CommentCard(data: data, index: index);
                         
                         /* ListTile(

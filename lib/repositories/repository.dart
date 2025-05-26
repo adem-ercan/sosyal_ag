@@ -159,4 +159,11 @@ class Repository {
     await _firestoreService.addCommentToPost(postId, commetModel.toJson());
 
    } 
+
+   Future<void> removeCommentFromPost(
+     String postId,
+     String commentId,
+   ) async {
+     await _firestoreService.deleteComment(postId, commentId);
+   }
 }

@@ -93,4 +93,13 @@ class PostViewModel extends ChangeNotifier {
       print("Error showing comment sheet: $e");
     }
   }
+
+  Future<void> removeCommentFromPost(String postID, String c) async {
+    try {
+      await _repository.removeCommentFromPost(postID, commentData);
+    } catch (e) {
+      print("Error removing comment: $e");
+    }
+  }
+
 }
