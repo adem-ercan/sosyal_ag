@@ -64,7 +64,8 @@ class CommentBottomSheet extends StatelessWidget {
                       // Örnek:
                      await postViewModel.addCommentToPost(
                         postId,
-                        commentController.text
+                        commentController.text,
+                        context
                       );
                     }
                    

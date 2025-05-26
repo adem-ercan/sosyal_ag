@@ -200,10 +200,10 @@ class FirestoreService implements DataBaseCore {
     await postRef.delete();
   }
 
-  Future<void> deleteComment(String postId, String commentId) async {
-    DocumentReference postRef = _firestore.collection('posts').doc(postId);
+  Future<void> deleteComment(Map<String, dynamic> commentData) async {
+    DocumentReference postRef = _firestore.collection('posts').doc(commentData['postId']);
     await postRef.update({
-      'comments': FieldValue.arrayRemove([commentId]),
+      'comments': FieldValue.arrayRemove([commentData]),
       'commentsCount': FieldValue.increment(-1)
     });
   }

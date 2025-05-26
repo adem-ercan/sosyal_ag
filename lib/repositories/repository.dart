@@ -161,9 +161,8 @@ class Repository {
    } 
 
    Future<void> removeCommentFromPost(
-     String postId,
-     String commentId,
+     Map<String, dynamic> commentData,
    ) async {
-     await _firestoreService.deleteComment(postId, commentId);
+     await _firestoreService.deleteComment(commentData);
    }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/post_comments.dart';
 import 'package:sosyal_ag/models/post_model.dart';
@@ -49,7 +51,7 @@ class PostViewModel extends ChangeNotifier {
   }
 
 
-  Future<void> addCommentToPost(String postId, String comment) async {
+  Future<void> addCommentToPost(String postId, String comment, BuildContext context) async {
 
     //Burada user!.uid kısmında null kontrolü yapılacak!!!
 
@@ -68,6 +70,16 @@ class PostViewModel extends ChangeNotifier {
 
     try {
       await _repository.addCommentToPost(postId, commentModel);
+      if (context.mounted) {
+        context.pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Theme.of(context).colorScheme.tertiary,
+            content: Text("Yorumunuz eklendi!", style: GoogleFonts.aBeeZee(color: Theme.of(context).colorScheme.primary, fontSize: 20, fontWeight: FontWeight.bold)),
+            duration: const Duration(seconds: 1),
+          ),
+        );
+      }
     } catch (e) {
       print("Error adding comment: $e ");
     }
@@ -94,9 +106,9 @@ class PostViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> removeCommentFromPost(String postID, String c) async {
+  Future<void> removeCommentFromPost(Map<String, dynamic> commentData) async {
     try {
-      await _repository.removeCommentFromPost(postID, commentData);
+      await _repository.removeCommentFromPost(commentData);
     } catch (e) {
       print("Error removing comment: $e");
     }

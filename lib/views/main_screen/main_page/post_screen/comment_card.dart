@@ -103,9 +103,8 @@ class CommentCard extends StatelessWidget {
                       ),
                       onPressed: () async{
                         await postViewModel.removeCommentFromPost(
-                          data["postId"] ?? "",
-                          data,
-                        );
+                          data["comments"][index],
+                        ); 
 
                       },
                     ),
