@@ -18,10 +18,6 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-
-
-  
-  
     return DefaultTabController(
       length: 3,
       child: NestedScrollView(
@@ -198,9 +194,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildPostsList(BuildContext context) {
-    return PaginationPostList( 
-    );
-   
+     return PaginationPostList();      
   }
 
   Widget _buildLikedList(BuildContext context) {

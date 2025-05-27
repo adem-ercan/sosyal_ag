@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
+import 'package:sosyal_ag/view_models/post_view_model.dart';
 
 class PostCard extends StatelessWidget {
   
@@ -26,6 +28,8 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    PostViewModel postViewModel = Provider.of<PostViewModel>(context, listen: false);
 
     final theme = Theme.of(context);
     return InkWell(
@@ -88,11 +92,42 @@ class PostCard extends StatelessWidget {
                             ),
                           const Spacer(),
                           Text(
-                            '2s', // Burada gerçek zaman formatlaması yapılacak
+                            '2s',
                             style: TextStyle(
                               color: theme.colorScheme.onTertiary,
                               fontSize: 14,
                             ),
+                          ),
+                          PopupMenuButton<String>(
+                            icon: Icon(
+                              Icons.more_vert,
+                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                            ),
+                            onSelected: (value) async{
+                              if (value == 'delete') {
+                                print("postId: ${post.id}");
+                                await postViewModel.deletePost(post.id ?? "", author.uid ?? "");
+                              }
+                            },
+                            itemBuilder: (context) => [
+                              PopupMenuItem<String>(
+                                value: 'delete',
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.delete, 
+                                      color: theme.colorScheme.error,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text('Sil',
+                                      style: TextStyle(
+                                        color: theme.colorScheme.error,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

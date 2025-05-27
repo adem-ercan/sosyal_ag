@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/view_models/post_view_model.dart';
+import 'package:sosyal_ag/views/main_screen/main_page/post_screen/comment_area/comment_like_button.dart';
 
 class CommentCard extends StatelessWidget {
-
   Map<String, dynamic> data;
 
-  
+
   int index;
 
-  CommentCard({
-    
-    required this.data,
-    required this.index,
-    super.key});
+  CommentCard({required this.data, required this.index, super.key});
 
   String _getAyAdi(int ay) {
-
     const aylar = [
-      'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-      'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+      'Ocak',
+      'Şubat',
+      'Mart',
+      'Nisan',
+      'Mayıs',
+      'Haziran',
+      'Temmuz',
+      'Ağustos',
+      'Eylül',
+      'Ekim',
+      'Kasım',
+      'Aralık',
     ];
     return aylar[ay - 1];
   }
@@ -27,7 +33,10 @@ class CommentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    PostViewModel postViewModel = Provider.of<PostViewModel>(context, listen: true);
+    PostViewModel postViewModel = Provider.of<PostViewModel>(
+      context,
+      listen: true,
+    );
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
@@ -49,10 +58,16 @@ class CommentCard extends StatelessWidget {
               children: [
                 Text(
                   data["comments"][index]["username"] ?? "kullanıcı",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
-                Text(data["comments"][index]["content"] ?? "yorum içeriği"),
+                Text(
+                  data["comments"][index]["content"] ?? "yorum içeriği",
+                  style: GoogleFonts.aBeeZee(
+                    color: theme.colorScheme.tertiary,
+                    fontSize: 14,
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -68,25 +83,10 @@ class CommentCard extends StatelessWidget {
                     const Spacer(),
                     Column(
                       children: [
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(
-                            minWidth: 30,
-                            minHeight: 30,
-                          ),
-                          icon: Icon(
-                            Icons.favorite_border,
-                            size: 18,
-                            color: theme.colorScheme.onSurface.withOpacity(0.6),
-                          ),
-                          onPressed: () {},
-                        ),
-                        Text(
-                          "0",  // Beğeni sayısı burada
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: theme.colorScheme.onSurface.withOpacity(0.6),
-                          ),
+                        CommentLikeButton(
+                          isLiked: true,
+                          onTap: () {},
+                          likeCount: 2,
                         ),
                       ],
                     ),
@@ -101,11 +101,10 @@ class CommentCard extends StatelessWidget {
                         size: 18,
                         color: theme.colorScheme.onSurface.withOpacity(0.6),
                       ),
-                      onPressed: () async{
+                      onPressed: () async {
                         await postViewModel.removeCommentFromPost(
                           data["comments"][index],
-                        ); 
-
+                        );
                       },
                     ),
                   ],
@@ -114,7 +113,7 @@ class CommentCard extends StatelessWidget {
             ),
           ),
         ],
-      ), 
+      ),
     );
   }
 }

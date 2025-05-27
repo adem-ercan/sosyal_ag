@@ -182,7 +182,7 @@ class PostAreaWidget extends StatelessWidget {
         children: [
           TextSpan(
             text: '$count ',
-            style: TextStyle(
+            style: GoogleFonts.aBeeZee(
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.onSurface,
             ),

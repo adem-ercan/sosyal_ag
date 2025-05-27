@@ -195,8 +195,12 @@ class FirestoreService implements DataBaseCore {
     return [];
   }
 
-  Future<void> deletePost(String postId) async {
+  Future<void> deletePost(String postId, String userId) async {
     DocumentReference postRef = _firestore.collection('posts').doc(postId);
+    DocumentReference userRef = _firestore.collection('users').doc(userId);
+    await userRef.update({
+      'posts': FieldValue.arrayRemove([postId])
+    });
     await postRef.delete();
   }
 

@@ -7,7 +7,7 @@ import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/repositories/repository.dart';
 import 'package:sosyal_ag/utils/locator.dart';
-import 'package:sosyal_ag/views/main_screen/main_page/post_screen/comment_bottom_sheet.dart';
+import 'package:sosyal_ag/views/main_screen/main_page/post_screen/comment_area/comment_bottom_sheet.dart';
 
 class PostViewModel extends ChangeNotifier {
 
@@ -111,6 +111,14 @@ class PostViewModel extends ChangeNotifier {
       await _repository.removeCommentFromPost(commentData);
     } catch (e) {
       print("Error removing comment: $e");
+    }
+  }
+
+  Future<void> deletePost(String postId, String userId) async {
+    try {
+      await _repository.deletePost(postId, userId); 
+    } catch (e) {
+      print("Error deleting post: $e");
     }
   }
 

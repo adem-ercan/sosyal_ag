@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/view_models/post_view_model.dart';
-import 'package:sosyal_ag/views/main_screen/main_page/post_screen/comment_area_widget.dart';
-import 'package:sosyal_ag/views/main_screen/main_page/post_screen/post_area_widget.dart';
+import 'package:sosyal_ag/views/main_screen/main_page/post_screen/comment_area/comment_area_widget.dart';
+import 'package:sosyal_ag/views/main_screen/main_page/post_screen/post_area/post_area_widget.dart';
 
 class PostScreen extends StatelessWidget {
   /*  final PostModel post;
