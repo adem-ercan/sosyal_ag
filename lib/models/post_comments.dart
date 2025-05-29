@@ -5,6 +5,7 @@ class PostCommentModel {
   final String? userProfileImage;
   final String? username;
   final DateTime? createdAt;
+  final List<String>? likedUserIds;
 
   PostCommentModel({
     required this.content,
@@ -12,8 +13,8 @@ class PostCommentModel {
     required this.postId,
     this.userProfileImage,
     this.username,
-    
     this.createdAt,
+    this.likedUserIds
   });
 
   factory PostCommentModel.fromJson(Map<String, dynamic> json) {
@@ -24,6 +25,7 @@ class PostCommentModel {
       userProfileImage: json['user_profile_image'] as String?,
       username: json['username'] as String?,
       createdAt: DateTime.parse(json['created_at'] as String),
+      likedUserIds: (json['liked_user_ids'] as List<dynamic>?)?.cast<String>(),
     );
   }
 
@@ -35,6 +37,7 @@ class PostCommentModel {
       'user_profile_image': userProfileImage,
       'username': username,
       'created_at': createdAt?.toIso8601String(),
+      'liked_user_ids': likedUserIds,
     };
   }
 
@@ -45,6 +48,7 @@ class PostCommentModel {
     String? userProfileImage,
     String? username,
     DateTime? createdAt,
+    List<String>? likedUserIds,
   }) {
     return PostCommentModel(
       content: content ?? this.content,
@@ -53,6 +57,7 @@ class PostCommentModel {
       userProfileImage: userProfileImage ?? this.userProfileImage,
       username: username ?? this.username,
       createdAt: createdAt ?? this.createdAt,
+      likedUserIds: likedUserIds ?? this.likedUserIds,
     );
   }
 }

@@ -175,6 +175,7 @@ class FirestoreService implements DataBaseCore {
         // Burada Firebase'in sistem saati ayarlanacak. 
         // FieldValue.serverTimeStamp() hata verdiği için şimdilik kalsın.
         'createdAt' : DateTime.now(),
+        'likedUserIds' : commentData['liked_user_ids'] ?? []
         
       }]),
       'commentsCount': FieldValue.increment(1)
@@ -209,6 +210,32 @@ class FirestoreService implements DataBaseCore {
     await postRef.update({
       'comments': FieldValue.arrayRemove([commentData]),
       'commentsCount': FieldValue.increment(-1)
+    });
+  }
+
+  Future<void> likeComment(String postId, String commentId, String userId) async {
+    DocumentReference postRef = _firestore.collection('posts').doc(postId);
+    
+    await postRef.update({
+      'comments': FieldValue.arrayUnion([
+        {
+          'commentId': commentId,
+          'likedUserIds': FieldValue.arrayUnion([userId])
+        }
+      ])
+    });
+  }
+
+  Future<void> unlikeComment(String postId, String commentId, String userId) async {
+    DocumentReference postRef = _firestore.collection('posts').doc(postId);
+    
+    await postRef.update({
+      'comments': FieldValue.arrayRemove([
+        {
+          'commentId': commentId,
+          'likedUserIds': FieldValue.arrayUnion([userId])
+        }
+      ])
     });
   }
 }

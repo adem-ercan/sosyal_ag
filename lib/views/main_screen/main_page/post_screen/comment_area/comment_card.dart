@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sosyal_ag/init.dart';
+import 'package:sosyal_ag/utils/locator.dart';
+
 import 'package:sosyal_ag/view_models/post_view_model.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_screen/comment_area/comment_like_button.dart';
 
 class CommentCard extends StatelessWidget {
+
+  final Init _init = locator<Init>();
+
   Map<String, dynamic> data;
-
-
   int index;
 
+  // ignore: use_key_in_widget_constructors
   CommentCard({required this.data, required this.index, super.key});
 
   String _getAyAdi(int ay) {
@@ -75,7 +80,7 @@ class CommentCard extends StatelessWidget {
                       data["comments"][index]["createdAt"] != null
                           ? "${data["comments"][index]["createdAt"].toDate().day} ${_getAyAdi(data["comments"][index]["createdAt"].toDate().month)} ${data["comments"][index]["createdAt"].toDate().year} ${data["comments"][index]["createdAt"].toDate().hour.toString().padLeft(2, '0')}:${data["comments"][index]["createdAt"].toDate().minute.toString().padLeft(2, '0')}"
                           : "Tarih",
-                      style: TextStyle(
+                      style: GoogleFonts.aBeeZee(
                         fontSize: 12,
                         color: theme.colorScheme.onSurface.withOpacity(0.6),
                       ),
@@ -90,22 +95,26 @@ class CommentCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(
-                        minWidth: 30,
-                        minHeight: 30,
+                    Visibility(
+                      visible: _init.user?.uid ==
+                          data["comments"][index]["userId"],
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(
+                          minWidth: 30,
+                          minHeight: 30,
+                        ),
+                        icon: Icon(
+                          Icons.remove_circle_outline,
+                          size: 18,
+                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        ),
+                        onPressed: () async {
+                          await postViewModel.removeCommentFromPost(
+                            data["comments"][index],
+                          );
+                        },
                       ),
-                      icon: Icon(
-                        Icons.remove_circle_outline,
-                        size: 18,
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
-                      onPressed: () async {
-                        await postViewModel.removeCommentFromPost(
-                          data["comments"][index],
-                        );
-                      },
                     ),
                   ],
                 ),

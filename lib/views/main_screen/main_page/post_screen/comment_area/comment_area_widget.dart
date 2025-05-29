@@ -21,7 +21,7 @@ class CommentAreaWidget extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             Map<String, dynamic> data =
-                snapshot.data!.data() as Map<String, dynamic>;
+                snapshot.data?.data() as Map<String, dynamic>;
             return ListView.builder(
               reverse: true,
               itemCount: data["comments"].length,

@@ -64,6 +64,7 @@ class PostViewModel extends ChangeNotifier {
       content: comment,
       userId: user!.uid ?? "",
       username: user.userName,
+      
     );
 
     print(" commentModel: $commentModel");
