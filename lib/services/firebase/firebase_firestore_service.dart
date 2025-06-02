@@ -288,11 +288,18 @@ class FirestoreService implements DataBaseCore {
       await userRef.update({
         "likedPosts": FieldValue.arrayRemove([postID]),
       });
+
+      await postRef.update({
+        "likesCount": FieldValue.increment(-1),
+      });
       
     } else {
       // Post beğenilmemiş, beğeni ekle
       await userRef.update({
         "likedPosts": FieldValue.arrayUnion([postID]),
+      });
+      await postRef.update({
+        "likesCount": FieldValue.increment(1),
       });
     }
   }
@@ -310,6 +317,18 @@ class FirestoreService implements DataBaseCore {
       if (!snapshot.exists) return [];
       final userData = snapshot.data() as Map<String, dynamic>;
       return List<String>.from(userData['likedPosts'] ?? []);
+    });
+  }
+
+  Stream<int> getPostLikesCountStream(String postId) {
+    return _firestore
+        .collection('posts')
+        .doc(postId)
+        .snapshots()
+        .map((snapshot) {
+      if (!snapshot.exists) return 0;
+      final postData = snapshot.data() as Map<String, dynamic>;
+      return postData['likesCount'] as int? ?? 0;
     });
   }
 

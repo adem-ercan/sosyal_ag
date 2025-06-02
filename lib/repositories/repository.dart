@@ -192,5 +192,8 @@ class Repository {
     return _firestoreService.getLikedPostsStream();
   }
 
+  Stream<int> getPostLikesCountStream(String postId) {
+    return _firestoreService.getPostLikesCountStream(postId);
+  }
 
 }

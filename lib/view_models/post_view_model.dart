@@ -160,4 +160,8 @@ class PostViewModel extends ChangeNotifier {
     return _repository.getLikedPostsStream();
   }
 
+  Stream<int> getPostLikesCountStream(String postId) {
+    return _repository.getPostLikesCountStream(postId);
+  }
+
 }

@@ -13,7 +13,6 @@ class PostAreaWidget extends StatelessWidget {
   PostAreaWidget({super.key, required this.mapData});
 
   // Bu kısım View Model'e taşınacak.
-  
 
   @override
   Widget build(BuildContext context) {
@@ -118,11 +117,37 @@ class PostAreaWidget extends StatelessWidget {
           // Etkileşim sayıları
           Row(
             children: [
-              _buildStatText(
+              StreamBuilder<int>(
+                stream: postViewModel.getPostLikesCountStream(
+                  mapData["post"].id ?? "",
+                ),
+                builder: (context, snapshot) {
+                  return RichText(
+                    text: TextSpan(
+                      style: GoogleFonts.aBeeZee(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: snapshot.data?.toString() ?? '0 ',
+                          style: GoogleFonts.aBeeZee(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                        TextSpan(text: " Beğeni"),
+                      ],
+                    ),
+                  );
+                },
+              ),
+
+              /* _buildStatText(
                 '${mapData["post"]?.likesCount}',
                 'Beğeni',
                 context,
-              ),
+              ), */
               const SizedBox(width: 24),
               _buildStatText(
                 '${mapData["post"]?.commentsCount}',
@@ -147,14 +172,20 @@ class PostAreaWidget extends StatelessWidget {
                 stream: postViewModel.getLikedPostsStream(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator(color: Colors.red,));
+                    return const Center(
+                      child: CircularProgressIndicator(color: Colors.red),
+                    );
                   } else {
                     if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator(color: Colors.white,));
+                      return const Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      );
                     } else {
                       List<String>? likedPosts = snapshot.data;
 
-                      print("liked posts: $likedPosts user id: ${_init.user?.uid}");
+                      print(
+                        "liked posts: $likedPosts user id: ${_init.user?.uid}",
+                      );
 
                       return InkWell(
                         onTap: () async {
@@ -167,11 +198,22 @@ class PostAreaWidget extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Column(
                             children: [
-                             likedPosts!.contains(mapData['post'].id) ? Icon(Icons.favorite, color: Colors.red, size: 22) : Icon(Icons.favorite_border, size: 22)  ,
+                              likedPosts!.contains(mapData['post'].id)
+                                  ? Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                    size: 22,
+                                  )
+                                  : Icon(Icons.favorite_border, size: 22),
                               const SizedBox(height: 4),
                               Text(
                                 "Beğen",
-                                style: GoogleFonts.aBeeZee(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+                                style: GoogleFonts.aBeeZee(
+                                  fontSize: 12,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withOpacity(0.6),
+                                ),
                               ),
                             ],
                           ),
