@@ -238,11 +238,73 @@ class PostAreaWidget extends StatelessWidget {
                 label: 'Paylaş',
                 onTap: () {},
               ),
-              _buildActionButton(
+              
+              // Kaydet butonu
+              StreamBuilder<List<String>>(
+                stream: postViewModel.getSavedPostsStream(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: Colors.red),
+                    );
+                  } else {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      );
+                    } else {
+                      List<String>? likedPosts = snapshot.data;
+
+                      print(
+                        "liked posts: $likedPosts user id: ${_init.user?.uid}",
+                      );
+
+                      return InkWell(
+                        onTap: () async {
+                          await postViewModel.savePost(
+                            mapData["post"].id ?? "",
+                          );
+                          // Burada beğenme işlemi yapılabilir
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Column(
+                            children: [
+                              likedPosts!.contains(mapData['post'].id)
+                                  ? Icon(
+                                    Icons.bookmark,
+                                    color: Colors.blue,
+                                    size: 22,
+                                  )
+                                  : Icon(Icons.bookmark_border, size: 22),
+                              const SizedBox(height: 4),
+                              Text(
+                                "Beğen",
+                                style: GoogleFonts.aBeeZee(
+                                  fontSize: 12,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withOpacity(0.6),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  }
+                },
+              ),
+
+              /* _buildActionButton(
                 icon: Icons.bookmark_border,
                 label: 'Kaydet',
-                onTap: () {},
-              ),
+                onTap: () async{
+                  await postViewModel.savePost(
+                    mapData["post"].id ?? ""
+                  );
+                },
+              ), */
             ],
           ),
         ],

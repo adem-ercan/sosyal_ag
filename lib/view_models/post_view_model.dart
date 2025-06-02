@@ -164,4 +164,16 @@ class PostViewModel extends ChangeNotifier {
     return _repository.getPostLikesCountStream(postId);
   }
 
+
+  Future<void> savePost(String postId) async {
+    try {
+      await _repository.savePost(postId);
+    } catch (e) {
+      print("Error saving post: $e");
+    }
+  }
+
+  Stream<List<String>> getSavedPostsStream() {
+    return _repository.getSavedPostsStream();
+  }
 }

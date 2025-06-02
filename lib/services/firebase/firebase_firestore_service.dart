@@ -333,4 +333,38 @@ class FirestoreService implements DataBaseCore {
     });
   }
 
+  Future<void> savePost(String postId) async {
+    User? user = await _authService.currentUser();
+    DocumentReference userRef = _firestore.collection("users").doc(user!.uid);
+    DocumentSnapshot userDoc = await userRef.get();
+
+    final userData = userDoc.data() as Map<String, dynamic>;
+    final savedPosts = List<String>.from(userData['savedPosts'] ?? []);
+
+    if (savedPosts.contains(postId)) {
+      // Post zaten kaydedilmiş, kayıttan kaldır
+      await userRef.update({
+        "savedPosts": FieldValue.arrayRemove([postId]),
+      });
+    } else {
+      // Post kaydedilmemiş, kaydet
+      await userRef.update({
+        "savedPosts": FieldValue.arrayUnion([postId]),
+      });
+    }
+  }
+
+  // Kaydedilen postları dinleyen stream
+  Stream<List<String>> getSavedPostsStream() {
+    String userId = _init.user!.uid!;
+    return _firestore
+        .collection('users')
+        .doc(userId)
+        .snapshots()
+        .map((snapshot) {
+      if (!snapshot.exists) return [];
+      final userData = snapshot.data() as Map<String, dynamic>;
+      return List<String>.from(userData['savedPosts'] ?? []);
+    });
+  }
 }

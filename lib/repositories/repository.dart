@@ -196,4 +196,13 @@ class Repository {
     return _firestoreService.getPostLikesCountStream(postId);
   }
 
+  Future<void> savePost(String postId) async {
+      await _firestoreService.savePost(postId);
+    
+  }
+
+  Stream<List<String>> getSavedPostsStream() {
+    return _firestoreService.getSavedPostsStream();
+  }
+
 }
