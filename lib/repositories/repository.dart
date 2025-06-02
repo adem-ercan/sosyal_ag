@@ -169,4 +169,28 @@ class Repository {
    Future<void> deletePost(String postId, String userId) async {
      await _firestoreService.deletePost(postId, userId);
    }
+
+   Future<void> likeComment(
+     String postId,
+     Map<String, dynamic> commentData,
+     String userId,
+     bool isLiked,
+   ) async {
+   
+      await _firestoreService.likeComment(postId, commentData, userId, isLiked);
+    
+     
+   }
+
+
+  Future<void> likePost(String postID) async {
+   await _firestoreService.likePost(postID);
+  }
+
+
+  Stream<List<String>> getLikedPostsStream(){
+    return _firestoreService.getLikedPostsStream();
+  }
+
+
 }

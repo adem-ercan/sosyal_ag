@@ -19,7 +19,6 @@ void setupLocator() {
   locator.registerLazySingleton(() => FirebaseStorageService());
 
 
-  
   // locator.registerLazySingleton(() => FirestoreService());
   // locator.registerLazySingleton(() => NavigationService());
   // locator.registerLazySingleton(() => DialogService());
@@ -48,5 +47,8 @@ void setupLocator() {
   // locator.registerLazySingleton(() => FirebaseMLTranslateService());
   // locator.registerLazySingleton(() => FirebaseMLSmartReplyService());
   // locator.registerLazySingleton(() => FirebaseMLImageLabelerService());     
+
+
+
 }
    

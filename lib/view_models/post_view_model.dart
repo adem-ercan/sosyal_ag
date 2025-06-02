@@ -15,6 +15,7 @@ class PostViewModel extends ChangeNotifier {
   //VARIABLES
   final Repository _repository = locator<Repository>();
   final Init _init = locator<Init>();
+  
 
 
   //GETTERS
@@ -64,7 +65,7 @@ class PostViewModel extends ChangeNotifier {
       content: comment,
       userId: user!.uid ?? "",
       username: user.userName,
-      
+
     );
 
     print(" commentModel: $commentModel");
@@ -121,6 +122,42 @@ class PostViewModel extends ChangeNotifier {
     } catch (e) {
       print("Error deleting post: $e");
     }
+  }
+
+  Future<void> likeComment(String postId, Map<String, dynamic> commentData, String userId) async {
+    try {
+      await _repository.likeComment(postId, commentData, userId, true);
+    } catch (e) {
+      print("Error liking post: $e");
+    }
+  }
+
+
+
+  // Bu kısım View Model'e taşınacak.
+  String formatDate(DateTime? date) {
+    if (date == null) return '';
+    const aylar = [
+      'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+      'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+    ];
+    return "${date.day} ${aylar[date.month - 1]} ${date.year} - ${date.hour}:${date.minute.toString().padLeft(2, '0')}";
+  }
+
+
+
+
+  Future<void> likePost(String postID) async {
+    try {
+      await _repository.likePost(postID);
+    } catch (e) {
+      print("Error liking post: $e");
+    }
+  }
+
+
+  Stream<List<String>> getLikedPostsStream() {
+    return _repository.getLikedPostsStream();
   }
 
 }

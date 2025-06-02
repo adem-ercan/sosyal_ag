@@ -1,4 +1,7 @@
 class PostCommentModel {
+
+  // Represents a comment on a post in the application.
+
   final String content;
   final String userId;
   final String postId;
@@ -6,6 +9,7 @@ class PostCommentModel {
   final String? username;
   final DateTime? createdAt;
   final List<String>? likedUserIds;
+
 
   PostCommentModel({
     required this.content,

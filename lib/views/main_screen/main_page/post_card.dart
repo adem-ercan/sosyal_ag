@@ -92,10 +92,10 @@ class PostCard extends StatelessWidget {
                             ),
                           const Spacer(),
                           Text(
-                            '2s',
+                            postViewModel.formatDate(post.createdAt),
                             style: TextStyle(
                               color: theme.colorScheme.onTertiary,
-                              fontSize: 14,
+                              fontSize: 10,
                             ),
                           ),
                           PopupMenuButton<String>(
@@ -105,7 +105,6 @@ class PostCard extends StatelessWidget {
                             ),
                             onSelected: (value) async{
                               if (value == 'delete') {
-                                print("postId: ${post.id}");
                                 await postViewModel.deletePost(post.id ?? "", author.uid ?? "");
                               }
                             },

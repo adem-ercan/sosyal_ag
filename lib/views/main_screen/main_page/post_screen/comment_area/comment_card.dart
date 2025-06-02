@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -8,10 +9,11 @@ import 'package:sosyal_ag/view_models/post_view_model.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_screen/comment_area/comment_like_button.dart';
 
 class CommentCard extends StatelessWidget {
-
   final Init _init = locator<Init>();
 
+  // post verisi
   Map<String, dynamic> data;
+
   int index;
 
   // ignore: use_key_in_widget_constructors
@@ -88,16 +90,52 @@ class CommentCard extends StatelessWidget {
                     const Spacer(),
                     Column(
                       children: [
-                        CommentLikeButton(
-                          isLiked: true,
-                          onTap: () {},
-                          likeCount: 2,
+                        StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                          stream:
+                              FirebaseFirestore.instance
+                                  .collection("posts")
+                                  .doc(data["id"])
+                                  .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else {
+
+                                if (snapshot.data?.data() != null) {
+
+                                  Map<String, dynamic>? dataPost =
+                                      snapshot.data?.data();
+
+                                 
+                                  return CommentLikeButton(
+                                  user: _init.user?.uid ?? "",
+                                  //likedUserIds: dataPost?["comments"][index]["likedUserIds"],
+                                  commentData: dataPost?["comments"][index],
+                                  postId: dataPost?["id"],
+                                  index: index,
+                                );
+                                }else {
+                                  return const Text("Yorum bulunamadı");
+                                }
+
+                                
+                              }
+                            }
+                          },
                         ),
                       ],
                     ),
                     Visibility(
-                      visible: _init.user?.uid ==
-                          data["comments"][index]["userId"],
+                      visible:
+                          _init.user?.uid == data["comments"][index]["userId"],
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(
