@@ -320,6 +320,7 @@ class FirestoreService implements DataBaseCore {
     });
   }
 
+  // Belirli bir postun beğeni sayısını dinleyen stream
   Stream<int> getPostLikesCountStream(String postId) {
     return _firestore
         .collection('posts')
