@@ -91,8 +91,7 @@ class PostAreaWidget extends StatelessWidget {
           ),
           // Medya içeriği
           if (mapData["post"]?.mediaUrls != null &&
-                  mapData["post"]?.mediaUrls!.isNotEmpty ||
-              true)
+                  mapData["post"]?.mediaUrls!.isNotEmpty)
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(

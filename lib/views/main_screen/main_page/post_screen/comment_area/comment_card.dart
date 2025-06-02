@@ -88,6 +88,7 @@ class CommentCard extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
+                    
                     Column(
                       children: [
                         StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
@@ -133,6 +134,7 @@ class CommentCard extends StatelessWidget {
                         ),
                       ],
                     ),
+
                     Visibility(
                       visible:
                           _init.user?.uid == data["comments"][index]["userId"],

@@ -290,14 +290,25 @@ class FirestoreService implements DataBaseCore {
       });
 
       await postRef.update({
+        "likes": FieldValue.arrayRemove([user.uid]),
+      });
+
+      await postRef.update({
         "likesCount": FieldValue.increment(-1),
       });
+
+
       
     } else {
       // Post beğenilmemiş, beğeni ekle
       await userRef.update({
         "likedPosts": FieldValue.arrayUnion([postID]),
       });
+
+      await postRef.update({
+        "likes": FieldValue.arrayUnion([user.uid]),
+      });
+
       await postRef.update({
         "likesCount": FieldValue.increment(1),
       });
@@ -367,4 +378,25 @@ class FirestoreService implements DataBaseCore {
       return List<String>.from(userData['savedPosts'] ?? []);
     });
   }
+
+
+
+
+/* 
+  Stream<bool> isSavedByUserStream(String postId) {
+    String userId = _init.user!.uid!;
+    return _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('savedPosts')
+        .endAtDocument({"values": postId})
+        .snapshots()
+        .map((snapshot) {
+      if (!snapshot.exists) return false;
+      final userData = snapshot.data() as Map<String, dynamic>;
+      final savedPosts = List<String>.from(userData['savedPosts'] ?? []);
+      return savedPosts.contains(postId);
+    });
+  } */
+
 }
