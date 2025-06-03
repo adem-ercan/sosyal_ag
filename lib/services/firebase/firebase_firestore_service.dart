@@ -67,11 +67,25 @@ class FirestoreService implements DataBaseCore {
 
     await docRef.set(postJsonData);
 
-    // Post ID'sini kullanıcının posts array'ine ekle
-    String userId = postJsonData['authorId'];
-    await _firestore.collection('users').doc(userId).update({
-      'posts': FieldValue.arrayUnion([docRef.id]),
+    
+
+    // Muhtemelen PostModel'de sıkıntı var ki veritabanına boş yorum ekliyor.
+    // Bu sebeple eklediği yorumu direkt siliyoruz. 
+    // Sonra bu düzeltilecek!!!
+    await _firestore.collection('posts').doc(docRef.id).update({
+      'comments': FieldValue.arrayRemove([{}]),
     });
+
+
+
+
+    // Post ID'sini kullanıcının posts array'ine ekle
+    //String userId = postJsonData['authorId'];
+
+    /* await _firestore.collection('posts').doc(userId).update({
+      'comments': FieldValue.increment(1),
+    }); */
+    
   }
 
   Future<List<Map<String, dynamic>>> currentUserGetLastFivePosts() async {
@@ -101,59 +115,7 @@ class FirestoreService implements DataBaseCore {
     return posts;
   }
 
-  Future<List<Map<String, dynamic>>> getMoreUserPosts(
-    String lastPostId,
-    int limit,
-  ) async {
-    User? user = await _authService.currentUser();
-
-    // Kullanıcı dokümanını al
-    DocumentSnapshot userDoc =
-        await _firestore.collection('users').doc(user?.uid).get();
-
-    if (!userDoc.exists ||
-        !(userDoc.data() as Map<String, dynamic>).containsKey('posts') ||
-        isFirstPost) {
-      return [];
-    }
-
-    // Tüm post ID'lerini al
-    List<dynamic> allPosts = (userDoc.data() as Map<String, dynamic>)['posts'];
-
-    // Son yüklenen postun indeksini bul
-    int lastIndex = allPosts.indexOf(lastPostId);
-    if (lastIndex == -1) return [];
-
-    // Sonraki postların ID'lerini al
-    List<String> nextPostIds =
-        allPosts
-            .skip(lastIndex)
-            .take(limit)
-            .map((postId) => postId.toString())
-            .toList();
-
-    if (nextPostIds.isEmpty) return [];
-
-    // Post detaylarını getir
-    List<Map<String, dynamic>> posts = [];
-    CollectionReference postRef = _firestore.collection("posts");
-
-    for (String postId in nextPostIds) {
-      DocumentSnapshot postDoc = await postRef.doc(postId).get();
-      if (postDoc.exists) {
-        posts.add(postDoc.data() as Map<String, dynamic>);
-      }
-    }
-
-    // Postları tarihe göre sırala
-    posts.sort((a, b) {
-      Timestamp timeA = a['createdAt'] as Timestamp;
-      Timestamp timeB = b['createdAt'] as Timestamp;
-      return timeB.compareTo(timeA);
-    });
-
-    return posts;
-  }
+  
 
   Future<void> addCommentToPost(
     String postId,

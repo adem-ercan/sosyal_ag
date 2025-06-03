@@ -127,26 +127,7 @@ class Repository {
     return _postModelList;
   }
 
-  Future<List<PostModel>> getMoreUserPosts(
-    String userId,
-    String lastPostId,
-    int limit,
-  ) async {
-    List<Map<String, dynamic>?> mapList = await _firestoreService
-        .getMoreUserPosts(lastPostId, limit);
 
-    List<PostModel> newPosts = [];
-    if (mapList.isNotEmpty) {
-      for (Map<String, dynamic>? v in mapList) {
-        if (v != null) {
-          PostModel p = PostModel.fromJson(v);
-          newPosts.add(p);
-        }
-      }
-      _postModelList.addAll(newPosts);
-    }
-    return _postModelList;
-  }
 
   Future<void> addCommentToPost(String postId, PostCommentModel commetModel) async {
 

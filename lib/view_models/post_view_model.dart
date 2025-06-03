@@ -39,17 +39,7 @@ class PostViewModel extends ChangeNotifier {
   }
 
 
-  Future<List<PostModel?>> getMoreUserPosts(
-    String userId,
-    String lastPostId,
-    int limit,
-  ) async {
-    try {
-      return await _repository.getMoreUserPosts(userId, lastPostId, limit);
-    } catch (e) {
-      return [];
-    }
-  }
+  
 
 
   Future<void> addCommentToPost(String postId, String comment, BuildContext context) async {

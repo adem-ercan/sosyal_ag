@@ -207,21 +207,7 @@ class ProfilePage extends StatelessWidget {
   Widget _buildSavedList(BuildContext context) {
 
     return PaginationFavoritedPostList();
-    /* return ListView.builder(
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        return PostCard(
-          post: PostModel(
-            authorId: "test_id",
-            content: "Kaydedilen gönderi içeriği $index",
-          ),
-          author: UserModel(
-            userName: "Test Kullanıcı",
-            email: "test@example.com",
-          ),
-        );
-      },
-    ); */
+    
   }
 }
 
