@@ -205,4 +205,12 @@ class Repository {
     return _firestoreService.getSavedPostsStream();
   }
 
+  Future<PostModel?> getPostById(String postId) async {
+    Map<String, dynamic>? postData = await _firestoreService.getPostById(postId);
+    if (postData != null) {
+      return PostModel.fromJson(postData);
+    }
+    return null;
+  }
+
 }

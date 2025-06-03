@@ -1,0 +1,57 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_pagination/firebase_pagination.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sosyal_ag/init.dart';
+import 'package:sosyal_ag/models/post_model.dart';
+import 'package:sosyal_ag/utils/locator.dart';
+import 'package:sosyal_ag/view_models/post_view_model.dart';
+import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
+
+class PaginationFavoritedPostList extends StatelessWidget {
+  final Init _init = locator<Init>();
+
+  final ScrollController scrollController = ScrollController();
+
+  PaginationFavoritedPostList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Burada SliverAppBar scroll'unun sağlıklı olması için
+    // ListView kullanıyoruz. Yani yukar doğru kaydırdığımızda
+    // SliverAppBar kaybolacak. Aşağı doğru kaydırdığımızda
+    // SliverAppBar açılacak.
+    // FirestorePagination'ı direkt kullandığımızda bu olmuyor.
+
+   
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
+      child: FirestorePagination(
+        limit: 6,
+        isLive: true,
+        //physics: NeverScrollableScrollPhysics(),
+        viewType: ViewType.list,
+        shrinkWrap: true,
+        query: FirebaseFirestore.instance
+            .collection('posts')
+            .where("favoritedUsers", arrayContainsAny: [_init.user!.uid]),
+        itemBuilder: (context, documentSnapshot, index) {
+          //print("likedPost ${index + 1} ${documentSnapshot[index].data()}");
+
+          final data = documentSnapshot[index].data() as Map<String, dynamic>;
+          final post = PostModel.fromJson(data);
+          //return Center(child: Text("asfdasdfasf"));
+          return PostCard(post: post, author: _init.user!);
+        },
+        initialLoader: const Center(child: CircularProgressIndicator()),
+        bottomLoader: const Center(child: CircularProgressIndicator()),
+      ),
+    );
+
+
+   
+  }
+}
+

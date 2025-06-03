@@ -92,7 +92,7 @@ class PostCard extends StatelessWidget {
                             ),
                           const Spacer(),
                           Text(
-                            postViewModel.formatDate(post.createdAt),
+                            postViewModel.formatDate1(post.createdAt),
                             style: TextStyle(
                               color: theme.colorScheme.onTertiary,
                               fontSize: 10,

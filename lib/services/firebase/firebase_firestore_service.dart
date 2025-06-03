@@ -347,6 +347,8 @@ class FirestoreService implements DataBaseCore {
   Future<void> savePost(String postId) async {
     User? user = await _authService.currentUser();
     DocumentReference userRef = _firestore.collection("users").doc(user!.uid);
+    DocumentReference postRef = _firestore.collection("posts").doc(postId);
+
     DocumentSnapshot userDoc = await userRef.get();
 
     final userData = userDoc.data() as Map<String, dynamic>;
@@ -357,10 +359,19 @@ class FirestoreService implements DataBaseCore {
       await userRef.update({
         "savedPosts": FieldValue.arrayRemove([postId]),
       });
+
+      await postRef.update({
+        "favoritedUsers": FieldValue.arrayRemove([user.uid]),
+      });
+
     } else {
       // Post kaydedilmemiş, kaydet
       await userRef.update({
         "savedPosts": FieldValue.arrayUnion([postId]),
+      });
+
+      await postRef.update({
+        "favoritedUsers": FieldValue.arrayUnion([user.uid]),
       });
     }
   }
@@ -380,7 +391,29 @@ class FirestoreService implements DataBaseCore {
   }
 
 
+Future<Map<String, dynamic>?> getPostById(String postId) async {
+    DocumentSnapshot postDoc = await _firestore.collection('posts').doc(postId).get();
+    if (postDoc.exists) {
+      return postDoc.data() as Map<String, dynamic>;
+    }
+    return null;
+  }
 
+  // Kullanıcının kaydettiği postları dinleyen stream
+  /* 
+  Stream<List<String>> getSavedPostsStream() {
+    String userId = _init.user!.uid!;
+    return _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('savedPosts')
+        .snapshots()
+        .map((snapshot) {
+      if (!snapshot.exists) return [];
+      final userData = snapshot.data() as Map<String, dynamic>;
+      return List<String>.from(userData['savedPosts'] ?? []);
+    });
+  } */
 
 /* 
   Stream<bool> isSavedByUserStream(String postId) {

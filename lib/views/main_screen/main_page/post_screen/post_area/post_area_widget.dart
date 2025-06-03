@@ -105,7 +105,7 @@ class PostAreaWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Text(
-              postViewModel.formatDate(mapData["post"]?.createdAt),
+              postViewModel.formatDate1(mapData["post"]?.createdAt),
               style: GoogleFonts.aBeeZee(
                 color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
@@ -200,7 +200,7 @@ class PostAreaWidget extends StatelessWidget {
                               likedPosts!.contains(mapData['post'].id)
                                   ? Icon(
                                     Icons.favorite,
-                                    color: Colors.red,
+                                    color: theme.colorScheme.error,
                                     size: 22,
                                   )
                                   : Icon(Icons.favorite_border, size: 22),
@@ -272,7 +272,7 @@ class PostAreaWidget extends StatelessWidget {
                               likedPosts!.contains(mapData['post'].id)
                                   ? Icon(
                                     Icons.bookmark,
-                                    color: Colors.blue,
+                                    color: theme.colorScheme.tertiary,
                                     size: 22,
                                   )
                                   : Icon(Icons.bookmark_border, size: 22),

@@ -135,7 +135,7 @@ class PostViewModel extends ChangeNotifier {
 
 
   // Bu kısım View Model'e taşınacak.
-  String formatDate(DateTime? date) {
+  String formatDate1(DateTime? date) {
     if (date == null) return '';
     const aylar = [
       'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
@@ -175,5 +175,16 @@ class PostViewModel extends ChangeNotifier {
 
   Stream<List<String>> getSavedPostsStream() {
     return _repository.getSavedPostsStream();
+  }
+
+
+  Future<PostModel?> getPostById(String postId) async {
+    try {
+      
+      return await _repository.getPostById(postId);
+    } catch (e) {
+      print("Error fetching post by ID: $e");
+      return null;
+    }
   }
 }

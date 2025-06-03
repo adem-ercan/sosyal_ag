@@ -6,6 +6,8 @@ import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
+import 'package:sosyal_ag/views/main_screen/profile_page/paginaition_liked_list.dart';
+import 'package:sosyal_ag/views/main_screen/profile_page/pagination_favorited_post_list.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/pagination_post_list.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -198,26 +200,14 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildLikedList(BuildContext context) {
-    return ListView.builder(
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        return PostCard(
-          post: PostModel(
-            authorId: "test_id",
-            content:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. $index",
-          ),
-          author: UserModel(
-            userName: "Test Kullanıcı",
-            email: "test@example.com",
-          ),
-        );
-      },
-    );
+    return PaginationLikedPostList();
+
   }
 
   Widget _buildSavedList(BuildContext context) {
-    return ListView.builder(
+
+    return PaginationFavoritedPostList();
+    /* return ListView.builder(
       itemCount: 5,
       itemBuilder: (context, index) {
         return PostCard(
@@ -231,7 +221,7 @@ class ProfilePage extends StatelessWidget {
           ),
         );
       },
-    );
+    ); */
   }
 }
 
