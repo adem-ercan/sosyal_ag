@@ -194,4 +194,12 @@ class Repository {
     return null;
   }
 
+  Future<UserModel?> getUserDataById(String userId) async {
+    Map<String, dynamic>? userData = await _firestoreService.getUserDataById(userId);
+    if (userData != null) {
+      return UserModel.fromJson(userData);
+    }
+    return null;
+  }
+
 }

@@ -1,39 +1,74 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
+import 'package:sosyal_ag/view_models/user_view_model.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 
 
 class MeydanPage extends StatelessWidget {
-  const MeydanPage({super.key});
+
+ const MeydanPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+  
+
+    UserViewModel userViewModel = Provider.of<UserViewModel>(
+      context,
+      listen: true,
+    );
+
     return Container(
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-      child: SingleChildScrollView(
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: 30,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: EdgeInsets.all(8),
-              child: PostCard(
-                post: PostModel(
-                  authorId: "dsfsdf",
-                  content:
-                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                  mediaUrls:
-                      index % 3 == 0
-                          ? ["https://picsum.photos/500/300?random=$index"]
-                          : null,
-                ),
-                author: UserModel(userName: "userName", email: "email"),
-              ),
-            );
-          },
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
+      child: FirestorePagination(
+        limit: 6,
+        isLive: true,
+        //physics: NeverScrollableScrollPhysics(),
+        viewType: ViewType.list,
+        shrinkWrap: true,
+        query: FirebaseFirestore.instance
+            .collection('posts')
+            .orderBy('createdAt', descending: true),
+        itemBuilder: (context, documentSnapshot, index) {
+      
+          print(" ${index + 1} ${documentSnapshot[index].id}}");
+        
+          if (documentSnapshot.isEmpty){
+            return Center(child: CircularProgressIndicator());
+          }
+      
+          final data = documentSnapshot[index].data() as Map<String, dynamic>;
+          final post = PostModel.fromJson(data);
+
+      
+          return FutureBuilder<UserModel?>(
+            future: userViewModel.getUserDataById(post.authorId),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data == null) {
+                return const Center(child: Text('User not found'));
+              }
+              UserModel? user = snapshot.data;
+              return PostCard(
+                post: post,
+                author: user!,
+              );
+            }
+          );
+        },
+        initialLoader: const Center(
+          child: CircularProgressIndicator(),
+        ),
+        bottomLoader: const Center(
+          child: CircularProgressIndicator(),
         ),
       ),
     );

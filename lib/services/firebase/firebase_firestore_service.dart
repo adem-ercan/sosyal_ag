@@ -348,36 +348,20 @@ class FirestoreService implements DataBaseCore {
     return null;
   }
 
-  // Kullanıcının kaydettiği postları dinleyen stream
-  /* 
-  Stream<List<String>> getSavedPostsStream() {
-    String userId = _init.user!.uid!;
-    return _firestore
-        .collection('users')
-        .doc(userId)
-        .collection('savedPosts')
-        .snapshots()
-        .map((snapshot) {
-      if (!snapshot.exists) return [];
-      final userData = snapshot.data() as Map<String, dynamic>;
-      return List<String>.from(userData['savedPosts'] ?? []);
-    });
-  } */
-
-  /* 
-  Stream<bool> isSavedByUserStream(String postId) {
-    String userId = _init.user!.uid!;
-    return _firestore
-        .collection('users')
-        .doc(userId)
-        .collection('savedPosts')
-        .endAtDocument({"values": postId})
-        .snapshots()
-        .map((snapshot) {
-      if (!snapshot.exists) return false;
-      final userData = snapshot.data() as Map<String, dynamic>;
-      final savedPosts = List<String>.from(userData['savedPosts'] ?? []);
-      return savedPosts.contains(postId);
-    });
-  } */
+  Future<Map<String, dynamic>?> getUserDataById(String userId) async {
+    try {
+      DocumentSnapshot userDoc = await _firestore
+          .collection('users')
+          .doc(userId)
+          .get();
+      
+      if (userDoc.exists) {
+        return userDoc.data() as Map<String, dynamic>;
+      }
+      return null;
+    } catch (e) {
+      print('Kullanıcı bilgileri getirme hatası: $e');
+      return null;
+    }
+  }
 }

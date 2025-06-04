@@ -76,8 +76,16 @@ class UserViewModel extends ChangeNotifier {
     
   }
 
+  Future<UserModel?> getUserDataById(String userId) async {
+    try {
+      return await _repository.getUserDataById(userId);
+    } catch (e) {
+      print("ERROR on UserViewModel: $e");
+      return null;
+    }
+
   }
 
-
+}
 
 

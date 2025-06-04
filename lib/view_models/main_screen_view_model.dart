@@ -57,7 +57,7 @@ class MainScreenViewModel extends ChangeNotifier {
   }
 
   void isFloatingButtonVisible(int index){
-    if(index == 0 || index == 3){
+    if(index == 0 || index == 4){
       isVisibleFloatingButton = true;
     }else{
       isVisibleFloatingButton = false;
