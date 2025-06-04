@@ -147,8 +147,8 @@ class Repository {
      await _firestoreService.deleteComment(commentData);
    }
 
-   Future<void> deletePost(String postId, String userId) async {
-     await _firestoreService.deletePost(postId, userId);
+   Future<void> deletePost(String postId, String userId, String? mediaUrl) async {
+     await _firestoreService.deletePost(postId, userId, mediaUrl);
    }
 
    Future<void> likeComment(

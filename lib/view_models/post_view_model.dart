@@ -153,9 +153,9 @@ class PostViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> deletePost(String postId, String userId) async {
+  Future<void> deletePost(String postId, String userId, String? mediaUrl) async {
     try {
-      await _repository.deletePost(postId, userId);
+      await _repository.deletePost(postId, userId, mediaUrl);
     } catch (e) {
       print("Error deleting post: $e");
     }

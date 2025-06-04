@@ -13,7 +13,7 @@ class FirebaseStorageService {
 
       // Yükleme tamamlanana kadar bekle
       final snapshot = await uploadTask.whenComplete(() => print("yükleme tamamlandı"));
-     
+    
       
       // Yüklenen medyanın download URL'ini al ve döndür
       final downloadUrl = await snapshot.ref.getDownloadURL();
@@ -22,6 +22,15 @@ class FirebaseStorageService {
 
     } catch (e) {
       throw Exception('Media yükleme hatası: $e');
+    }
+  }
+
+  Future<void> deletePostMedia(String mediaUrl) async {
+    try {
+      final ref = _storage.refFromURL(mediaUrl);
+      await ref.delete();
+    } catch (e) {
+      throw Exception('Media silme hatası: $e');
     }
   }
 }

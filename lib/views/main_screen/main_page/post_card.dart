@@ -105,7 +105,7 @@ class PostCard extends StatelessWidget {
                             ),
                             onSelected: (value) async{
                               if (value == 'delete') {
-                                await postViewModel.deletePost(post.id ?? "", author.uid ?? "");
+                                await postViewModel.deletePost(post.id ?? "", author.uid ?? "", post.mediaUrls![0]);
                               }
                             },
                             itemBuilder: (context) => [
