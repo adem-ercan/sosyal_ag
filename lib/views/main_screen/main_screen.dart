@@ -7,6 +7,7 @@ import 'package:sosyal_ag/utils/theme_provider.dart';
 import 'package:sosyal_ag/views/main_screen/drawer/drawer.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/main_page.dart';
 import 'package:sosyal_ag/views/main_screen/messages_page/messages_page.dart';
+import 'package:sosyal_ag/views/main_screen/meydan_page/meydan_page.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/profile_page.dart';
 import 'package:sosyal_ag/views/main_screen/search_page/search_page.dart';
 import 'package:sosyal_ag/views/components/post_share_bottom_sheet.dart';
@@ -23,10 +24,11 @@ class MainScreen extends StatelessWidget {
   final NavBarStyle _navBarStyle = NavBarStyle.simple;
 
   List<Widget> _buildScreens() => [
-    
     MainPage(),
 
     SearchPage(),
+
+    MeydanPage(),
 
     MessagesPage(),
 
@@ -50,6 +52,18 @@ class MainScreen extends StatelessWidget {
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
       inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
     ),
+
+    PersistentBottomNavBarItem(
+      icon: Image.asset(
+        "assets/logo/m_light.png",
+        width: MediaQuery.of(context).size.width * .07,
+      ),
+      opacity: 0.7,
+      activeColorPrimary: Colors.blue,
+      activeColorSecondary: Theme.of(context).colorScheme.tertiary,
+      inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
+    ),
+
     PersistentBottomNavBarItem(
       icon: Stack(
         alignment: Alignment.center,
@@ -99,8 +113,10 @@ class MainScreen extends StatelessWidget {
       context,
     );
 
-    ThemeProvider themeProvider =
-        Provider.of<ThemeProvider>(context, listen: true);
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(
+      context,
+      listen: true,
+    );
 
     return Scaffold(
       appBar:
@@ -114,26 +130,19 @@ class MainScreen extends StatelessWidget {
                     icon: Icon(Icons.notifications),
                   ),
                 ],
-                title: themeProvider.themeMode != ThemeMode.dark
-                    ? Image.asset(
-                        "assets/logo/meydan_dark.png",
-                        height: 40,
-                        //width: MediaQuery.of(context).size.width * .6,
-                      )
-                    : Image.asset(
-                        "assets/logo/meydan_light.png",
-                        height: 40,
-                        //width: MediaQuery.of(context).size.width * .6,
-                      ),
-                /* Text(
-                  "MEYDAN",
-                  style: GoogleFonts.aBeeZee(
-                    color: theme.colorScheme.onSurface,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                ), */
+                title:
+                    themeProvider.themeMode != ThemeMode.dark
+                        ? Image.asset(
+                          "assets/logo/meydan_dark.png",
+                          height: 40,
+                          //width: MediaQuery.of(context).size.width * .6,
+                        )
+                        : Image.asset(
+                          "assets/logo/meydan_light.png",
+                          height: 40,
+                          //width: MediaQuery.of(context).size.width * .6,
+                        ),
+
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               )
               : null,
@@ -142,9 +151,8 @@ class MainScreen extends StatelessWidget {
 
       body: RefreshIndicator(
         onRefresh: () async {
-          
           await Future.delayed(Duration(seconds: 2));
-          print("main screen refresh");
+          print("main screen refreshed");
         },
         child: PersistentTabView(
           context,
@@ -242,86 +250,3 @@ class MainScreen extends StatelessWidget {
 }
 
 // ----------------------------------------- Custom Style ----------------------------------------- //
-
-class CustomNavBarWidget extends StatelessWidget {
-  const CustomNavBarWidget(
-    this.items, {
-    required this.selectedIndex,
-    required this.onItemSelected,
-    super.key,
-  });
-  final int selectedIndex;
-  // List<PersistentBottomNavBarItem> is just for example here. It can be anything you want like List<YourItemWidget>
-  final List<PersistentBottomNavBarItem> items;
-  final ValueChanged<int> onItemSelected;
-
-  Widget _buildItem(
-    final PersistentBottomNavBarItem item,
-    final bool isSelected,
-  ) => Container(
-    alignment: Alignment.center,
-    height: kBottomNavigationBarHeight,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Flexible(
-          child: IconTheme(
-            data: IconThemeData(
-              size: 26,
-              color:
-                  isSelected
-                      ? (item.activeColorSecondary ?? item.activeColorPrimary)
-                      : item.inactiveColorPrimary ?? item.activeColorPrimary,
-            ),
-            child: isSelected ? item.icon : item.inactiveIcon ?? item.icon,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 5),
-          child: Material(
-            type: MaterialType.transparency,
-            child: FittedBox(
-              child: Text(
-                item.title ?? "",
-                style: TextStyle(
-                  color:
-                      isSelected
-                          ? (item.activeColorSecondary ??
-                              item.activeColorPrimary)
-                          : item.inactiveColorPrimary,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-
-  @override
-  Widget build(final BuildContext context) => Container(
-    color: Colors.grey.shade900,
-    child: SizedBox(
-      width: double.infinity,
-      height: kBottomNavigationBarHeight,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children:
-            items.map((final item) {
-              final int index = items.indexOf(item);
-              return Flexible(
-                child: GestureDetector(
-                  onTap: () {
-                    onItemSelected(index);
-                  },
-                  child: _buildItem(item, selectedIndex == index),
-                ),
-              );
-            }).toList(),
-      ),
-    ),
-  );
-}
