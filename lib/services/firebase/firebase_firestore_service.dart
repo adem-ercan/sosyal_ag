@@ -54,7 +54,7 @@ class FirestoreService implements DataBaseCore {
     File? imageFile,
   }) async {
     if (imageFile != null) {
-      await _storageService.uploadPostMedia(imageFile, "pinhani");
+      await _storageService.uploadPostMedia(imageFile, "${postJsonData['authorId']}-${postJsonData['id']}");
     }
 
     postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());

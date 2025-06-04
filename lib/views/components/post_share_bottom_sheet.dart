@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sosyal_ag/view_models/main_screen_view_model.dart';
+import 'package:sosyal_ag/view_models/post_view_model.dart';
 
 
 class PostShareBottomSheet extends StatelessWidget {
@@ -27,8 +27,7 @@ class PostShareBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context);
-
+    final PostViewModel postViewModel = Provider.of<PostViewModel>(context);
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
     final TextEditingController contentController = TextEditingController();
@@ -81,7 +80,7 @@ class PostShareBottomSheet extends StatelessWidget {
                     TextButton(
                       // ignore: dead_code
                       onPressed: () => _handlePost(context, contentController.text, selectedMediaUrls),
-                      child: mainScreenViewModel.loading == Loading.loading
+                      child: postViewModel.loading == Loading.loading
                           ? SizedBox(
                               height: 20,
                               width: 20,
@@ -127,14 +126,14 @@ class PostShareBottomSheet extends StatelessWidget {
                   ),
                 ),
                 // Medya önizleme
-                if (mainScreenViewModel.image != null) ...[
+                if (postViewModel.image != null) ...[
                   const SizedBox(height: 8),
                   Container(
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Image.file(mainScreenViewModel.image!),
+                    child: Image.file(postViewModel.image!),
                   )
                 ],
                 // Alt toolbar
@@ -143,7 +142,7 @@ class PostShareBottomSheet extends StatelessWidget {
                   child: Row(
                     children: [
                       IconButton(
-                        onPressed: () async => await mainScreenViewModel.mediaPick(),
+                        onPressed: () async => await postViewModel.mediaPick(),
                         icon: Icon(
                           Icons.image_outlined,
                           color: theme.colorScheme.onSecondary,
@@ -246,7 +245,7 @@ class PostShareBottomSheet extends StatelessWidget {
 
   void _handlePost(BuildContext context, String content, List<String>? mediaUrls) async {
 
-    final MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context, listen: false);
+    final PostViewModel postViewModel = Provider.of<PostViewModel>(context, listen: false);
 
     if (content.isEmpty){
       // Şimdilik sadece text paylaşımı yapalım.
@@ -255,7 +254,7 @@ class PostShareBottomSheet extends StatelessWidget {
       return;
     }else{
       print("boş değil");
-      await mainScreenViewModel.createNewPost(context, content);
+      await postViewModel.createNewPost(context, content);
     }
 
     try {
