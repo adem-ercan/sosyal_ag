@@ -95,7 +95,7 @@ class PostAreaWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
-                "https://picsum.photos/500/300?random=3",
+                mapData["post"]?.mediaUrls[0],
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),

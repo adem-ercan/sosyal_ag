@@ -10,8 +10,10 @@ class FirebaseStorageService {
       final ref = _storage.ref().child("postMedias/$fileName");
       final uploadTask = ref.putFile(media);
       
+
       // Yükleme tamamlanana kadar bekle
-      final snapshot = await uploadTask.whenComplete(() => null);
+      final snapshot = await uploadTask.whenComplete(() => print("yükleme tamamlandı"));
+     
       
       // Yüklenen medyanın download URL'ini al ve döndür
       final downloadUrl = await snapshot.ref.getDownloadURL();

@@ -54,7 +54,12 @@ class FirestoreService implements DataBaseCore {
     File? imageFile,
   }) async {
     if (imageFile != null) {
-      await _storageService.uploadPostMedia(imageFile, "${postJsonData['authorId']}-${postJsonData['id']}");
+      String? url = await _storageService.uploadPostMedia(
+        imageFile,
+        "${postJsonData['authorId']}-${postJsonData['id']}",
+      );
+    postJsonData['mediaUrls'] = [url];
+      print("Post media URLs: ${postJsonData['mediaUrls']}");
     }
 
     postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
@@ -67,17 +72,12 @@ class FirestoreService implements DataBaseCore {
 
     await docRef.set(postJsonData);
 
-    
-
     // Muhtemelen PostModel'de sıkıntı var ki veritabanına boş yorum ekliyor.
-    // Bu sebeple eklediği yorumu direkt siliyoruz. 
+    // Bu sebeple eklediği yorumu direkt siliyoruz.
     // Sonra bu düzeltilecek!!!
     await _firestore.collection('posts').doc(docRef.id).update({
       'comments': FieldValue.arrayRemove([{}]),
     });
-
-
-
 
     // Post ID'sini kullanıcının posts array'ine ekle
     //String userId = postJsonData['authorId'];
@@ -85,7 +85,6 @@ class FirestoreService implements DataBaseCore {
     /* await _firestore.collection('posts').doc(userId).update({
       'comments': FieldValue.increment(1),
     }); */
-    
   }
 
   Future<List<Map<String, dynamic>>> currentUserGetLastFivePosts() async {
@@ -114,8 +113,6 @@ class FirestoreService implements DataBaseCore {
 
     return posts;
   }
-
-  
 
   Future<void> addCommentToPost(
     String postId,
@@ -255,12 +252,7 @@ class FirestoreService implements DataBaseCore {
         "likes": FieldValue.arrayRemove([user.uid]),
       });
 
-      await postRef.update({
-        "likesCount": FieldValue.increment(-1),
-      });
-
-
-      
+      await postRef.update({"likesCount": FieldValue.increment(-1)});
     } else {
       // Post beğenilmemiş, beğeni ekle
       await userRef.update({
@@ -271,22 +263,17 @@ class FirestoreService implements DataBaseCore {
         "likes": FieldValue.arrayUnion([user.uid]),
       });
 
-      await postRef.update({
-        "likesCount": FieldValue.increment(1),
-      });
+      await postRef.update({"likesCount": FieldValue.increment(1)});
     }
   }
-
 
   // Mevcut kullanıcı beğenilen postları dinleyen stream
   Stream<List<String>> getLikedPostsStream() {
     String userId = _init.user!.uid!;
 
-    return _firestore
-        .collection('users')
-        .doc(userId)
-        .snapshots()
-        .map((snapshot) {
+    return _firestore.collection('users').doc(userId).snapshots().map((
+      snapshot,
+    ) {
       if (!snapshot.exists) return [];
       final userData = snapshot.data() as Map<String, dynamic>;
       return List<String>.from(userData['likedPosts'] ?? []);
@@ -295,11 +282,9 @@ class FirestoreService implements DataBaseCore {
 
   // Belirli bir postun beğeni sayısını dinleyen stream
   Stream<int> getPostLikesCountStream(String postId) {
-    return _firestore
-        .collection('posts')
-        .doc(postId)
-        .snapshots()
-        .map((snapshot) {
+    return _firestore.collection('posts').doc(postId).snapshots().map((
+      snapshot,
+    ) {
       if (!snapshot.exists) return 0;
       final postData = snapshot.data() as Map<String, dynamic>;
       return postData['likesCount'] as int? ?? 0;
@@ -325,7 +310,6 @@ class FirestoreService implements DataBaseCore {
       await postRef.update({
         "favoritedUsers": FieldValue.arrayRemove([user.uid]),
       });
-
     } else {
       // Post kaydedilmemiş, kaydet
       await userRef.update({
@@ -341,20 +325,18 @@ class FirestoreService implements DataBaseCore {
   // Kaydedilen postları dinleyen stream
   Stream<List<String>> getSavedPostsStream() {
     String userId = _init.user!.uid!;
-    return _firestore
-        .collection('users')
-        .doc(userId)
-        .snapshots()
-        .map((snapshot) {
+    return _firestore.collection('users').doc(userId).snapshots().map((
+      snapshot,
+    ) {
       if (!snapshot.exists) return [];
       final userData = snapshot.data() as Map<String, dynamic>;
       return List<String>.from(userData['savedPosts'] ?? []);
     });
   }
 
-
-Future<Map<String, dynamic>?> getPostById(String postId) async {
-    DocumentSnapshot postDoc = await _firestore.collection('posts').doc(postId).get();
+  Future<Map<String, dynamic>?> getPostById(String postId) async {
+    DocumentSnapshot postDoc =
+        await _firestore.collection('posts').doc(postId).get();
     if (postDoc.exists) {
       return postDoc.data() as Map<String, dynamic>;
     }
@@ -377,7 +359,7 @@ Future<Map<String, dynamic>?> getPostById(String postId) async {
     });
   } */
 
-/* 
+  /* 
   Stream<bool> isSavedByUserStream(String postId) {
     String userId = _init.user!.uid!;
     return _firestore
@@ -393,5 +375,4 @@ Future<Map<String, dynamic>?> getPostById(String postId) async {
       return savedPosts.contains(postId);
     });
   } */
-
 }
