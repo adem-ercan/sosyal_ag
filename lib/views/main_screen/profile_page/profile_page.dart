@@ -5,6 +5,7 @@ import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/paginaition_liked_list.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/pagination_favorited_post_list.dart';
+import 'package:sosyal_ag/views/main_screen/profile_page/pagination_media_list.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/pagination_post_list.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -18,7 +19,7 @@ class ProfilePage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: NestedScrollView(
         
         controller: _scrollController,
@@ -155,15 +156,19 @@ class ProfilePage extends StatelessWidget {
                   unselectedLabelColor: theme.colorScheme.onSurface,
                   tabs: [
                     Tab(
-                      child: Text('Gönderiler', style: GoogleFonts.aBeeZee()),
+                      child: FittedBox(child: Text('Gönderiler', style: GoogleFonts.aBeeZee())),
                     ),
-                    Tab(child: Text('Beğeniler', style: GoogleFonts.aBeeZee())),
+                    Tab(child: FittedBox(child: Text('Beğeniler', style: GoogleFonts.aBeeZee()))),
                     Tab(
-                      child: Text(
-                        'Kaydedilenler',
-                        style: GoogleFonts.aBeeZee(),
+                      child: FittedBox(
+                        child: Text(
+                          'Kaydedilenler',
+                          style: GoogleFonts.aBeeZee(),
+                        ),
                       ),
                     ),
+                    Tab(child: FittedBox(child: Text('Media', style: GoogleFonts.aBeeZee()))),
+
                   ],
                   indicatorColor: theme.colorScheme.tertiary,
                 ),
@@ -177,6 +182,7 @@ class ProfilePage extends StatelessWidget {
             _buildPostsList(context),
             _buildLikedList(context),
             _buildSavedList(context),
+            _buildMediaList(context),
           ],
         ),
       ),
@@ -207,6 +213,11 @@ class ProfilePage extends StatelessWidget {
   Widget _buildSavedList(BuildContext context) {
 
     return PaginationFavoritedPostList();
+    
+  }
+  Widget _buildMediaList(BuildContext context) {
+
+    return PaginationMediaList();
     
   }
 }

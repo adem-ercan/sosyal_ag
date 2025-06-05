@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
+import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/view_models/post_view_model.dart';
 
 class PostCard extends StatelessWidget {
-  
+  final Init _init = locator<Init>();
+
   final PostModel post;
   final UserModel author;
   final VoidCallback? onTap;
@@ -15,7 +18,7 @@ class PostCard extends StatelessWidget {
   final VoidCallback? onComment;
   final VoidCallback? onRepost;
 
-  const PostCard({
+  PostCard({
     super.key,
     required this.post,
     required this.author,
@@ -25,20 +28,23 @@ class PostCard extends StatelessWidget {
     this.onRepost,
   });
 
-
   @override
   Widget build(BuildContext context) {
-
-    PostViewModel postViewModel = Provider.of<PostViewModel>(context, listen: false);
+    PostViewModel postViewModel = Provider.of<PostViewModel>(
+      context,
+      listen: false,
+    );
 
     final theme = Theme.of(context);
     return InkWell(
-      onTap: onTap ?? (){
-        context.push("/postScreen", extra: {
-          'post' : post,
-          'author' : author 
-        });
-      },
+      onTap:
+          onTap ??
+          () {
+            context.push(
+              "/postScreen",
+              extra: {'post': post, 'author': author},
+            );
+          },
 
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -58,12 +64,14 @@ class PostCard extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: theme.colorScheme.surface,
                   radius: 24,
-                  backgroundImage: author.photoUrl != null
-                      ? NetworkImage(author.photoUrl!)
-                      : null,
-                  child: author.photoUrl == null
-                      ? Text(author.userName[0].toUpperCase())
-                      : null,
+                  backgroundImage:
+                      author.photoUrl != null
+                          ? NetworkImage(author.photoUrl!)
+                          : null,
+                  child:
+                      author.photoUrl == null
+                          ? Text(author.userName[0].toUpperCase())
+                          : null,
                 ),
                 const SizedBox(width: 12),
                 // Kullanıcı adı ve içerik
@@ -98,44 +106,78 @@ class PostCard extends StatelessWidget {
                               fontSize: 10,
                             ),
                           ),
-                          PopupMenuButton<String>(
-                            icon: Icon(
-                              Icons.more_vert,
-                              color: theme.colorScheme.onSurface.withOpacity(0.6),
-                            ),
-                            onSelected: (value) async{
-                              if (value == 'delete') {
-                                await postViewModel.deletePost(post.id ?? "", author.uid ?? "", post.mediaUrls![0]);
-                              }
-                            },
-                            itemBuilder: (context) => [
-                              PopupMenuItem<String>(
-                                value: 'delete',
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.delete, 
-                                      color: theme.colorScheme.error,
-                                      size: 20,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text('Sil',
-                                      style: TextStyle(
-                                        color: theme.colorScheme.error,
-                                      ),
-                                    ),
-                                  ],
+                          if (context.mounted) ...[
+                            PopupMenuButton<String>(
+                              icon: Icon(
+                                Icons.more_vert,
+                                color: theme.colorScheme.onSurface.withOpacity(
+                                  0.6,
                                 ),
                               ),
-                            ],
-                          ),
+                              onSelected: (value) async {
+                                if (value == 'delete') {
+                                  await postViewModel.deletePost(
+                                    context,
+                                    post.id ?? "",
+                                    author.uid ?? "",
+                                   post.mediaUrls?[0],
+                                  );
+                                }
+                              },
+                              itemBuilder: (BuildContext context) => 
+                                _init.user?.uid == author.uid
+                                    ? <PopupMenuItem<String>>[
+                                        PopupMenuItem<String>(
+                                          value: 'delete',
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.delete, 
+                                                color: theme.colorScheme.error,
+                                                size: 20,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text('Sil',
+                                                style: TextStyle(
+                                                  color: theme.colorScheme.error,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ]
+                                    : <PopupMenuItem<String>>[
+                                        PopupMenuItem<String>(
+                                          value: 'block',
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.block, 
+                                                color: theme.colorScheme.error,
+                                                size: 20,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text('Engelle',
+                                                style: TextStyle(
+                                                  color: theme.colorScheme.error,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                            ),
+                          ],
                         ],
                       ),
                       const SizedBox(height: 4),
                       Text(
                         post.content,
-                        style: GoogleFonts.aBeeZee(fontSize: 15, color: theme.colorScheme.onTertiary),
+                        style: GoogleFonts.aBeeZee(
+                          fontSize: 15,
+                          color: theme.colorScheme.onTertiary,
+                        ),
                       ),
-                      if (post.mediaUrls != null && post.mediaUrls!.isNotEmpty) ...[
+                      if (post.mediaUrls != null &&
+                          post.mediaUrls!.isNotEmpty) ...[
                         const SizedBox(height: 8),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
@@ -152,10 +194,14 @@ class PostCard extends StatelessWidget {
                                 color: theme.colorScheme.surface,
                                 child: Center(
                                   child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null
-                                        ? loadingProgress.cumulativeBytesLoaded / 
-                                          loadingProgress.expectedTotalBytes!
-                                        : null,
+                                    value:
+                                        loadingProgress.expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
                                   ),
                                 ),
                               );
@@ -222,10 +268,7 @@ class PostCard extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             count.toString(),
-            style: TextStyle(
-              fontSize: 14,
-              color: color.withOpacity(0.8),
-            ),
+            style: TextStyle(fontSize: 14, color: color.withOpacity(0.8)),
           ),
         ],
       ),

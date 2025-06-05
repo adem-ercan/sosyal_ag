@@ -60,6 +60,7 @@ class FirestoreService implements DataBaseCore {
       );
     postJsonData['mediaUrls'] = [url];
       print("Post media URLs: ${postJsonData['mediaUrls']}");
+      
     }
 
     postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
@@ -371,7 +372,7 @@ class FirestoreService implements DataBaseCore {
     if (searchQuery.trim().isEmpty) return [];
 
     // Büyük/küçük harf duyarlılığını kaldır
-    //searchQuery = searchQuery.toLowerCase();
+    searchQuery = searchQuery.toLowerCase();
 
     // Kullanıcı adı veya email ile eşleşenleri bul
     final usersSnapshot = await _firestore

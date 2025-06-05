@@ -143,51 +143,60 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildUserListItem(UserModel user, ThemeData theme) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundImage:
-            user.photoUrl != null ? NetworkImage(user.photoUrl!) : null,
-        child:
-            user.photoUrl == null ? Text(user.userName[0].toUpperCase()) : null,
-      ),
-      title: Row(
-        children: [
-          Text(
-            user.userName,
-            style: GoogleFonts.aBeeZee(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onSurface,
-            ),
-          ),
-          if (user.isVerified)
-            Padding(
-              padding: const EdgeInsets.only(left: 4),
-              child: Icon(
-                Icons.verified,
-                size: 16,
-                color: theme.colorScheme.tertiary,
+    return InkWell(
+      onTap: () {
+        // Kullanıcı profiline git
+        context.push(
+          '/otherUserProfile',
+          extra: user,
+        );
+      },
+      
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundImage:
+              user.photoUrl != null ? NetworkImage(user.photoUrl!) : null,
+          child:
+              user.photoUrl == null
+                  ? Text(user.userName[0].toUpperCase())
+                  : null,
+        ),
+        title: Row(
+          children: [
+            Text(
+              user.userName,
+              style: GoogleFonts.aBeeZee(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onSurface,
               ),
             ),
-        ],
-      ),
-      subtitle: Text(
-        '@${user.userName.toLowerCase()}',
-        style: GoogleFonts.aBeeZee(
-          color: theme.colorScheme.onSurface.withOpacity(0.6),
+            if (user.isVerified)
+              Padding(
+                padding: const EdgeInsets.only(left: 4),
+                child: Icon(
+                  Icons.verified,
+                  size: 16,
+                  color: theme.colorScheme.tertiary,
+                ),
+              ),
+          ],
         ),
-      ),
-      trailing: TextButton(
-        onPressed: () {
-          context.push(
-            '/otherUserProfile',
-            extra: UserModel(userName: "Adem", email: "ademercan@gmail.com"),
-          );
-        },
-        child: Text(
-          'Profili Gör',
+        subtitle: Text(
+          '@${user.userName.toLowerCase()}',
           style: GoogleFonts.aBeeZee(
-            color: theme.colorScheme.tertiary,
-            fontWeight: FontWeight.bold,
+            color: theme.colorScheme.onSurface.withOpacity(0.6),
+          ),
+        ),
+        trailing: TextButton(
+          onPressed: () {
+            print("Takip et butonuna basıldı");
+          },
+          child: Text(
+            'Takip Et',
+            style: GoogleFonts.aBeeZee(
+              color: theme.colorScheme.tertiary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),

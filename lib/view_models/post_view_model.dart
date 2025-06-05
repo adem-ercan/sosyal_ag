@@ -153,11 +153,15 @@ class PostViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> deletePost(String postId, String userId, String? mediaUrl) async {
+  Future<void> deletePost(BuildContext context, String postId, String userId, String? mediaUrl) async {
     try {
       await _repository.deletePost(postId, userId, mediaUrl);
     } catch (e) {
       print("Error deleting post: $e");
+      if (context.mounted) {
+        ErrorHandlerWidget.showError(context, "Silme işlemi gerçekleştirilemedi!");
+      }
+      
     }
   }
 

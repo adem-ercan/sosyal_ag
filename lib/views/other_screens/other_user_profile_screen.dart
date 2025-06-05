@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,7 +33,10 @@ class OtherUserProfileScreen extends StatelessWidget {
                 floating: true,
                 pinned: true,
                 leading: IconButton(
-                  icon: Icon(Icons.arrow_back_ios, color: theme.colorScheme.onSurface),
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: theme.colorScheme.onSurface,
+                  ),
                   onPressed: () => context.pop(),
                 ),
                 flexibleSpace: FlexibleSpaceBar(
@@ -60,13 +65,17 @@ class OtherUserProfileScreen extends StatelessWidget {
                           CircleAvatar(
                             radius: 40,
                             backgroundColor: theme.colorScheme.tertiary,
-                            backgroundImage: user.photoUrl != null 
-                              ? NetworkImage(user.photoUrl!) 
-                              : null,
-                            child: user.photoUrl == null
-                              ? Text(user.userName[0].toUpperCase(),
-                                  style: const TextStyle(fontSize: 32))
-                              : null,
+                            backgroundImage:
+                                user.photoUrl != null
+                                    ? NetworkImage(user.photoUrl!)
+                                    : null,
+                            child:
+                                user.photoUrl == null
+                                    ? Text(
+                                      user.userName[0].toUpperCase(),
+                                      style: const TextStyle(fontSize: 32),
+                                    )
+                                    : null,
                           ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -96,7 +105,8 @@ class OtherUserProfileScreen extends StatelessWidget {
                                 Text(
                                   '@${user.userName.toLowerCase()}',
                                   style: GoogleFonts.aBeeZee(
-                                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                    color: theme.colorScheme.onSurface
+                                        .withOpacity(0.6),
                                   ),
                                 ),
                               ],
@@ -118,12 +128,14 @@ class OtherUserProfileScreen extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: () {},
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: isFollowing 
-                                  ? theme.colorScheme.surface
-                                  : theme.colorScheme.tertiary,
-                                foregroundColor: isFollowing
-                                  ? theme.colorScheme.onSurface
-                                  : Colors.white,
+                                backgroundColor:
+                                    isFollowing
+                                        ? theme.colorScheme.surface
+                                        : theme.colorScheme.tertiary,
+                                foregroundColor:
+                                    isFollowing
+                                        ? theme.colorScheme.onSurface
+                                        : Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
@@ -154,9 +166,21 @@ class OtherUserProfileScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          _buildStatColumn(context, 'Gönderi', user.postsCount.toString()),
-                          _buildStatColumn(context, 'Takipçi', user.followersCount.toString()),
-                          _buildStatColumn(context, 'Takip', user.followingCount.toString()),
+                          _buildStatColumn(
+                            context,
+                            'Gönderi',
+                            user.postsCount.toString(),
+                          ),
+                          _buildStatColumn(
+                            context,
+                            'Takipçi',
+                            user.followersCount.toString(),
+                          ),
+                          _buildStatColumn(
+                            context,
+                            'Takip',
+                            user.followingCount.toString(),
+                          ),
                         ],
                       ),
                     ],
@@ -170,17 +194,9 @@ class OtherUserProfileScreen extends StatelessWidget {
                     unselectedLabelColor: theme.colorScheme.onSurface,
                     tabs: [
                       Tab(
-                        child: Text(
-                          'Gönderiler',
-                          style: GoogleFonts.aBeeZee(),
-                        ),
+                        child: Text('Gönderiler', style: GoogleFonts.aBeeZee()),
                       ),
-                      Tab(
-                        child: Text(
-                          'Medya',
-                          style: GoogleFonts.aBeeZee(),
-                        ),
-                      ),
+                      Tab(child: Text('Medya', style: GoogleFonts.aBeeZee())),
                     ],
                     indicatorColor: theme.colorScheme.tertiary,
                   ),
@@ -190,10 +206,7 @@ class OtherUserProfileScreen extends StatelessWidget {
             ];
           },
           body: TabBarView(
-            children: [
-              _buildPostsList(context),
-              _buildMediaGrid(context),
-            ],
+            children: [_buildPostsList(context), _buildMediaGrid(context)],
           ),
         ),
       ),
@@ -205,23 +218,37 @@ class OtherUserProfileScreen extends StatelessWidget {
       children: [
         Text(
           count,
-          style: GoogleFonts.aBeeZee(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          style: GoogleFonts.aBeeZee(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        Text(
-          label,
-          style: GoogleFonts.aBeeZee(
-            fontSize: 14,
-          ),
-        ),
+        Text(label, style: GoogleFonts.aBeeZee(fontSize: 14)),
       ],
     );
   }
 
   Widget _buildPostsList(BuildContext context) {
-    return ListView.builder(
+    return FirestorePagination(
+      limit: 5,
+      isLive: true,
+      query: FirebaseFirestore.instance
+          .collection('posts')
+          .where("authorId", isEqualTo: user.uid)
+          .orderBy('createdAt', descending: true),
+      itemBuilder: (context, documentSnapshot, index) {
+        print(" ${index + 1} ${documentSnapshot[index].id}}");
+
+        if (documentSnapshot.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        final data = documentSnapshot[index].data() as Map<String, dynamic>;
+        final post = PostModel.fromJson(data);
+
+        return PostCard(post: post, author: user);
+      },
+      initialLoader: const Center(child: CircularProgressIndicator()),
+      bottomLoader: const Center(child: CircularProgressIndicator()),
+    );
+    /*  return ListView.builder(
       padding: EdgeInsets.zero,
       itemCount: 10,
       itemBuilder: (context, index) {
@@ -233,11 +260,47 @@ class OtherUserProfileScreen extends StatelessWidget {
           author: user,
         );
       },
-    );
+    ); */
   }
 
   Widget _buildMediaGrid(BuildContext context) {
-    return GridView.builder(
+    return FirestorePagination(
+      limit: 15,
+      isLive: true,
+      viewType: ViewType.grid,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: 1,
+        crossAxisSpacing: 1,
+      ),
+      query: FirebaseFirestore.instance
+          .collection('posts')
+          .where("authorId", isEqualTo: user.uid)
+          .where('mediaUrls')
+          .orderBy('createdAt', descending: true),
+      itemBuilder: (context, documentSnapshot, index) {
+        print("bbb ${index + 1} ${documentSnapshot[index].id}}");
+
+        if (documentSnapshot.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        final data = documentSnapshot[index].data() as Map<String, dynamic>;
+        final post = PostModel.fromJson(data);
+        if(post.mediaUrls == null || post.mediaUrls!.isEmpty) {
+          return const SizedBox.shrink(); // Eğer mediaUrls boşsa, boş bir widget döndür
+        }
+        return Container(
+          decoration: BoxDecoration(),
+          child: Image.network(
+            post.mediaUrls![index].toString()
+          ),
+        );
+      },
+      initialLoader: const Center(child: CircularProgressIndicator()),
+      bottomLoader: const Center(child: CircularProgressIndicator()),
+    );
+    /* return GridView.builder(
       padding: const EdgeInsets.all(1),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -251,7 +314,7 @@ class OtherUserProfileScreen extends StatelessWidget {
           child: const Icon(Icons.image),
         );
       },
-    );
+    ); */
   }
 }
 
@@ -273,5 +336,6 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get minExtent => _tabBar.preferredSize.height;
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => false;
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      false;
 }
