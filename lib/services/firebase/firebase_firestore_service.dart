@@ -371,12 +371,12 @@ class FirestoreService implements DataBaseCore {
     if (searchQuery.trim().isEmpty) return [];
 
     // Büyük/küçük harf duyarlılığını kaldır
-    searchQuery = searchQuery.toLowerCase();
+    //searchQuery = searchQuery.toLowerCase();
 
     // Kullanıcı adı veya email ile eşleşenleri bul
     final usersSnapshot = await _firestore
         .collection('users')
-        .orderBy('userName' )
+        .orderBy('userName')
         .startAt([searchQuery])
         .endAt(['$searchQuery\uf8ff'])
         .get();
