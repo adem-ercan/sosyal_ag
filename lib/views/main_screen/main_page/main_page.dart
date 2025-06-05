@@ -145,6 +145,7 @@ class MainPage extends StatelessWidget {
         bottomLoader: const Center(
           child: CircularProgressIndicator(),
         ),
+        
       ),
     );
   }
