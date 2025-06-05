@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sosyal_ag/models/post_model.dart';
-import 'package:sosyal_ag/views/main_screen/main_page/post_screen/comment_area/comment_card.dart';
+import 'package:sosyal_ag/views/post_screen/comment_area/comment_card.dart';
 
 class CommentAreaWidget extends StatelessWidget {
-  
+
   PostModel postModel;
 
   CommentAreaWidget({super.key, required this.postModel});

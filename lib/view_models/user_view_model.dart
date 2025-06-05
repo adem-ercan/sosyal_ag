@@ -86,6 +86,15 @@ class UserViewModel extends ChangeNotifier {
 
   }
 
+  Stream<List<String>?> getUserFollowingList(String userId) {
+    try {
+      return _repository.getUsersFollowingStream(userId);
+    } catch (e) {
+      print("ERROR on UserViewModel: $e");
+      return Stream.value([]);
+    }
+  }
+
 }
 
 

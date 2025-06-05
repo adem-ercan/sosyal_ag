@@ -6,7 +6,7 @@ import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 
 import 'package:sosyal_ag/view_models/post_view_model.dart';
-import 'package:sosyal_ag/views/main_screen/main_page/post_screen/comment_area/comment_like_button.dart';
+import 'package:sosyal_ag/views/post_screen/comment_area/comment_like_button.dart';
 
 class CommentCard extends StatelessWidget {
   final Init _init = locator<Init>();
@@ -88,7 +88,7 @@ class CommentCard extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    
+
                     Column(
                       children: [
                         StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(

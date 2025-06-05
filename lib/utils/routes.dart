@@ -6,7 +6,7 @@ import 'package:sosyal_ag/views/login_screen/login_screen.dart';
 import 'package:sosyal_ag/views/main_screen/main_screen.dart';
 import 'package:sosyal_ag/views/other_screens/notification_screen.dart';
 import 'package:sosyal_ag/views/other_screens/other_user_profile_screen.dart';
-import 'package:sosyal_ag/views/main_screen/main_page/post_screen/post_screen.dart';
+import 'package:sosyal_ag/views/post_screen/post_screen.dart';
 import 'package:sosyal_ag/views/profile_edit_screen/profile_edit_screen.dart';
 import 'package:sosyal_ag/views/sign_up_screen/sign_up_screen.dart';
 

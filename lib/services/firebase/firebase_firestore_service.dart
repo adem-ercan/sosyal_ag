@@ -79,6 +79,7 @@ class FirestoreService implements DataBaseCore {
       'comments': FieldValue.arrayRemove([{}]),
     });
 
+    
     // Post ID'sini kullanıcının posts array'ine ekle
     //String userId = postJsonData['authorId'];
 
@@ -364,4 +365,37 @@ class FirestoreService implements DataBaseCore {
       return null;
     }
   }
+
+  Future<List<Map<String, dynamic>>> searchUsers(String searchQuery) async {
+    // Boş arama sorgusunu engelle
+    if (searchQuery.trim().isEmpty) return [];
+
+    // Büyük/küçük harf duyarlılığını kaldır
+    searchQuery = searchQuery.toLowerCase();
+
+    // Kullanıcı adı veya email ile eşleşenleri bul
+    final usersSnapshot = await _firestore
+        .collection('users')
+        .where('searchTerms', arrayContains: searchQuery)
+        .limit(10)
+        .get();
+
+    return usersSnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+  }
+
+  Stream<List<String>> getUsersFollowingStream(String uid) {
+    return _firestore
+        .collection('users')
+        .doc(uid)
+        .snapshots()
+        .map((snapshot) {
+      if (!snapshot.exists) return [];
+      final userData = snapshot.data() as Map<String, dynamic>;
+      final allFollowing = List<String>.from(userData['following'] ?? []);
+      return allFollowing.take(6).toList();
+    });
+  }
+
 }

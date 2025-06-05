@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sosyal_ag/models/post_model.dart';
-import 'package:sosyal_ag/views/main_screen/main_page/post_screen/comment_area/comment_area_widget.dart';
-import 'package:sosyal_ag/views/main_screen/main_page/post_screen/post_area/post_area_widget.dart';
+import 'package:sosyal_ag/views/post_screen/comment_area/comment_area_widget.dart';
+import 'package:sosyal_ag/views/post_screen/post_area/post_area_widget.dart';
 
 class PostScreen extends StatelessWidget {
 

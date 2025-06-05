@@ -202,4 +202,8 @@ class Repository {
     return null;
   }
 
+  Stream<List<String>?> getUsersFollowingStream(String userId) {
+    return _firestoreService.getUsersFollowingStream(userId);
+    
+  }
 }
