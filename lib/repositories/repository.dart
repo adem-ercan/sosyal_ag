@@ -206,4 +206,17 @@ class Repository {
     return _firestoreService.getUsersFollowingStream(userId);
     
   }
+
+  Future<List<UserModel?>> searchUsers(String query) async {
+    List<Map<String, dynamic>?> userList = await _firestoreService.searchUsers(query);
+    List<UserModel?> users = [];
+    
+    for (Map<String, dynamic>? userData in userList) {
+      if (userData != null) {
+        users.add(UserModel.fromJson(userData));
+      }
+    }
+    
+    return users;
+  }
 }

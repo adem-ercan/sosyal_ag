@@ -95,6 +95,16 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
+
+  Future<List<UserModel?>> searchUsers(String query) async {
+    try {
+      return await _repository.searchUsers(query);
+    } catch (e) {
+      print("ERROR on UserViewModel: $e");
+      return [];
+    }
+  }
+
 }
 
 

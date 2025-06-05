@@ -17,6 +17,8 @@ void main() async{
 
   setupLocator();
 
+
+
   runApp(
       ChangeNotifierProvider(
         create: (_) => ThemeProvider(),

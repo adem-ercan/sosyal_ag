@@ -376,13 +376,16 @@ class FirestoreService implements DataBaseCore {
     // Kullanıcı adı veya email ile eşleşenleri bul
     final usersSnapshot = await _firestore
         .collection('users')
-        .where('searchTerms', arrayContains: searchQuery)
-        .limit(10)
+        .orderBy('userName' )
+        .startAt([searchQuery])
+        .endAt(['$searchQuery\uf8ff'])
         .get();
 
-    return usersSnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
+    List<Map<String, dynamic>> list = usersSnapshot.docs
+        .map((doc) => doc.data())
         .toList();
+
+        return list;
   }
 
   Stream<List<String>> getUsersFollowingStream(String uid) {
