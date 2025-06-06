@@ -5,9 +5,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sosyal_ag/init.dart';
+import 'package:sosyal_ag/repositories/repository.dart';
 import 'package:sosyal_ag/utils/constants.dart';
+import 'package:sosyal_ag/utils/locator.dart';
 
 class ThemeProvider with ChangeNotifier {
+
+  final Repository _repository = locator<Repository>();
+  final Init _init = locator<Init>();
+  bool _isFirst = true;
+
+
 // VARIABLES
   final ThemeData _themeDataLight = ThemeData(
     primaryColor: Constants.themeColor7, // En açık renk
@@ -98,15 +107,49 @@ class ThemeProvider with ChangeNotifier {
   ThemeData get themeDataLight => _themeDataLight;
   ThemeData get themeDataDark => _themeDataDark;
   ThemeMode get themeMode => _themeMode;
+  bool get isFirst => _isFirst;
 
   // SETTERS
-  void toggleTheme() {
+   set themeMode(ThemeMode mode) {
+    _themeMode = mode;
+  }
+
+  set isFirst(bool value) {
+    _isFirst = value;
+    notifyListeners();
+  }
+
+
+  //METHODS
+  Future<void> toggleTheme() async{
     if (_themeMode == ThemeMode.light) {
+      await setUserTheme(_init.user!.uid!, true);
       _themeMode = ThemeMode.dark;
+
     } else {
+      await setUserTheme(_init.user!.uid!, false);
       _themeMode = ThemeMode.light;
     }
     notifyListeners();
   }
+
+  Future<void> setUserTheme(String userId, bool isDarkMode) async {
+    await _repository.updateUserTheme(userId, isDarkMode);
+    notifyListeners();
+  }
+
+
+  Future<bool> getUserTheme(String userId) async {
+      return await _repository.getUserTheme(userId);
+
+  }
+
+
+  Stream<bool> getUserThemeStream(String userId) {
+    return _repository.getUserThemeStream(userId);
+  }
+
+
+
 
 }

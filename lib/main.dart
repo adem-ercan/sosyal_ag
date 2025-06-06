@@ -12,6 +12,7 @@ void main() async{
   
   WidgetsFlutterBinding.ensureInitialized();
 
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform);
 
@@ -22,7 +23,7 @@ void main() async{
   runApp(
       ChangeNotifierProvider(
         create: (_) => ThemeProvider(),
-        child: const MeydanApp(),
+        child: MeydanApp(),
       ),
 
   );

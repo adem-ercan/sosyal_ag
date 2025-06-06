@@ -219,4 +219,17 @@ class Repository {
     
     return users;
   }
+
+  Future<void> updateUserTheme(String userId, bool isDarkMode) async {
+    await _firestoreService.updateUserTheme(userId, isDarkMode);
+  }
+
+  Stream<bool> getUserThemeStream(String userId) {
+    return _firestoreService.getUserThemeStream(userId);
+  }
+
+  Future<bool> getUserTheme(String userId)async{
+    return await _firestoreService.getUserTheme(userId);
+  }
+
 }

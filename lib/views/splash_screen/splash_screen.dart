@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sosyal_ag/utils/constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -51,7 +52,7 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Constants.themeColor1,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +64,7 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
                 height: 120,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(context).primaryColor,
+                  color: Constants.themeColor1,
                 ),
                 child:  Image.asset("assets/logo/m_light.png"),
               ),

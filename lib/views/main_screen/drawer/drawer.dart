@@ -7,8 +7,11 @@ import 'package:sosyal_ag/utils/theme_provider.dart';
 import 'package:sosyal_ag/view_models/user_view_model.dart';
 
 class MeydanDrawer extends StatelessWidget {
+
+  final Init _init = locator<Init>();
   final VoidCallback? onProfileTap;
   final VoidCallback? onSettingsTap;
+  
 
    MeydanDrawer({
     super.key,
@@ -16,7 +19,6 @@ class MeydanDrawer extends StatelessWidget {
     this.onSettingsTap,
   });
 
-  final Init _init = locator<Init>();
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +102,7 @@ class MeydanDrawer extends StatelessWidget {
                   : Icons.dark_mode_outlined,
             ),
             title: Text('Tema Değiştir', style: GoogleFonts.aBeeZee()),
-            onTap: () => themeProvider.toggleTheme(),
+            onTap: () async => await themeProvider.toggleTheme(),
           ),
           ListTile(
             leading: const Icon(Icons.settings_outlined),

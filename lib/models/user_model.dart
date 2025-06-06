@@ -22,6 +22,7 @@ class UserModel {
   final List<String>? favoritedPosts;
   final List<String>? blockedUsers;
   final List<String>? posts;
+  final bool isDarkMode;
 
   UserModel({
     this.uid,
@@ -45,6 +46,7 @@ class UserModel {
     this.favoritedPosts,
     this.blockedUsers,
     this.posts,
+    this.isDarkMode = true,
   });
 
   // JSON'dan UserModel'e dönüştürme
@@ -77,6 +79,7 @@ class UserModel {
       favoritedPosts: (json['favoritedPosts'] as List<dynamic>?)?.cast<String>(),
       blockedUsers: (json['blockedUsers'] as List<dynamic>?)?.cast<String>(),
       posts: (json['posts'] as List<dynamic>?)?.cast<String>(),
+      isDarkMode: json['isDarkMode'] as bool? ?? true,
     );
   }
 
@@ -104,6 +107,7 @@ class UserModel {
       'favoritedPosts': favoritedPosts,
       'blockedUsers': blockedUsers,
       'posts': posts,
+      'isDarkMode': isDarkMode,
     };
   }
 
@@ -130,6 +134,7 @@ class UserModel {
     List<String>? favoritedPosts,
     List<String>? blockedUsers,
     List<String>? posts,
+    bool? isDarkMode,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -152,6 +157,7 @@ class UserModel {
       favoritedPosts: favoritedPosts ?? this.favoritedPosts,
       blockedUsers: blockedUsers ?? this.blockedUsers,
       posts: posts ?? this.posts,
+      isDarkMode: isDarkMode ?? this.isDarkMode,
     );
   }
 }

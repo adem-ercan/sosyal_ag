@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:sosyal_ag/init.dart';
+import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
 import 'package:sosyal_ag/views/main_screen/drawer/drawer.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/main_page.dart';
@@ -14,7 +16,9 @@ import 'package:sosyal_ag/views/components/post_share_bottom_sheet.dart';
 import 'package:sosyal_ag/view_models/main_screen_view_model.dart';
 
 class MainScreen extends StatelessWidget {
+  bool _isFirst = true;
   final BuildContext context;
+  final Init _init = locator<Init>();
   MainScreen({required this.context, super.key});
 
   final PersistentTabController _controller = PersistentTabController(
@@ -37,6 +41,7 @@ class MainScreen extends StatelessWidget {
 
   List<PersistentBottomNavBarItem> _navBarsItems(
     MainScreenViewModel mainScreenViewModel,
+    ThemeMode themeMode
   ) => [
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.home),
@@ -55,7 +60,8 @@ class MainScreen extends StatelessWidget {
 
     PersistentBottomNavBarItem(
       icon: Image.asset(
-        "assets/logo/m_light.png",
+        
+        themeMode == ThemeMode.dark ? "assets/logo/m_light.png" : "assets/logo/m_dark.png",
         width: MediaQuery.of(context).size.width * .07,
       ),
       opacity: 0.7,
@@ -118,6 +124,15 @@ class MainScreen extends StatelessWidget {
       listen: true,
     );
 
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      //await themeProvider.toggleTheme();
+      if (themeProvider.isFirst) {
+        themeProvider.isFirst = false;
+        await themeProvider.getUserTheme(_init.user?.uid ?? "");
+      }
+      
+    });
+
     return Scaffold(
       appBar:
           mainScreenViewModel.isVisibleAppBar
@@ -134,12 +149,12 @@ class MainScreen extends StatelessWidget {
                     themeProvider.themeMode != ThemeMode.dark
                         ? Image.asset(
                           "assets/logo/meydan_dark.png",
-                          height: 40,
-                          //width: MediaQuery.of(context).size.width * .6,
+                          height: 30,
+                          //width: diaQuery.of(context).size.width * .6,
                         )
                         : Image.asset(
                           "assets/logo/meydan_light.png",
-                          height: 40,
+                          height: 30,
                           //width: MediaQuery.of(context).size.width * .6,
                         ),
 
@@ -159,7 +174,7 @@ class MainScreen extends StatelessWidget {
           controller: _controller,
           screens: _buildScreens(),
 
-          items: _navBarsItems(mainScreenViewModel),
+          items: _navBarsItems(mainScreenViewModel, themeProvider.themeMode),
           handleAndroidBackButtonPress: true,
           resizeToAvoidBottomInset: false,
           stateManagement: true,

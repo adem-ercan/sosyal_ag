@@ -25,7 +25,7 @@ final router = GoRouter(
       builder: (context, state) => MainScreen(context: context),
     ),
 
-    GoRoute(path: '/authRoute', builder: (context, state) => const AuthRoute()),
+    GoRoute(path: '/authRoute', builder: (context, state) =>  AuthRoute()),
     GoRoute(
       path: '/otherUserProfile',
       builder: (context, state) {

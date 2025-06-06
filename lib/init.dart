@@ -16,7 +16,7 @@ class Init {
   Future<void> start(BuildContext context) async{
    await Future.delayed(const Duration(seconds: 3));
    if (context.mounted) {
-     await getCurrentUserAllData(context);
+    await getCurrentUserAllData(context);
    }
 
    isFirstInit = false;
@@ -30,8 +30,9 @@ class Init {
     // Burada uygulama açılırken locator ile uygulamanın her yerinde çağırıp kullanacağımız 
     // singleton UserModel ataması yapıyoruz.
     // UserViewModel'de zaten hata yakalandığı için try-catch yapılmadı.
-    user = await userViewModel.getCurrentUserAllData(context);
-    return null;
+    user = await userViewModel.getCurrentUserAllData(context); 
+    
+    return user;
   }
 
 

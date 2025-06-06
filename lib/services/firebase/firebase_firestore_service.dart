@@ -402,4 +402,35 @@ class FirestoreService implements DataBaseCore {
     });
   }
 
+  Future<void> updateUserTheme(String userId, bool isDarkMode) async {
+    await _firestore.collection('users').doc(userId).update({
+      'isDarkMode': isDarkMode,
+    });
+  }
+
+  Stream<bool> getUserThemeStream(String userId) {
+    
+    return _firestore
+        .collection('users')
+        .doc(userId)
+        .snapshots()
+        .map((snapshot) {
+      if (!snapshot.exists) return false;
+      final userData = snapshot.data() as Map<String, dynamic>;
+      return userData['isDarkMode'] as bool? ?? false;
+    });
+  }
+
+  Future<bool> getUserTheme(String userId) async {
+    DocumentSnapshot snapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .get();
+    
+    if (!snapshot.exists) return false;
+    final userData = snapshot.data() as Map<String, dynamic>;
+    print("firestore'dan gelen tema: ${userData['isDarkMode']}");
+    return userData['isDarkMode'] as bool? ?? false;
+  }
+
 }
