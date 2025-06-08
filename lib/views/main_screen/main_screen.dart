@@ -16,7 +16,6 @@ import 'package:sosyal_ag/views/components/post_share_bottom_sheet.dart';
 import 'package:sosyal_ag/view_models/main_screen_view_model.dart';
 
 class MainScreen extends StatelessWidget {
-  bool _isFirst = true;
   final BuildContext context;
   final Init _init = locator<Init>();
   MainScreen({required this.context, super.key});
@@ -114,7 +113,6 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    ThemeData theme = Theme.of(context);
     MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(
       context,
     );

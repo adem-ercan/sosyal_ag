@@ -1,18 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/post_model.dart';
-import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
-import 'package:sosyal_ag/view_models/user_view_model.dart';
-import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 
+// ignore: must_be_immutable
 class PaginationMediaList extends StatelessWidget {
   final Init _init = locator<Init>();
 
   final ScrollController scrollController = ScrollController();
+
 
   PaginationMediaList({super.key});
 
@@ -24,10 +23,7 @@ class PaginationMediaList extends StatelessWidget {
     // SliverAppBar açılacak.
     // FirestorePagination'ı direkt kullandığımızda bu olmuyor.
 
-    UserViewModel userViewModel = Provider.of<UserViewModel>(
-      context,
-      listen: true,
-    );
+ 
 
     return Container(
       decoration: BoxDecoration(
@@ -59,9 +55,17 @@ class PaginationMediaList extends StatelessWidget {
           if (post.mediaUrls == null || post.mediaUrls!.isEmpty) {
             return const SizedBox.shrink(); // Eğer mediaUrls boşsa, boş bir widget döndür
           }
-          return Container(
-            decoration: BoxDecoration(),
-            child: Image.network(post.mediaUrls![index].toString()),
+          return InkWell(
+            onTap: () {
+              context.push(
+                "/postScreen",
+                extra: {'post': post, 'author': _init.user!},
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(),
+              child: Image.network(post.mediaUrls![index].toString()),
+            ),
           );
         },
         initialLoader: const Center(child: CircularProgressIndicator()),
