@@ -24,7 +24,7 @@ class FirebaseStorageService {
       throw Exception('Media yükleme hatası: $e');
     }
   }
-
+  // rtgwreg
   Future<void> deletePostMedia(String mediaUrl) async {
     try {
       final ref = _storage.refFromURL(mediaUrl);
