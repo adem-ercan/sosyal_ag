@@ -62,6 +62,7 @@ class FirestoreService implements DataBaseCore {
       print("Post media URLs: ${postJsonData['mediaUrls']}");
       
     }
+    //bnfghnf
 
     postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
 
