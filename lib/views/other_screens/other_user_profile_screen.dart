@@ -290,10 +290,18 @@ class OtherUserProfileScreen extends StatelessWidget {
         if(post.mediaUrls == null || post.mediaUrls!.isEmpty) {
           return const SizedBox.shrink(); // Eğer mediaUrls boşsa, boş bir widget döndür
         }
-        return Container(
-          decoration: BoxDecoration(),
-          child: Image.network(
-            post.mediaUrls![index].toString()
+        return InkWell(
+          onTap: () {
+            context.push(
+              "/postScreen",
+              extra: {'post': post, 'author': user},
+            );
+          },
+          child: Container(
+            decoration: BoxDecoration(),
+            child: Image.network(
+              post.mediaUrls![index].toString()
+            ),
           ),
         );
       },
