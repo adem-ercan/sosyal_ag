@@ -232,4 +232,16 @@ class Repository {
     return await _firestoreService.getUserTheme(userId);
   }
 
+  Future<List<PostModel?>> searchPosts(String searchQuery) async {
+    List<PostModel> postList = []; 
+    List<Map<String, dynamic>> posts = await _firestoreService.searchPosts(searchQuery);
+    
+    if (posts.isEmpty) {
+      for (var post in posts) {
+        postList.add(PostModel.fromJson(post));
+      }
+    }
+    return postList;
+  }
+
 }

@@ -59,12 +59,15 @@ class FirestoreService implements DataBaseCore {
         "${postJsonData['authorId']}-${postJsonData['id']}",
       );
     postJsonData['mediaUrls'] = [url];
-      print("Post media URLs: ${postJsonData['mediaUrls']}");
-      
-    }
-    //bnfghnf
 
+    }
+    
     postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
+    String content = postJsonData['content'];
+    List<String> splitList = content.split(' ');
+    postJsonData.update("searchKey", (value) => splitList);
+
+    print("searchKey : ${postJsonData['searchKey']}");
 
     CollectionReference postRef = _firestore.collection("posts");
     DocumentReference docRef = postRef.doc(); // Rastgele ID oluşturur
@@ -82,12 +85,13 @@ class FirestoreService implements DataBaseCore {
     });
 
     
-    // Post ID'sini kullanıcının posts array'ine ekle
-    //String userId = postJsonData['authorId'];
-
-    /* await _firestore.collection('posts').doc(userId).update({
-      'comments': FieldValue.increment(1),
-    }); */
+    String userId = postJsonData['authorId'];
+    print("userId: $userId");
+    await _firestore.collection('users').doc(userId).update({
+      'posts': FieldValue.arrayUnion([postJsonData['id']]),
+      'postsCount' : FieldValue.increment(1)
+    }); 
+    print("ok");
   }
 
   Future<List<Map<String, dynamic>>> currentUserGetLastFivePosts() async {
@@ -378,7 +382,7 @@ class FirestoreService implements DataBaseCore {
     // Kullanıcı adı veya email ile eşleşenleri bul
     final usersSnapshot = await _firestore
         .collection('users')
-        .orderBy('userName')
+        .orderBy('userName') 
         .startAt([searchQuery])
         .endAt(['$searchQuery\uf8ff'])
         .get();
@@ -432,6 +436,20 @@ class FirestoreService implements DataBaseCore {
     final userData = snapshot.data() as Map<String, dynamic>;
     print("firestore'dan gelen tema: ${userData['isDarkMode']}");
     return userData['isDarkMode'] as bool? ?? false;
+  }
+
+  Future<List<Map<String, dynamic>>> searchPosts(String searchQuery) async {
+    if (searchQuery.trim().isEmpty) return [];
+    
+    final postsSnapshot = await _firestore
+        .collection('posts')
+        .where('content', arrayContains: searchQuery)
+        .limit(20)
+        .get();
+
+    return postsSnapshot.docs
+        .map((doc) => doc.data())
+        .toList();
   }
 
 }

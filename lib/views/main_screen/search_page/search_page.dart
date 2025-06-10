@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
-import 'package:sosyal_ag/view_models/user_view_model.dart';
+import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -12,110 +14,123 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   bool _isSearching = false;
   String? _searchQuery;
+  late TabController _tabController;
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {
+        _currentIndex = _tabController.index;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    UserViewModel userViewModel = Provider.of<UserViewModel>(
-      context,
-      listen: true,
-    );
+  
 
     return SafeArea(
       bottom: false,
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(70),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SafeArea(
-              child: TextField(
-                controller: _searchController,
-                onChanged: (value) {
-                  setState(() {
-                    _isSearching = value.isNotEmpty;
-                    _searchQuery = value.isNotEmpty ? value : null;
-                  });
-                  // TODO: Arama işlemi yapılacak
-                },
-                decoration: InputDecoration(
-                  hintText: 'Kullanıcı ara...',
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon:
-                      _isSearching
-                          ? IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              _searchController.clear();
-                              setState(() {
-                                _isSearching = false;
-                              });
-                            },
-                          )
-                          : null,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide.none,
+          preferredSize: const Size.fromHeight(120),
+          child: Column(
+            children: [
+              TabBar(
+                indicatorColor: theme.colorScheme.tertiary,
+                labelColor: theme.colorScheme.tertiary,
+                controller: _tabController,
+                tabs: [Tab(text: 'Kullanıcı Ara'), Tab(text: 'Post Ara')],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SafeArea(
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (value) {
+                      setState(() {
+                        _isSearching = value.isNotEmpty;
+                        _searchQuery = value.isNotEmpty ? value : null;
+                      });
+                      // TODO: Arama işlemi yapılacak
+                    },
+                    decoration: InputDecoration(
+                      hintText:
+                          _currentIndex == 0
+                              ? 'Kullanıcı ara...'
+                              : "Post ara...",
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon:
+                          _isSearching
+                              ? IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: () {
+                                  _searchController.clear();
+                                  setState(() {
+                                    _isSearching = false;
+                                  });
+                                },
+                              )
+                              : null,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: theme.colorScheme.surface,
+                    ),
                   ),
-                  filled: true,
-                  fillColor: theme.colorScheme.surface,
                 ),
               ),
-            ),
+            ],
           ),
         ),
-        body:
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            // İlk tab - mevcut arama sonuçları
             _isSearching
-                ? FutureBuilder<List<UserModel?>>(
-                  future: userViewModel.searchUsers(_searchQuery!),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final users = snapshot.data!;
-                      if (users.isEmpty) {
-                        return Center(
-                          child: Text(
-                            'Arama sonuç bulunamadı',
-                            style: GoogleFonts.aBeeZee(
-                              fontSize: 16,
-                              color: theme.colorScheme.onSurface.withOpacity(
-                                0.5,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                      return ListView.builder(
-                        itemCount: users.length,
-                        itemBuilder: (context, index) {
-                          final user = users[index];
-                          if (user == null) return SizedBox.shrink();
-                          return _buildUserListItem(user, theme);
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text(
-                          'Bir hata oluştu: ${snapshot.error}',
-                          style: GoogleFonts.aBeeZee(
-                            fontSize: 16,
-                            color: theme.colorScheme.error,
-                          ),
-                        ),
-                      );
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: theme.colorScheme.primary,
-                        ),
-                      );
-                    }
+                ? FirestorePagination(
+                  limit: 15,
+                  isLive: true,
+                  viewType: ViewType.list,
+                  shrinkWrap: true,
+                  query: FirebaseFirestore.instance
+                      .collection('users')
+                      .orderBy("userName")
+                      .startAt([_searchQuery!])
+                      .endAt(['$_searchQuery\uf8ff']),
+
+                  itemBuilder: (context, documentSnapshot, index) {
+
+                    final data =
+                        documentSnapshot[index].data() as Map<String, dynamic>;
+                    final user = UserModel.fromJson(data);
+                    return _buildUserListItem(user, theme);
                   },
+                  initialLoader: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  bottomLoader: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 )
                 : Center(
                   child: Column(
@@ -138,6 +153,65 @@ class _SearchPageState extends State<SearchPage> {
                     ],
                   ),
                 ),
+            // İkinci tab
+            _isSearching
+                ? FirestorePagination(
+                  limit: 15,
+                  isLive: true,
+                  viewType: ViewType.list,
+                  shrinkWrap: true,
+                  query: FirebaseFirestore.instance
+                      .collection('posts')
+                      .orderBy('createdAt', descending: true)
+                      .where("searchKey", arrayContainsAny: _searchQuery!.split(' ')),
+                     /*  .startAt([_searchQuery!])
+                      .endAt(['$_searchQuery\uf8ff']), */
+                      
+                      
+                                          
+                  itemBuilder: (context, documentSnapshot, index) {
+                    final data =
+                        documentSnapshot[index].data() as Map<String, dynamic>;
+                    final post = PostModel.fromJson(data);
+                    return _buildPostListItem(
+                      post,
+                      UserModel(
+                        userName: "ademmmm",
+                        email: "ademmmm@gmail.com",
+                      ),
+                      theme,
+                    );
+                  },
+                  initialLoader: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  bottomLoader: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+                : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.search,
+                        size: 100,
+                        color: theme.colorScheme.onSurface.withOpacity(0.2),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Post içeriği aramak için yukarıdaki\narama çubuğunu kullan',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.aBeeZee(
+                          fontSize: 16,
+                          color: theme.colorScheme.onSurface.withOpacity(0.5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+          ],
+        ),
       ),
     );
   }
@@ -146,12 +220,8 @@ class _SearchPageState extends State<SearchPage> {
     return InkWell(
       onTap: () {
         // Kullanıcı profiline git
-        context.push(
-          '/otherUserProfile',
-          extra: user,
-        );
+        context.push('/otherUserProfile', extra: user);
       },
-      
       child: ListTile(
         leading: CircleAvatar(
           backgroundImage:
@@ -203,9 +273,12 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
+  Widget _buildPostListItem(PostModel post, UserModel user, ThemeData theme) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
+      child: PostCard(post: post, author: user),
+    );
   }
 }

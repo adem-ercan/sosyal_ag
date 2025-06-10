@@ -233,4 +233,12 @@ class PostViewModel extends ChangeNotifier {
       return null;
     }
   }
+  Future<List<PostModel?>> searchPosts(String query) async {
+    try {
+      return await _repository.searchPosts(query);
+    } catch (e) {
+      print("ERROR on UserViewModel: $e");
+      return [];
+    }
+  }
 }
