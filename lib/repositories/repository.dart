@@ -250,7 +250,7 @@ class Repository {
     
   }
 
-  Future<void> saveProfileEdit(String fullName, String userName, String bio) async {
-    await _firestoreService.saveProfileEdit(fullName, userName, bio);
+  Future<void> saveProfileEdit(String fullName, String userName, String bio,{File? image}) async {
+    await _firestoreService.saveProfileEdit(fullName, userName, bio, imageFile: image);
   }
 }

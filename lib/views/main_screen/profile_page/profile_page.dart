@@ -22,7 +22,6 @@ class ProfilePage extends StatelessWidget {
     return DefaultTabController(
       length: 4,
       child: NestedScrollView(
-        
         controller: _scrollController,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
@@ -56,11 +55,18 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
-                            radius: 40,
-                            backgroundColor: theme.colorScheme.tertiary,
-                            child: const Icon(Icons.person, size: 40),
-                          ),
+                          _init.user!.photoUrl == null
+                              ? CircleAvatar(
+                                radius: 40,
+                                backgroundColor: theme.colorScheme.tertiary,
+                                child: const Icon(Icons.person, size: 40),
+                              )
+                              : CircleAvatar(
+                                radius: 50,
+                                backgroundImage: NetworkImage(
+                                  '${_init.user!.photoUrl}',
+                                ),
+                              ),
                           const SizedBox(width: 16),
                           Expanded(
                             child: Column(
@@ -157,9 +163,15 @@ class ProfilePage extends StatelessWidget {
                   unselectedLabelColor: theme.colorScheme.onSurface,
                   tabs: [
                     Tab(
-                      child: FittedBox(child: Text('Gönderiler', style: GoogleFonts.aBeeZee())),
+                      child: FittedBox(
+                        child: Text('Gönderiler', style: GoogleFonts.aBeeZee()),
+                      ),
                     ),
-                    Tab(child: FittedBox(child: Text('Beğeniler', style: GoogleFonts.aBeeZee()))),
+                    Tab(
+                      child: FittedBox(
+                        child: Text('Beğeniler', style: GoogleFonts.aBeeZee()),
+                      ),
+                    ),
                     Tab(
                       child: FittedBox(
                         child: Text(
@@ -168,8 +180,11 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Tab(child: FittedBox(child: Text('Media', style: GoogleFonts.aBeeZee()))),
-
+                    Tab(
+                      child: FittedBox(
+                        child: Text('Media', style: GoogleFonts.aBeeZee()),
+                      ),
+                    ),
                   ],
                   indicatorColor: theme.colorScheme.tertiary,
                 ),
@@ -203,23 +218,19 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildPostsList(BuildContext context) {
-     return PaginationPostList();      
+    return PaginationPostList();
   }
 
   Widget _buildLikedList(BuildContext context) {
     return PaginationLikedPostList();
-
   }
 
   Widget _buildSavedList(BuildContext context) {
-
     return PaginationFavoritedPostList();
-    
   }
-  Widget _buildMediaList(BuildContext context) {
 
+  Widget _buildMediaList(BuildContext context) {
     return PaginationMediaList();
-    
   }
 }
 

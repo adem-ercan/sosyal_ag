@@ -33,5 +33,27 @@ class FirebaseStorageService {
     }
   }
 
+
+  Future<String> uploadPPMedia(File media, String fileName) async {
+    try {
+      // Medyayı belirtilen path'e yükle
+      final ref = _storage.ref().child("userProfilePhotos/$fileName");
+      final uploadTask = ref.putFile(media);
+      
+
+      // Yükleme tamamlanana kadar bekle
+      final snapshot = await uploadTask.whenComplete(() => print("yükleme tamamlandı"));
+    
+      
+      // Yüklenen medyanın download URL'ini al ve döndür
+      final downloadUrl = await snapshot.ref.getDownloadURL();
+      
+      return downloadUrl;
+
+    } catch (e) {
+      throw Exception('Media yükleme hatası: $e');
+    }
+  }
+
   
 }

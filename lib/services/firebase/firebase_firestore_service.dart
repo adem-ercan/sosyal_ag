@@ -462,12 +462,22 @@ class FirestoreService implements DataBaseCore {
   }
 
 
-  Future<void> saveProfileEdit(String fullName, String userName, String bio) async {
+  Future<void> saveProfileEdit(String fullName, String userName, String bio, {File? imageFile,}) async {
+    FieldValue time =FieldValue.serverTimestamp();
+    String url = '';
+
+    String fileName = time.toString() + _init.user!.uid.toString();
+    if (imageFile != null) {
+      print("bubububu");
+      url = await _storageService.uploadPostMedia(imageFile, fileName );
+
+    }
     _firestore.collection('users').doc(_init.user!.uid.toString()).update(
       {
         'bio' : bio,
         'name' : fullName,
-        'userName' : userName
+        'userName' : userName,
+        'photoUrl' : url
       }
     );
   }

@@ -70,7 +70,7 @@ class ProfilePageViewModel extends ChangeNotifier {
       print("isim: $_bio kullanıcı adı: $_userName bio: $_bio");
 
       try {
-          await _repository.saveProfileEdit(_fullName ?? '', userName ?? '', _bio ?? '');
+          await _repository.saveProfileEdit(_fullName ?? '', userName ?? '', _bio ?? '', image: _profilePhotoImages);
 
       } catch (e) {
         print('Profil kaydetme hatası: $e');
