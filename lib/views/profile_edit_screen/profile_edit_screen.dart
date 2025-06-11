@@ -25,6 +25,7 @@ class ProfileEditScreen extends StatelessWidget {
           IconButton(
             onPressed: () {
               // Kaydetme işlemi
+              pageViewModel.save();
             },
             icon: const Icon(Icons.save),
           ),
@@ -101,7 +102,12 @@ class ProfileEditScreen extends StatelessWidget {
                       labelStyle: TextStyle(color: theme.colorScheme.onSurface),
                       filled: true,
                       fillColor: theme.colorScheme.primary,
+                      
                     ),
+
+                    onSaved: (newValue) {
+                      pageViewModel.fullName = newValue;
+                    },
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
@@ -123,6 +129,9 @@ class ProfileEditScreen extends StatelessWidget {
                       filled: true,
                       fillColor: theme.colorScheme.primary,
                     ),
+                    onSaved: (newValue) {
+                      pageViewModel.userName = newValue;
+                    },
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
@@ -145,6 +154,9 @@ class ProfileEditScreen extends StatelessWidget {
                       filled: true,
                       fillColor: theme.colorScheme.primary,
                     ),
+                    onSaved: (newValue) {
+                      pageViewModel.bio = newValue;
+                    },
                   ),
                 ],
               ),

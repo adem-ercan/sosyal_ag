@@ -461,4 +461,15 @@ class FirestoreService implements DataBaseCore {
         .toList();
   }
 
+
+  Future<void> saveProfileEdit(String fullName, String userName, String bio) async {
+    _firestore.collection('users').doc(_init.user!.uid.toString()).update(
+      {
+        'bio' : bio,
+        'name' : fullName,
+        'userName' : userName
+      }
+    );
+  }
+
 }

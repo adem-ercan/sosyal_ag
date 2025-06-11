@@ -249,4 +249,8 @@ class Repository {
     return _firestoreService.getUserByIdStream(userId);
     
   }
+
+  Future<void> saveProfileEdit(String fullName, String userName, String bio) async {
+    await _firestoreService.saveProfileEdit(fullName, userName, bio);
+  }
 }
