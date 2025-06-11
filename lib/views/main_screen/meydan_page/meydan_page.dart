@@ -18,7 +18,7 @@ class MeydanPage extends StatelessWidget {
 
     UserViewModel userViewModel = Provider.of<UserViewModel>(
       context,
-      listen: true,
+      listen: false,
     );
 
     return Container(

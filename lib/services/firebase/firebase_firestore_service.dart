@@ -86,12 +86,10 @@ class FirestoreService implements DataBaseCore {
 
     
     String userId = postJsonData['authorId'];
-    print("userId: $userId");
     await _firestore.collection('users').doc(userId).update({
       'posts': FieldValue.arrayUnion([postJsonData['id']]),
       'postsCount' : FieldValue.increment(1)
     }); 
-    print("ok");
   }
 
   Future<List<Map<String, dynamic>>> currentUserGetLastFivePosts() async {
@@ -370,6 +368,17 @@ class FirestoreService implements DataBaseCore {
       print('Kullanıcı bilgileri getirme hatası: $e');
       return null;
     }
+  }
+
+  Stream<Map<String, dynamic>?> getUserByIdStream(String userId){
+     String userId = _init.user!.uid!;
+      return _firestore.collection('users').doc(userId).snapshots().map((
+      snapshot,
+    ) {
+      if (!snapshot.exists) return {};
+      final userData = snapshot.data() as Map<String, dynamic>;
+      return userData;
+    });
   }
 
   Future<List<Map<String, dynamic>>> searchUsers(String searchQuery) async {

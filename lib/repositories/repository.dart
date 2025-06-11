@@ -244,4 +244,9 @@ class Repository {
     return postList;
   }
 
+
+  Stream<Map<String, dynamic>?> getUserByIdStream(String userId){
+    return _firestoreService.getUserByIdStream(userId);
+    
+  }
 }

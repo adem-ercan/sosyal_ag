@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/init.dart';
@@ -8,7 +7,6 @@ import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
 import 'package:sosyal_ag/views/main_screen/drawer/drawer.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/main_page.dart';
-import 'package:sosyal_ag/views/main_screen/messages_page/messages_page.dart';
 import 'package:sosyal_ag/views/main_screen/meydan_page/meydan_page.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/profile_page.dart';
 import 'package:sosyal_ag/views/main_screen/search_page/search_page.dart';
@@ -33,14 +31,14 @@ class MainScreen extends StatelessWidget {
 
     MeydanPage(),
 
-    MessagesPage(),
-
+    //MessagesPage(),
     ProfilePage(),
   ];
 
+
   List<PersistentBottomNavBarItem> _navBarsItems(
     MainScreenViewModel mainScreenViewModel,
-    ThemeMode themeMode
+    ThemeMode themeMode,
   ) => [
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.home),
@@ -50,6 +48,7 @@ class MainScreen extends StatelessWidget {
       inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
     ),
 
+
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.search),
       activeColorPrimary: Colors.teal,
@@ -57,19 +56,24 @@ class MainScreen extends StatelessWidget {
       inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
     ),
 
+
     PersistentBottomNavBarItem(
       icon: Image.asset(
-        
-        themeMode == ThemeMode.dark ? "assets/logo/m_light.png" : "assets/logo/m_dark.png",
+        themeMode == ThemeMode.dark
+            ? "assets/logo/m_light.png"
+            : "assets/logo/m_dark.png",
         width: MediaQuery.of(context).size.width * .07,
       ),
+
+
       opacity: 0.7,
       activeColorPrimary: Colors.blue,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
       inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
     ),
 
-    PersistentBottomNavBarItem(
+    
+    /* PersistentBottomNavBarItem(
       icon: Stack(
         alignment: Alignment.center,
         children: [
@@ -100,13 +104,13 @@ class MainScreen extends StatelessWidget {
       activeColorPrimary: Colors.deepOrange,
       inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
-    ),
+    ), */
+
     PersistentBottomNavBarItem(
       icon: Icon(Icons.person),
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
-
       //scrollController: _scrollControllers.last,
     ),
   ];
@@ -122,13 +126,12 @@ class MainScreen extends StatelessWidget {
       listen: true,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async{
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       //await themeProvider.toggleTheme();
       if (themeProvider.isFirst) {
         themeProvider.isFirst = false;
         await themeProvider.getUserTheme(_init.user?.uid ?? "");
       }
-      
     });
 
     return Scaffold(
@@ -240,6 +243,7 @@ class MainScreen extends StatelessWidget {
               duration: Duration(milliseconds: 400),
               curve: Curves.ease,
             ),
+
             screenTransitionAnimation: ScreenTransitionAnimationSettings(
               // Screen transition animation on change of selected tab.
               animateTabTransition: true,
@@ -247,11 +251,13 @@ class MainScreen extends StatelessWidget {
               screenTransitionAnimationType:
                   ScreenTransitionAnimationType.fadeIn,
             ),
+
             onNavBarHideAnimation: OnHideAnimationSettings(
               duration: Duration(milliseconds: 100),
               curve: Curves.bounceInOut,
             ),
           ),
+
           confineToSafeArea: true,
           navBarHeight: kBottomNavigationBarHeight,
           navBarStyle:
@@ -261,5 +267,3 @@ class MainScreen extends StatelessWidget {
     );
   }
 }
-
-// ----------------------------------------- Custom Style ----------------------------------------- //

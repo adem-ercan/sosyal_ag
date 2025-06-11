@@ -142,19 +142,14 @@ class PostShareBottomSheet extends StatelessWidget {
                   child: Row(
                     children: [
                       IconButton(
+                        iconSize: 50,
                         onPressed: () async => await postViewModel.mediaPick(),
                         icon: Icon(
                           Icons.image_outlined,
                           color: theme.colorScheme.onSecondary,
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.gif_box_outlined,
-                          color: theme.colorScheme.onSecondary,
-                        ),
-                      ),
+                      
                       
                       const Spacer(),
                       if (contentController.text.isNotEmpty)

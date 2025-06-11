@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/user_model.dart';
@@ -12,6 +13,12 @@ class UserViewModel extends ChangeNotifier {
   final Repository _repository = locator<Repository>();
   final Init _init = locator<Init>();
 
+  
+
+
+
+
+  //METHODS
   Future<void> createUserWithEmailAndPassword(String email, String password, String userName, BuildContext context) async {
     try {
       await _repository.createUserWithEmailAndPassword(email, password, userName);
@@ -103,6 +110,10 @@ class UserViewModel extends ChangeNotifier {
       print("ERROR on UserViewModel: $e");
       return [];
     }
+  }
+
+  Stream<Map<String, dynamic>?> getUserByIdStream(String userId){
+    return _repository.getUserByIdStream(userId);
   }
 
 }

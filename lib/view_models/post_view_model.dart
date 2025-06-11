@@ -22,6 +22,7 @@ class PostViewModel extends ChangeNotifier {
   Loading _loading = Loading.loaded;
   final ImagePicker _picker = ImagePicker();
   File? _image;
+  
 
   //GETTERS
   Loading get loading => _loading;
