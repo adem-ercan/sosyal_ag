@@ -125,7 +125,7 @@ class MainPage extends StatelessWidget {
               Map<String, dynamic> data = documentSnapshotX[index].data() as Map<String, dynamic>;
               PostModel post = PostModel.fromJson(data);
 
-              /* return FutureBuilder<UserModel?>(
+              return FutureBuilder<UserModel?>(
                 future: userViewModel.getUserDataById(followingID),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -137,9 +137,9 @@ class MainPage extends StatelessWidget {
                   }
                   return PostCard(post: post, author: snapshot.data!);
                 }
-              ); */
+              ); 
 
-              return StreamBuilder(
+              /* return StreamBuilder(
                 stream: userViewModel.getUserByIdStream(followingID), 
                 builder: (context, snapshot){
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -153,7 +153,7 @@ class MainPage extends StatelessWidget {
                   
                   UserModel user = UserModel.fromJson(map!);
                   return PostCard(post: post, author: user);
-                });
+                }); */
             }
           );
         },

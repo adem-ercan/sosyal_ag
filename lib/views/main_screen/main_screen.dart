@@ -12,15 +12,14 @@ import 'package:sosyal_ag/views/main_screen/profile_page/profile_page.dart';
 import 'package:sosyal_ag/views/main_screen/search_page/search_page.dart';
 import 'package:sosyal_ag/views/components/post_share_bottom_sheet.dart';
 import 'package:sosyal_ag/view_models/main_screen_view_model.dart';
+import 'package:sosyal_ag/views/other_screens/notification_screen.dart';
 
 class MainScreen extends StatelessWidget {
   final BuildContext context;
   final Init _init = locator<Init>();
   MainScreen({required this.context, super.key});
 
-  final PersistentTabController _controller = PersistentTabController(
-    initialIndex: 0,
-  );
+  
   final bool _hideNavBar = false;
   final NavBarStyle _navBarStyle = NavBarStyle.simple;
 
@@ -30,6 +29,8 @@ class MainScreen extends StatelessWidget {
     SearchPage(),
 
     MeydanPage(),
+
+    NotificationScreen(),
 
     //MessagesPage(),
     ProfilePage(),
@@ -107,6 +108,14 @@ class MainScreen extends StatelessWidget {
     ), */
 
     PersistentBottomNavBarItem(
+      icon: Icon(Icons.notifications),
+      activeColorPrimary: Colors.indigo,
+      inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
+      activeColorSecondary: Theme.of(context).colorScheme.tertiary,
+      //scrollController: _scrollControllers.last,
+    ),
+
+    PersistentBottomNavBarItem(
       icon: Icon(Icons.person),
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
@@ -117,9 +126,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(
-      context,
-    );
+    MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context);
 
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(
       context,
@@ -139,12 +146,7 @@ class MainScreen extends StatelessWidget {
           mainScreenViewModel.isVisibleAppBar
               ? AppBar(
                 actions: [
-                  IconButton(
-                    onPressed: () async {
-                      await context.push("/notificationScreen");
-                    },
-                    icon: Icon(Icons.notifications),
-                  ),
+                  
                 ],
                 title:
                     themeProvider.themeMode != ThemeMode.dark
@@ -172,7 +174,7 @@ class MainScreen extends StatelessWidget {
         },
         child: PersistentTabView(
           context,
-          controller: _controller,
+          controller: mainScreenViewModel.controller,
           screens: _buildScreens(),
 
           items: _navBarsItems(mainScreenViewModel, themeProvider.themeMode),

@@ -3,12 +3,19 @@ import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
+import 'package:sosyal_ag/utils/locator.dart';
+import 'package:sosyal_ag/view_models/main_screen_view_model.dart';
+import 'package:sosyal_ag/view_models/user_view_model.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+
+  final Init init = locator<Init>();
+  SearchPage({super.key});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -43,7 +50,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-  
+    UserViewModel userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context, listen: true);
 
     return SafeArea(
       bottom: false,
@@ -123,7 +131,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     final data =
                         documentSnapshot[index].data() as Map<String, dynamic>;
                     final user = UserModel.fromJson(data);
-                    return _buildUserListItem(user, theme);
+                    return _buildUserListItem(user, theme, mainScreenViewModel, userViewModel);
                   },
                   initialLoader: const Center(
                     child: CircularProgressIndicator(),
@@ -175,11 +183,9 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     final post = PostModel.fromJson(data);
                     return _buildPostListItem(
                       post,
-                      UserModel(
-                        userName: "ademmmm",
-                        email: "ademmmm@gmail.com",
-                      ),
+                      post.authorId,
                       theme,
+                      userViewModel
                     );
                   },
                   initialLoader: const Center(
@@ -216,11 +222,18 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildUserListItem(UserModel user, ThemeData theme) {
+  Widget _buildUserListItem(UserModel user, ThemeData theme, MainScreenViewModel viewModel, UserViewModel userViewModel) {
+    final Init init = locator<Init>();
+
     return InkWell(
       onTap: () {
         // Kullanıcı profiline git
-        context.push('/otherUserProfile', extra: user);
+        if(user.uid != init.user!.uid){
+          context.push('/otherUserProfile', extra: user);
+        }else{
+          viewModel.controller.index = 4;
+        }
+        
       },
       child: ListTile(
         leading: CircleAvatar(
@@ -252,33 +265,44 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           ],
         ),
         subtitle: Text(
-          '@${user.userName.toLowerCase()}',
+          '@${user.userName}',
           style: GoogleFonts.aBeeZee(
             color: theme.colorScheme.onSurface.withOpacity(0.6),
           ),
         ),
         trailing: TextButton(
-          onPressed: () {
+          onPressed: () async {
             print("Takip et butonuna basıldı");
+            await userViewModel.followRequest(user.uid ?? "");
+
           },
-          child: Text(
+          child: user.uid != init.user!.uid ? Text(
             'Takip Et',
             style: GoogleFonts.aBeeZee(
               color: theme.colorScheme.tertiary,
               fontWeight: FontWeight.bold,
             ),
-          ),
+          ) : Text(""),
         ),
       ),
     );
   }
 
-  Widget _buildPostListItem(PostModel post, UserModel user, ThemeData theme) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-      ),
-      child: PostCard(post: post, author: user),
+  Widget _buildPostListItem(PostModel post, String userId, ThemeData theme, UserViewModel userViewModel) {
+    return FutureBuilder<UserModel?>(
+      future:  userViewModel.getUserDataById(userId),
+      builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data == null) {
+                    return const Center(child: Text('User not found'));
+                  }
+                  return PostCard(post: post, author: snapshot.data!);
+          
+        
+      }
     );
   }
 }

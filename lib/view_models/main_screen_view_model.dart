@@ -1,20 +1,16 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:sosyal_ag/models/post_model.dart';
-import 'package:sosyal_ag/models/user_model.dart';
-import 'package:sosyal_ag/repositories/repository.dart';
-import 'package:sosyal_ag/utils/locator.dart';
-import 'package:sosyal_ag/views/components/error_handler_widget.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+
 
 
 
 
 class MainScreenViewModel extends ChangeNotifier {
 
-  final Repository _repository = locator<Repository>();
-  
+final PersistentTabController controller = PersistentTabController(
+    initialIndex: 0,
+  );  
   
   
   //VARIABLES

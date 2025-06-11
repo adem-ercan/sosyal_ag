@@ -8,6 +8,7 @@ import 'package:sosyal_ag/views/other_screens/notification_screen.dart';
 import 'package:sosyal_ag/views/other_screens/other_user_profile_screen.dart';
 import 'package:sosyal_ag/views/post_screen/post_screen.dart';
 import 'package:sosyal_ag/views/profile_edit_screen/profile_edit_screen.dart';
+import 'package:sosyal_ag/views/settings_screen/setting_screen.dart';
 import 'package:sosyal_ag/views/sign_up_screen/sign_up_screen.dart';
 
 final router = GoRouter(
@@ -46,6 +47,11 @@ final router = GoRouter(
     GoRoute(
       path: '/notificationScreen',
       builder: (context, state) => const NotificationScreen(),
+    ),
+
+    GoRoute(
+      path: '/settingsScreen',
+      builder: (context, state) => const SettingsScreen(),
     ),
   ],
 );

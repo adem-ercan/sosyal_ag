@@ -116,6 +116,14 @@ class UserViewModel extends ChangeNotifier {
     return _repository.getUserByIdStream(userId);
   }
 
+  Future<void> followRequest(String targetUserId) async {
+    try {
+      await _repository.followRequest(targetUserId);
+    } catch (e) {
+      print("ERROR on UserViewModel.followRequest: $e");
+    }
+  }
+
 }
 
 

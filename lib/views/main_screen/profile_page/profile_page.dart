@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sosyal_ag/init.dart';
-import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/paginaition_liked_list.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/pagination_favorited_post_list.dart';

@@ -58,10 +58,9 @@ class FirestoreService implements DataBaseCore {
         imageFile,
         "${postJsonData['authorId']}-${postJsonData['id']}",
       );
-    postJsonData['mediaUrls'] = [url];
-
+      postJsonData['mediaUrls'] = [url];
     }
-    
+
     postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
     String content = postJsonData['content'];
     List<String> splitList = content.split(' ');
@@ -84,12 +83,11 @@ class FirestoreService implements DataBaseCore {
       'comments': FieldValue.arrayRemove([{}]),
     });
 
-    
     String userId = postJsonData['authorId'];
     await _firestore.collection('users').doc(userId).update({
       'posts': FieldValue.arrayUnion([postJsonData['id']]),
-      'postsCount' : FieldValue.increment(1)
-    }); 
+      'postsCount': FieldValue.increment(1),
+    });
   }
 
   Future<List<Map<String, dynamic>>> currentUserGetLastFivePosts() async {
@@ -159,7 +157,11 @@ class FirestoreService implements DataBaseCore {
     return [];
   }
 
-  Future<void> deletePost(String postId, String userId, String? mediaURL) async {
+  Future<void> deletePost(
+    String postId,
+    String userId,
+    String? mediaURL,
+  ) async {
     DocumentReference postRef = _firestore.collection('posts').doc(postId);
     DocumentReference userRef = _firestore.collection('users').doc(userId);
     await userRef.update({
@@ -170,7 +172,6 @@ class FirestoreService implements DataBaseCore {
     if (mediaURL != null && mediaURL.isNotEmpty) {
       await _storageService.deletePostMedia(mediaURL);
     }
-    
   }
 
   Future<void> deleteComment(Map<String, dynamic> commentData) async {
@@ -355,11 +356,9 @@ class FirestoreService implements DataBaseCore {
 
   Future<Map<String, dynamic>?> getUserDataById(String userId) async {
     try {
-      DocumentSnapshot userDoc = await _firestore
-          .collection('users')
-          .doc(userId)
-          .get();
-      
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(userId).get();
+
       if (userDoc.exists) {
         return userDoc.data() as Map<String, dynamic>;
       }
@@ -370,9 +369,9 @@ class FirestoreService implements DataBaseCore {
     }
   }
 
-  Stream<Map<String, dynamic>?> getUserByIdStream(String userId){
-     String userId = _init.user!.uid!;
-      return _firestore.collection('users').doc(userId).snapshots().map((
+  Stream<Map<String, dynamic>?> getUserByIdStream(String userId) {
+    String userId = _init.user!.uid!;
+    return _firestore.collection('users').doc(userId).snapshots().map((
       snapshot,
     ) {
       if (!snapshot.exists) return {};
@@ -389,26 +388,22 @@ class FirestoreService implements DataBaseCore {
     searchQuery = searchQuery.toLowerCase();
 
     // Kullanıcı adı veya email ile eşleşenleri bul
-    final usersSnapshot = await _firestore
-        .collection('users')
-        .orderBy('userName') 
-        .startAt([searchQuery])
-        .endAt(['$searchQuery\uf8ff'])
-        .get();
+    final usersSnapshot =
+        await _firestore
+            .collection('users')
+            .orderBy('userName')
+            .startAt([searchQuery])
+            .endAt(['$searchQuery\uf8ff'])
+            .get();
 
-    List<Map<String, dynamic>> list = usersSnapshot.docs
-        .map((doc) => doc.data())
-        .toList();
+    List<Map<String, dynamic>> list =
+        usersSnapshot.docs.map((doc) => doc.data()).toList();
 
-        return list;
+    return list;
   }
 
   Stream<List<String>> getUsersFollowingStream(String uid) {
-    return _firestore
-        .collection('users')
-        .doc(uid)
-        .snapshots()
-        .map((snapshot) {
+    return _firestore.collection('users').doc(uid).snapshots().map((snapshot) {
       if (!snapshot.exists) return [];
       final userData = snapshot.data() as Map<String, dynamic>;
       final allFollowing = List<String>.from(userData['following'] ?? []);
@@ -423,12 +418,9 @@ class FirestoreService implements DataBaseCore {
   }
 
   Stream<bool> getUserThemeStream(String userId) {
-    
-    return _firestore
-        .collection('users')
-        .doc(userId)
-        .snapshots()
-        .map((snapshot) {
+    return _firestore.collection('users').doc(userId).snapshots().map((
+      snapshot,
+    ) {
       if (!snapshot.exists) return false;
       final userData = snapshot.data() as Map<String, dynamic>;
       return userData['isDarkMode'] as bool? ?? false;
@@ -436,11 +428,9 @@ class FirestoreService implements DataBaseCore {
   }
 
   Future<bool> getUserTheme(String userId) async {
-    DocumentSnapshot snapshot = await _firestore
-        .collection('users')
-        .doc(userId)
-        .get();
-    
+    DocumentSnapshot snapshot =
+        await _firestore.collection('users').doc(userId).get();
+
     if (!snapshot.exists) return false;
     final userData = snapshot.data() as Map<String, dynamic>;
     print("firestore'dan gelen tema: ${userData['isDarkMode']}");
@@ -449,37 +439,45 @@ class FirestoreService implements DataBaseCore {
 
   Future<List<Map<String, dynamic>>> searchPosts(String searchQuery) async {
     if (searchQuery.trim().isEmpty) return [];
-    
-    final postsSnapshot = await _firestore
-        .collection('posts')
-        .where('content', arrayContains: searchQuery)
-        .limit(20)
-        .get();
 
-    return postsSnapshot.docs
-        .map((doc) => doc.data())
-        .toList();
+    final postsSnapshot =
+        await _firestore
+            .collection('posts')
+            .where('content', arrayContains: searchQuery)
+            .limit(20)
+            .get();
+
+    return postsSnapshot.docs.map((doc) => doc.data()).toList();
   }
 
-
-  Future<void> saveProfileEdit(String fullName, String userName, String bio, {File? imageFile,}) async {
-    FieldValue time =FieldValue.serverTimestamp();
+  Future<void> saveProfileEdit(
+    String fullName,
+    String userName,
+    String bio, {
+    File? imageFile,
+  }) async {
+    FieldValue time = FieldValue.serverTimestamp();
     String url = '';
 
     String fileName = time.toString() + _init.user!.uid.toString();
     if (imageFile != null) {
       print("bubububu");
-      url = await _storageService.uploadPostMedia(imageFile, fileName );
-
+      url = await _storageService.uploadPostMedia(imageFile, fileName);
     }
-    _firestore.collection('users').doc(_init.user!.uid.toString()).update(
-      {
-        'bio' : bio,
-        'name' : fullName,
-        'userName' : userName,
-        'photoUrl' : url
-      }
-    );
+    _firestore.collection('users').doc(_init.user!.uid.toString()).update({
+      'bio': bio,
+      'name': fullName,
+      'userName': userName,
+      'photoUrl': url,
+    });
   }
 
+  Future<void> followRequest(String targetUserId) async {
+    await _firestore.collection('follow_requests').add({
+      'senderId': _init.user!.uid,
+      'receiverId': targetUserId,
+      'status': 'pending',
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  }
 }

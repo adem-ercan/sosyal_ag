@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
@@ -38,7 +40,8 @@ class FirebaseStorageService {
     try {
       // Medyayı belirtilen path'e yükle
       final ref = _storage.ref().child("userProfilePhotos/$fileName");
-      final uploadTask = ref.putFile(media);
+      Uint8List fileBytes = await media.readAsBytes();
+      final uploadTask = ref.putData(fileBytes);
       
 
       // Yükleme tamamlanana kadar bekle

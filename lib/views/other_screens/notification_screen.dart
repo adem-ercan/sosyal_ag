@@ -20,12 +20,7 @@ class NotificationScreen extends StatelessWidget {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.settings, color: colorScheme.onSurfaceVariant),
-            onPressed: () {
-              // Bildirim ayarları sayfasına yönlendirme
-            },
-          ),
+          
         ],
       ),
       body: ListView(

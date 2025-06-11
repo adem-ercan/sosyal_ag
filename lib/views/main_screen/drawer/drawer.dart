@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
+import 'package:sosyal_ag/view_models/main_screen_view_model.dart';
 import 'package:sosyal_ag/view_models/user_view_model.dart';
 
 class MeydanDrawer extends StatelessWidget {
@@ -25,6 +27,7 @@ class MeydanDrawer extends StatelessWidget {
     final theme = Theme.of(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     UserViewModel userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context);
 
     return Drawer(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -74,26 +77,14 @@ class MeydanDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.person_outline),
             title: Text('Profil', style: GoogleFonts.aBeeZee()),
-            onTap: onProfileTap,
+            onTap: (){
+             // Navigator.pop(context);
+              mainScreenViewModel.isAppBarVisible(4);
+              mainScreenViewModel.controller.index = 4;
+              
+            } 
           ),
-          ListTile(
-            leading: const Icon(Icons.favorite_border),
-            title: Text('Beğendiklerim', style: GoogleFonts.aBeeZee()),
-            trailing: Text(
-              '${_init.user?.likedPosts?.length ?? 0}',
-              style: GoogleFonts.aBeeZee(),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.bookmark_border),
-            title: Text('Favorilerim', style: GoogleFonts.aBeeZee()),
-            trailing: Text(
-              '${_init.user?.favoritedPosts?.length ?? 0}',
-              style: GoogleFonts.aBeeZee(),
-            ),
-            onTap: () {},
-          ),
+         
           const Divider(),
           ListTile(
             leading: Icon(
@@ -107,10 +98,15 @@ class MeydanDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.settings_outlined),
             title: Text('Ayarlar', style: GoogleFonts.aBeeZee()),
-            onTap: onSettingsTap,
+            onTap: () => context.push("/settingsScreen")
+          ),
+          ListTile(
+            leading: Icon(Icons.logout, color: theme.colorScheme.error,),
+            title: Text('Oturumu Kapat', style: GoogleFonts.aBeeZee()),
+            onTap: () async => await userViewModel.signOut()
           ),
           const Spacer(),
-          Padding(
+         /*  Padding(
             padding: const EdgeInsets.all(16.0),
             child: SizedBox(
               width: double.infinity,
@@ -133,8 +129,8 @@ class MeydanDrawer extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 8),
+          ), */
+          //const SizedBox(height: 8),
         ],
       ),
     );
