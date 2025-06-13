@@ -66,7 +66,7 @@ class UserViewModel extends ChangeNotifier {
 
 
   Stream<bool> authStateChanges() {
-   
+
     return _repository.authStateChanges();
   } 
 
@@ -135,6 +135,8 @@ class UserViewModel extends ChangeNotifier {
       print("ERROR on UserViewModel.followRequest: $e");
     }
   }
+
+  
 
 }
 

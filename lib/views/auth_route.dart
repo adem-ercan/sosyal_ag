@@ -12,6 +12,7 @@ class AuthRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     UserViewModel userViewModel = Provider.of<UserViewModel>(context, listen: false);
 
+
     return StreamBuilder<bool>(
       stream: userViewModel.authStateChanges(),
       builder: (context, snapshot) {

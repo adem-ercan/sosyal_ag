@@ -33,7 +33,7 @@ class PaginationLikedPostList extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
       ),
       child: FirestorePagination(
-        limit: 6,
+        limit: 20,
         isLive: true,
         //physics: NeverScrollableScrollPhysics(),
         viewType: ViewType.list,

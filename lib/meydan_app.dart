@@ -28,16 +28,15 @@ class MeydanApp extends StatelessWidget {
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
+          
                 return StreamBuilder<bool>(
                   stream:themeProvider.getUserThemeStream(_init.user?.uid ?? " "),
                   builder: (context, snapshot) {
-                    print("snap: ${snapshot.data}");
                     if (snapshot.hasData && snapshot.data != null) {
                       snapshot.data == true
                         ? themeProvider.themeMode = ThemeMode.dark
                         : themeProvider.themeMode = ThemeMode.light;
                       } 
-
                     return MaterialApp.router(
                       routerConfig: router,
                       debugShowCheckedModeBanner: false,

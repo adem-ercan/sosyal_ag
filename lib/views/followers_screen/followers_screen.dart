@@ -29,8 +29,7 @@ class FollowersScreen extends StatelessWidget {
         query: FirebaseFirestore.instance
             .collection('users')
             .doc(_init.user?.uid)
-            .collection('followers')
-            .orderBy('createdAt', descending: true),
+            .collection('followers'),
         limit: 20,
         viewType: ViewType.list,
         onEmpty: Center(
@@ -46,9 +45,10 @@ class FollowersScreen extends StatelessWidget {
         ),
         itemBuilder: (context, documentSnapshot, index) {
           final followerData = documentSnapshot[index].data() as Map<String, dynamic>;
+
           
           return FutureBuilder<UserModel?>(
-            future: userViewModel.getUserDataById(followerData['userId']),
+            future: userViewModel.getUserDataById(followerData['followerId'] ?? ''),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const SizedBox.shrink();
@@ -92,13 +92,22 @@ class FollowersScreen extends StatelessWidget {
                   ),
                 ),
                 trailing: follower.uid != _init.user?.uid
-                    ? ElevatedButton(
-                        onPressed: () {
-                          // Takip et/Takibi bırak işlemi
+                    ? TextButton(
+                        onPressed: () async {
+                          // Takip et/Takibi bırak işlemi 
+                          if (_init.user!.following!.contains(follower.uid)) {
+                             await userViewModel.unFollowUser(follower.uid.toString());
+                          }else{
+                            
+                            await userViewModel.followUser(follower.uid.toString());
+                          }
+                           
                         },
                         child: Text(
-                          'Takip Et',
-                          style: GoogleFonts.aBeeZee(),
+                          _init.user!.following!.contains(follower.uid) ? 'Takibi Bırak' : 'Takip Et',
+                          style: GoogleFonts.aBeeZee(
+                            color: theme.colorScheme.onTertiary,
+                          ),
                         ),
                       )
                     : null,

@@ -371,7 +371,7 @@ class FirestoreService implements DataBaseCore {
   }
 
   Stream<Map<String, dynamic>?> getUserByIdStream(String userId) {
-    String userId = _init.user!.uid!;
+    //String userId = _init.user!.uid!;
     return _firestore.collection('users').doc(userId).snapshots().map((
       snapshot,
     ) {
@@ -411,6 +411,10 @@ class FirestoreService implements DataBaseCore {
       return allFollowing.take(6).toList();
     });
   }
+
+  /* Stream<List<String>> getUsersFollowersStream(String uid) {
+    return _firestore.collection('users').doc(uid).snapshots();
+  } */
 
   Future<void> updateUserTheme(String userId, bool isDarkMode) async {
     await _firestore.collection('users').doc(userId).update({
@@ -529,8 +533,8 @@ class FirestoreService implements DataBaseCore {
         .doc(targetUserId)
         .delete();
 
-    await _firestore.collection("users").doc(_init.user?.uid).update({
-      "followers": FieldValue.arrayRemove([targetUserId]),
+    await _firestore.collection("users").doc(targetUserId).update({
+      "followers": FieldValue.arrayRemove([_init.user?.uid]),
     });
 
     await _firestore
@@ -539,5 +543,8 @@ class FirestoreService implements DataBaseCore {
         .collection("followers")
         .doc(_init.user?.uid)
         .delete();
+
+          print("bütün işler tamamlandı");
+
   }
 }

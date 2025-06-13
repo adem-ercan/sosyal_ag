@@ -22,7 +22,7 @@ class OtherUserProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     //isFollowing = _init.user!.following!.contains(user.uid);
-
+    print("kullanıcı : ${user.userName}");
     UserViewModel userViewModel = Provider.of<UserViewModel>(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -204,15 +204,30 @@ class OtherUserProfileScreen extends StatelessWidget {
                                   // Burası count olarak ayarlanabilir
                                   user.posts!.length.toString(),
                                 ),
-                                _buildStatColumn(
-                                  context,
-                                  'Takipçi',
-                                  user.followersCount.toString(),
+                                StreamBuilder<Map<String, dynamic>?>(
+                                  stream: userViewModel.getUserByIdStream(user.uid.toString()),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      Map<String, dynamic>? data = snapshot.data;
+                                      print("dsdds ${data!['userName']}");
+                                      return _buildStatColumn(
+                                      context,
+                                      'Takipçi',
+                                      data!['followers'].length.toString(),
+                                    );
+                                    }
+
+                                    return _buildStatColumn(
+                                      context,
+                                      'Takipçi',
+                                      '0',
+                                    );
+                                  }
                                 ),
                                 _buildStatColumn(
                                   context,
                                   'Takip',
-                                  user.followingCount.toString(),
+                                  user.following!.length.toString(),
                                 ),
                               ],
                             ),

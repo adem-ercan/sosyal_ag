@@ -66,20 +66,19 @@ class MainPage extends StatelessWidget {
       context,
       listen: false,
     );
-    
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
       ),
       child: FirestorePagination(
-        limit: 6,
+        limit: 20,
         isLive: true,
         //physics: NeverScrollableScrollPhysics(),
         viewType: ViewType.list,
         shrinkWrap: true,
         query: FirebaseFirestore.instance
             .collection('users')
-            .doc(_init.user!.uid!)
+            .doc(_init.user?.uid!)
             .collection('following'),
 
         itemBuilder: (context, documentSnapshot, index) {

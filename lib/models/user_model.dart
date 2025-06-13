@@ -34,7 +34,7 @@ class UserModel {
     this.createdAt,
     this.updatedAt,
     this.followers,
-    this.following,
+    this.following = const [],
     this.followersCount = 0,
     this.followingCount = 0,
     this.postsCount = 0,

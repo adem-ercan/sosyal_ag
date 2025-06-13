@@ -126,17 +126,19 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
+    print("main screen tetiklendi");
     MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context);
 
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(
       context,
-      listen: true,
+      listen: false,
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       //await themeProvider.toggleTheme();
       if (themeProvider.isFirst) {
         themeProvider.isFirst = false;
+      
         await themeProvider.getUserTheme(_init.user?.uid ?? "");
       }
     });

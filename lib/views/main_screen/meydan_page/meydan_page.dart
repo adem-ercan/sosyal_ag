@@ -26,7 +26,7 @@ class MeydanPage extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
       ),
       child: FirestorePagination(
-        limit: 6,
+        limit: 20,
         isLive: true,
         //physics: NeverScrollableScrollPhysics(),
         viewType: ViewType.list,
@@ -36,7 +36,6 @@ class MeydanPage extends StatelessWidget {
             .orderBy('createdAt', descending: true),
         itemBuilder: (context, documentSnapshot, index) {
       
-          print(" ${index + 1} ${documentSnapshot[index].id}}");
         
           if (documentSnapshot.isEmpty){
             return Center(child: CircularProgressIndicator());
@@ -57,6 +56,7 @@ class MeydanPage extends StatelessWidget {
                 return const Center(child: Text('User not found'));
               }
               UserModel? user = snapshot.data;
+
               return PostCard(
                 post: post,
                 author: user!,

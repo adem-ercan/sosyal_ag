@@ -30,7 +30,7 @@ class PaginationMediaList extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
       ),
       child: FirestorePagination(
-        limit: 15,
+        limit: 20,
         isLive: true,
         viewType: ViewType.grid,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

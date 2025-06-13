@@ -274,13 +274,18 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         ),
         trailing: TextButton(
           onPressed: () async {
-            await userViewModel.followUser(user.uid ?? "");
+            if (init.user!.following!.contains(user.uid)) {
+              await userViewModel.unFollowUser(user.uid ?? "");
+            }else{
+              await userViewModel.followUser(user.uid ?? "");
+            }
+            
 
           },
-          child: user.uid != init.user!.uid ? Text(
-            'Takip Et',
+          child: user.uid != init.user?.uid ? Text(
+            init.user!.following!.contains(user.uid) ? 'Takibi Bırak' : 'Takip Et',
             style: GoogleFonts.aBeeZee(
-              color: theme.colorScheme.tertiary,
+              color: init.user!.following!.contains(user.uid) ? theme.colorScheme.onSurface : theme.colorScheme.tertiary,
               fontWeight: FontWeight.bold,
             ),
           ) : Text(""),

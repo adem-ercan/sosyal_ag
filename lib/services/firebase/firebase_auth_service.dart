@@ -18,6 +18,7 @@ class FirebaseAuthService implements AuthBase {
         return true;
       } else{return false;} 
     });
+    
   }
 
   @override

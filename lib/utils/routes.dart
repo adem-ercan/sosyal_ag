@@ -67,5 +67,10 @@ final router = GoRouter(
       builder: (context, state) => FollowingScreen(),
       
     ),
+    GoRoute(
+      path: '/authRoute',
+      builder: (context, state) => AuthRoute(),
+      
+    ),
   ],
 );

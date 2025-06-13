@@ -82,6 +82,8 @@ class Repository {
 
   Stream<bool> authStateChanges() {
     return _firebaseAuthService.authStateChanges();
+    
+    
   }
 
   Future<UserModel?> getCurrentUserAllData() async {
