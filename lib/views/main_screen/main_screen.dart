@@ -191,26 +191,24 @@ class MainScreen extends StatelessWidget {
           onItemSelected: (index) => mainScreenViewModel.isAppBarVisible(index),
           floatingActionButton: Visibility(
             visible: mainScreenViewModel.isVisibleFloatingButton,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10, bottom: 30),
-              child: Container(
-                height: 50,
-                width: 50,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  shape: BoxShape.rectangle,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-                child: IconButton(
-                  padding: EdgeInsets.only(bottom: 30, right: 10),
-                  icon: Icon(
-                    Icons.add_comment_rounded,
-                    color: Theme.of(context).primaryColor,
+            child: InkWell(
+              onTap: () => PostShareBottomSheet.show(context),
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10, bottom: 30),
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    shape: BoxShape.rectangle,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
-                  onPressed: () {
-                    PostShareBottomSheet.show(context);
-                  },
+                  child: Icon(
+                      Icons.add_comment_rounded,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  
                 ),
               ),
             ),

@@ -250,6 +250,8 @@ class Repository {
     
   }
 
+  
+
   Future<void> saveProfileEdit(String fullName, String userName, String bio,{File? image}) async {
     await _firestoreService.saveProfileEdit(fullName, userName, bio, imageFile: image);
   }
@@ -260,5 +262,9 @@ class Repository {
 
   Future<void> followUser(String targetUserId) async {
     await _firestoreService.followUser(targetUserId);
+  }
+
+  Future<void> unFollowUser(String targetUserId) async {
+    await _firestoreService.unFollowUser(targetUserId);
   }
 }

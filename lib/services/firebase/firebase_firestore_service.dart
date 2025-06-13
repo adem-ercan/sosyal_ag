@@ -60,9 +60,7 @@ class FirestoreService implements DataBaseCore {
       );
       postJsonData['mediaUrls'] = [url];
       postJsonData['hasMedia'] = true;
-    }else{
-
-    }
+    } else {}
 
     postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
     String content = postJsonData['content'];
@@ -488,24 +486,58 @@ class FirestoreService implements DataBaseCore {
     await _firestore.collection('follow_requests').doc(senderId).delete();
   }
 
-
   // if not private
-  Future<void> followUser(String targetUserId) async {  
+  Future<void> followUser(String targetUserId) async {
     await _firestore.collection('users').doc(_init.user!.uid).update({
       'following': FieldValue.arrayUnion([targetUserId]),
     });
 
-    await _firestore.collection('users').doc(_init.user?.uid).collection('following').doc(targetUserId).set({
-      'timestamp': FieldValue.serverTimestamp(),
-      'followingId' : targetUserId 
+    await _firestore
+        .collection('users')
+        .doc(_init.user?.uid)
+        .collection('following')
+        .doc(targetUserId)
+        .set({
+          'timestamp': FieldValue.serverTimestamp(),
+          'followingId': targetUserId,
+        });
+
+    await _firestore.collection("users").doc(targetUserId).update({
+      "followers": FieldValue.arrayUnion([_init.user?.uid]),
     });
+
+    await _firestore
+        .collection("users")
+        .doc(targetUserId)
+        .collection("followers")
+        .doc(_init.user?.uid)
+        .set({
+          "timestamp": FieldValue.serverTimestamp(),
+          "followerId": _init.user?.uid,
+        });
   }
 
-  Future<void> unFollowUser() async {
-    await _firestore.collection('users').doc(_init.user!.uid).update({ 
-      'following': FieldValue.arrayRemove([_init.user!.uid]),
+  Future<void> unFollowUser(String targetUserId) async {
+    await _firestore.collection('users').doc(_init.user!.uid).update({
+      'following': FieldValue.arrayRemove([targetUserId]),
     });
+
+    await _firestore
+        .collection('users')
+        .doc(_init.user?.uid)
+        .collection('following')
+        .doc(targetUserId)
+        .delete();
+
+    await _firestore.collection("users").doc(_init.user?.uid).update({
+      "followers": FieldValue.arrayRemove([targetUserId]),
+    });
+
+    await _firestore
+        .collection("users")
+        .doc(targetUserId)
+        .collection("followers")
+        .doc(_init.user?.uid)
+        .delete();
   }
-
-
 }

@@ -128,6 +128,14 @@ class UserViewModel extends ChangeNotifier {
     await _repository.followUser(targetUserId);
   }
 
+  Future<void> unFollowUser(String targetUserId) async {
+    try {
+      await _repository.unFollowUser(targetUserId);
+    } catch (e) {
+      print("ERROR on UserViewModel.followRequest: $e");
+    }
+  }
+
 }
 
 

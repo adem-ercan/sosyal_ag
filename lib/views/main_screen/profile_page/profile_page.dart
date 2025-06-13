@@ -175,6 +175,9 @@ class ProfilePage extends StatelessWidget {
             SliverPersistentHeader(
               delegate: _SliverAppBarDelegate(
                 TabBar(
+                  tabAlignment: TabAlignment.start,
+                  automaticIndicatorColorAdjustment: false,
+                  isScrollable: true,
                   dividerColor: theme.colorScheme.onSecondary,
                   labelColor: theme.colorScheme.tertiary,
                   overlayColor: WidgetStateProperty.all(
@@ -183,6 +186,7 @@ class ProfilePage extends StatelessWidget {
                   unselectedLabelColor: theme.colorScheme.onSurface,
                   tabs: [
                     Tab(
+                      
                       child: FittedBox(
                         child: Text('Gönderiler', style: GoogleFonts.aBeeZee()),
                       ),

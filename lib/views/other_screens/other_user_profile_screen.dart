@@ -3,10 +3,12 @@ import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
+import 'package:sosyal_ag/view_models/user_view_model.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 
 class OtherUserProfileScreen extends StatelessWidget {
@@ -19,200 +21,242 @@ class OtherUserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    isFollowing = _init.user!.following!.contains(user.uid);
+    //isFollowing = _init.user!.following!.contains(user.uid);
+
+    UserViewModel userViewModel = Provider.of<UserViewModel>(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: DefaultTabController(
         length: 2,
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                expandedHeight: 100,
-                floating: true,
-                pinned: true,
-                leading: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: theme.colorScheme.onSurface,
-                  ),
-                  onPressed: () => context.pop(),
-                ),
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          theme.colorScheme.tertiary,
-                          theme.scaffoldBackgroundColor,
-                        ],
+        child: StreamBuilder<Map<String, dynamic>?>(
+          stream: userViewModel.getUserByIdStream(_init.user!.uid.toString()),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              Map<String, dynamic>? userMap = snapshot.data;
+              List? fol = userMap!['following'] as List;
+
+              isFollowing = fol.contains(user.uid);
+              return NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    SliverAppBar(
+                      expandedHeight: 100,
+                      floating: true,
+                      pinned: true,
+                      leading: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                        onPressed: () => context.pop(),
+                      ),
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                theme.colorScheme.tertiary,
+                                theme.scaffoldBackgroundColor,
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 40,
-                            backgroundColor: theme.colorScheme.tertiary,
-                            backgroundImage:
-                                user.photoUrl != null
-                                    ? NetworkImage(user.photoUrl!)
-                                    : null,
-                            child:
-                                user.photoUrl == null
-                                    ? Text(
-                                      user.userName[0].toUpperCase(),
-                                      style: const TextStyle(fontSize: 32),
-                                    )
-                                    : null,
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
                               children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      user.userName,
-                                      style: GoogleFonts.aBeeZee(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
+                                CircleAvatar(
+                                  radius: 40,
+                                  backgroundColor: theme.colorScheme.tertiary,
+                                  backgroundImage:
+                                      user.photoUrl != null
+                                          ? NetworkImage(user.photoUrl!)
+                                          : null,
+                                  child:
+                                      user.photoUrl == null
+                                          ? Text(
+                                            user.userName[0].toUpperCase(),
+                                            style: const TextStyle(
+                                              fontSize: 32,
+                                            ),
+                                          )
+                                          : null,
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            user.userName,
+                                            style: GoogleFonts.aBeeZee(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          if (user.isVerified)
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 4,
+                                              ),
+                                              child: Icon(
+                                                Icons.verified,
+                                                color:
+                                                    theme.colorScheme.tertiary,
+                                                size: 20,
+                                              ),
+                                            ),
+                                        ],
                                       ),
-                                    ),
-                                    if (user.isVerified)
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 4),
-                                        child: Icon(
-                                          Icons.verified,
-                                          color: theme.colorScheme.tertiary,
-                                          size: 20,
+                                      Text(
+                                        '@${user.userName.toLowerCase()}',
+                                        style: GoogleFonts.aBeeZee(
+                                          color: theme.colorScheme.onSurface
+                                              .withOpacity(0.6),
                                         ),
                                       ),
-                                  ],
-                                ),
-                                Text(
-                                  '@${user.userName.toLowerCase()}',
-                                  style: GoogleFonts.aBeeZee(
-                                    color: theme.colorScheme.onSurface
-                                        .withOpacity(0.6),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                      if (user.bio != null) ...[
-                        const SizedBox(height: 16),
-                        Text(
-                          user.bio!,
-                          style: GoogleFonts.aBeeZee(fontSize: 14),
+                            if (user.bio != null) ...[
+                              const SizedBox(height: 16),
+                              Text(
+                                user.bio!,
+                                style: GoogleFonts.aBeeZee(fontSize: 14),
+                              ),
+                            ],
+                            const SizedBox(height: 16),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      isFollowing
+                                          ? await userViewModel.unFollowUser(
+                                            user.uid.toString(),
+                                          )
+                                          : await userViewModel.followUser(
+                                            user.uid.toString(),
+                                          );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          isFollowing
+                                              ? theme.colorScheme.surface
+                                              : theme.colorScheme.tertiary,
+                                      foregroundColor:
+                                          isFollowing
+                                              ? theme.colorScheme.onSurface
+                                              : Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      isFollowing ? 'Takibi Bırak' : 'Takip Et',
+                                      style:
+                                          isFollowing
+                                              ? GoogleFonts.aBeeZee(
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    theme.colorScheme.onSurface,
+                                              )
+                                              : GoogleFonts.aBeeZee(
+                                                fontWeight: FontWeight.bold,
+                                                color: theme.primaryColor,
+                                              ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                IconButton(
+                                  onPressed: () {},
+                                  style: IconButton.styleFrom(
+                                    backgroundColor: theme.colorScheme.surface,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                  icon: const Icon(Icons.message_outlined),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                _buildStatColumn(
+                                  context,
+                                  'Gönderi',
+                                  // Burası count olarak ayarlanabilir
+                                  user.posts!.length.toString(),
+                                ),
+                                _buildStatColumn(
+                                  context,
+                                  'Takipçi',
+                                  user.followersCount.toString(),
+                                ),
+                                _buildStatColumn(
+                                  context,
+                                  'Takip',
+                                  user.followingCount.toString(),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    isFollowing
-                                        ? theme.colorScheme.surface
-                                        : theme.colorScheme.tertiary,
-                                foregroundColor:
-                                    isFollowing
-                                        ? theme.colorScheme.onSurface
-                                        : Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
+                      ),
+                    ),
+                    SliverPersistentHeader(
+                      delegate: _SliverAppBarDelegate(
+                        TabBar(
+                          labelColor: theme.colorScheme.tertiary,
+                          unselectedLabelColor: theme.colorScheme.onSurface,
+                          tabs: [
+                            Tab(
                               child: Text(
-                                isFollowing
-                                    ? 'Takibi Bırak'
-                                    : 'Takip Et',
-                                style: isFollowing ? GoogleFonts.aBeeZee(
-                                  fontWeight: FontWeight.bold,
-                                  color:  theme.colorScheme.onSurface,
-                                ) : GoogleFonts.aBeeZee(
-                                  fontWeight: FontWeight.bold,
-                                  color:theme.primaryColor,
-                                ),
+                                'Gönderiler',
+                                style: GoogleFonts.aBeeZee(),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          IconButton(
-                            onPressed: () {},
-                            style: IconButton.styleFrom(
-                              backgroundColor: theme.colorScheme.surface,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                            Tab(
+                              child: Text(
+                                'Medya',
+                                style: GoogleFonts.aBeeZee(),
                               ),
                             ),
-                            icon: const Icon(Icons.message_outlined),
-                          ),
-                        ],
+                          ],
+                          indicatorColor: theme.colorScheme.tertiary,
+                        ),
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _buildStatColumn(
-                            context,
-                            'Gönderi',
-                            // Burası count olarak ayarlanabilir
-                            user.posts!.length.toString(),
-                          ),
-                          _buildStatColumn(
-                            context,
-                            'Takipçi',
-                            user.followersCount.toString(),
-                          ),
-                          _buildStatColumn(
-                            context,
-                            'Takip',
-                            user.followingCount.toString(),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                      pinned: true,
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  children: [
+                    _buildPostsList(context),
+                    _buildMediaGrid(context),
+                  ],
                 ),
-              ),
-              SliverPersistentHeader(
-                delegate: _SliverAppBarDelegate(
-                  TabBar(
-                    labelColor: theme.colorScheme.tertiary,
-                    unselectedLabelColor: theme.colorScheme.onSurface,
-                    tabs: [
-                      Tab(
-                        child: Text('Gönderiler', style: GoogleFonts.aBeeZee()),
-                      ),
-                      Tab(child: Text('Medya', style: GoogleFonts.aBeeZee())),
-                    ],
-                    indicatorColor: theme.colorScheme.tertiary,
-                  ),
-                ),
-                pinned: true,
-              ),
-            ];
+              );
+            } else {
+              return Center(child: Text("Bir sorun çıktı!"));
+            }
           },
-          body: TabBarView(
-            children: [_buildPostsList(context), _buildMediaGrid(context)],
-          ),
         ),
       ),
     );
@@ -268,35 +312,33 @@ class OtherUserProfileScreen extends StatelessWidget {
 
   Widget _buildMediaGrid(BuildContext context) {
     return FirestorePagination(
-        limit: 15,
-        isLive: true,
-        viewType: ViewType.grid,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          mainAxisSpacing: 1,
-          crossAxisSpacing: 1,
-        ),
-        query: FirebaseFirestore.instance
-            .collection('posts')
-            .where("authorId", isEqualTo: user.uid)
-            .where('hasMedia', isEqualTo: true)
-            .orderBy('createdAt', descending: true),
-        itemBuilder: (context, documentSnapshot, index) {
+      limit: 15,
+      isLive: true,
+      viewType: ViewType.grid,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: 1,
+        crossAxisSpacing: 1,
+      ),
+      query: FirebaseFirestore.instance
+          .collection('posts')
+          .where("authorId", isEqualTo: user.uid)
+          .where('hasMedia', isEqualTo: true)
+          .orderBy('createdAt', descending: true),
+      itemBuilder: (context, documentSnapshot, index) {
+        if (documentSnapshot.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        }
 
-          if (documentSnapshot.isEmpty) {
-            return Center(child: CircularProgressIndicator());
-          }
+        final data = documentSnapshot[index].data() as Map<String, dynamic>;
+        final post = PostModel.fromJson(data);
 
-          final data = documentSnapshot[index].data() as Map<String, dynamic>;
-          final post = PostModel.fromJson(data);
-          
-
-         for (var element in post.mediaUrls!) {
-            return InkWell(
+        for (var element in post.mediaUrls!) {
+          return InkWell(
             onTap: () {
               context.push(
                 "/postScreen",
-                extra: {'post': post, 'author': user!},
+                extra: {'post': post, 'author': user},
               );
             },
             child: Container(
@@ -304,15 +346,13 @@ class OtherUserProfileScreen extends StatelessWidget {
               child: Image.network(element.toString()),
             ),
           );
-          }
+        }
 
-          return const SizedBox.shrink(); // Eğer mediaUrls boşsa, boş bir widget döndür
-          
-          
-        },
-        initialLoader: const Center(child: CircularProgressIndicator()),
-        bottomLoader: const Center(child: CircularProgressIndicator()),
-      );
+        return const SizedBox.shrink(); // Eğer mediaUrls boşsa, boş bir widget döndür
+      },
+      initialLoader: const Center(child: CircularProgressIndicator()),
+      bottomLoader: const Center(child: CircularProgressIndicator()),
+    );
     /* return GridView.builder(
       padding: const EdgeInsets.all(1),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

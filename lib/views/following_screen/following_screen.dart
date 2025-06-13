@@ -104,9 +104,10 @@ class FollowingScreen extends StatelessWidget {
                   trailing: following.uid != _init.user?.uid
                       ? TextButton(
                           
-                          onPressed: () {
+                          onPressed: () async{
                             // Takipten çıkma işlemi
                             print("Takipten çık");
+                            await userViewModel.unFollowUser(following.uid.toString());
                           },
                           child: Text(
                             'Takipten Çık',
