@@ -40,11 +40,10 @@ class PaginationMediaList extends StatelessWidget {
         ),
         query: FirebaseFirestore.instance
             .collection('posts')
-            .where("authorId", isEqualTo: _init.user!.uid)
-            .where('mediaUrls')
+            .where("authorId", isEqualTo: _init.user?.uid)
+            .where('hasMedia', isEqualTo: true)
             .orderBy('createdAt', descending: true),
         itemBuilder: (context, documentSnapshot, index) {
-          print("bbb ${index + 1} ${documentSnapshot[index].id}}");
 
           if (documentSnapshot.isEmpty) {
             return Center(child: CircularProgressIndicator());
@@ -52,10 +51,12 @@ class PaginationMediaList extends StatelessWidget {
 
           final data = documentSnapshot[index].data() as Map<String, dynamic>;
           final post = PostModel.fromJson(data);
-          if (post.mediaUrls == null || post.mediaUrls!.isEmpty) {
-            return const SizedBox.shrink(); // Eğer mediaUrls boşsa, boş bir widget döndür
-          }
-          return InkWell(
+          
+        
+
+
+         for (var element in post.mediaUrls!) {
+            return InkWell(
             onTap: () {
               context.push(
                 "/postScreen",
@@ -64,9 +65,14 @@ class PaginationMediaList extends StatelessWidget {
             },
             child: Container(
               decoration: BoxDecoration(),
-              child: Image.network(post.mediaUrls![index].toString()),
+              child: Image.network(element.toString()),
             ),
           );
+          }
+
+          return const SizedBox.shrink(); // Eğer mediaUrls boşsa, boş bir widget döndür
+          
+          
         },
         initialLoader: const Center(child: CircularProgressIndicator()),
         bottomLoader: const Center(child: CircularProgressIndicator()),

@@ -103,20 +103,22 @@ class ProfilePage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          ElevatedButton(
+                          TextButton(
                             onPressed: () {
                               context.push('/profileEdit');
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: theme.colorScheme.onSurface,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            child: Text(
-                              'Düzenle',
-                              style: GoogleFonts.aBeeZee(
-                                color: theme.primaryColor,
+                            child: FittedBox(
+                              child: Text(
+                                'Düzenle',
+                                style: GoogleFonts.aBeeZee(
+                                  color: theme.primaryColor,
+                                ),
                               ),
                             ),
                           ),
@@ -136,13 +138,24 @@ class ProfilePage extends StatelessWidget {
                             'Gönderi',
                             '${_init.user?.posts?.length ?? "0"}',
                           ),
-                          _buildStatColumn(
-                            'Takipçi',
-                            '${_init.user?.followersCount}',
+                          InkWell(
+                            onTap: () {
+                              context.push('/followersScreen');
+                            },
+                            child: _buildStatColumn(
+                              'Takipçi',
+                              '${_init.user?.following?.length ?? "0"}',
+                            ),
                           ),
-                          _buildStatColumn(
-                            'Takip',
-                            '${_init.user?.followingCount}',
+                          InkWell(
+                            onTap: () {
+                              context.push('/followingScreen');
+                            },
+                            child: _buildStatColumn(
+                              
+                              'Takip',
+                              '${_init.user?.followers?.length ?? "0"}',
+                            ),
                           ),
                         ],
                       ),
@@ -151,6 +164,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ),
+            
             SliverPersistentHeader(
               delegate: _SliverAppBarDelegate(
                 TabBar(

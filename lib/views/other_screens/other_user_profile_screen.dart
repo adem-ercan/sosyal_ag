@@ -169,7 +169,8 @@ class OtherUserProfileScreen extends StatelessWidget {
                           _buildStatColumn(
                             context,
                             'Gönderi',
-                            user.postsCount.toString(),
+                            // Burası count olarak ayarlanabilir
+                            user.posts!.length.toString(),
                           ),
                           _buildStatColumn(
                             context,

@@ -124,6 +124,10 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> followUser(String targetUserId) async{
+    await _repository.followUser(targetUserId);
+  }
+
 }
 
 

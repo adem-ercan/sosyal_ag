@@ -17,18 +17,26 @@ enum Loading { loading, loaded }
 
 class PostViewModel extends ChangeNotifier {
   //VARIABLES
+  final TextEditingController contentController = TextEditingController();
   final Repository _repository = locator<Repository>();
   final Init _init = locator<Init>();
   Loading _loading = Loading.loaded;
   final ImagePicker _picker = ImagePicker();
   File? _image;
+  String? _postContent;
   
 
   //GETTERS
   Loading get loading => _loading;
   File? get image => _image;
+  String? get postContent => _postContent;
 
   //SETTERS
+  set postContent(value){
+    _postContent = value;
+    notifyListeners();
+  }
+
   set image(File? value) {
     _image = value;
     notifyListeners();

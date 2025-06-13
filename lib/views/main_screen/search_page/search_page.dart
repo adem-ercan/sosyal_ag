@@ -232,6 +232,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           context.push('/otherUserProfile', extra: user);
         }else{
           viewModel.controller.index = 4;
+          viewModel.isFloatingButtonVisible(4);
+          
         }
         
       },
@@ -272,8 +274,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         ),
         trailing: TextButton(
           onPressed: () async {
-            print("Takip et butonuna basıldı");
-            await userViewModel.followRequest(user.uid ?? "");
+            await userViewModel.followUser(user.uid ?? "");
 
           },
           child: user.uid != init.user!.uid ? Text(
@@ -301,7 +302,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   }
                   return PostCard(post: post, author: snapshot.data!);
           
-        
       }
     );
   }

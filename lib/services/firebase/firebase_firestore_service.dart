@@ -56,7 +56,7 @@ class FirestoreService implements DataBaseCore {
     if (imageFile != null) {
       String? url = await _storageService.uploadPostMedia(
         imageFile,
-        "${postJsonData['authorId']}-${postJsonData['id']}",
+        "${postJsonData['authorId']}-${postJsonData['id']}-${DateTime.now()}",
       );
       postJsonData['mediaUrls'] = [url];
     }
@@ -457,11 +457,10 @@ class FirestoreService implements DataBaseCore {
     File? imageFile,
   }) async {
     FieldValue time = FieldValue.serverTimestamp();
-    String url = '';
+    String? url;
 
     String fileName = time.toString() + _init.user!.uid.toString();
     if (imageFile != null) {
-      print("bubububu");
       url = await _storageService.uploadPostMedia(imageFile, fileName);
     }
     _firestore.collection('users').doc(_init.user!.uid.toString()).update({
@@ -472,6 +471,7 @@ class FirestoreService implements DataBaseCore {
     });
   }
 
+  // if user profile is private
   Future<void> followRequest(String targetUserId) async {
     await _firestore.collection('follow_requests').add({
       'senderId': _init.user!.uid,
@@ -480,4 +480,24 @@ class FirestoreService implements DataBaseCore {
       'timestamp': FieldValue.serverTimestamp(),
     });
   }
+
+  Future<void> acceptFollowRequest(String senderId) async {
+    await _firestore.collection('follow_requests').doc(senderId).delete();
+  }
+
+
+  // if not private
+  Future<void> followUser(String targetUserId) async {  
+    await _firestore.collection('users').doc(_init.user!.uid).update({
+      'following': FieldValue.arrayUnion([targetUserId]),
+    });
+  }
+
+  Future<void> unFollowUser() async {
+    await _firestore.collection('users').doc(_init.user!.uid).update({ 
+      'following': FieldValue.arrayRemove([_init.user!.uid]),
+    });
+  }
+
+
 }

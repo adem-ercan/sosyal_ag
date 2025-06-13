@@ -42,7 +42,7 @@ final PersistentTabController controller = PersistentTabController(
 
   //METHODS
   void isAppBarVisible(int index){
-    if(index==0){
+    if(index==0 || index == 2){
       isVisibleAppBar = true;
     }else{
       isVisibleAppBar = false;

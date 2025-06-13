@@ -84,6 +84,27 @@ class MeydanDrawer extends StatelessWidget {
               
             } 
           ),
+            ListTile(
+            leading: const Icon(Icons.person_add),
+            title: Row(
+              children: [
+                Text('Takip İstekleri', style: GoogleFonts.aBeeZee()),
+                SizedBox(width: MediaQuery.of(context).size.width*.2,),
+                Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.onPrimary,
+                    borderRadius: BorderRadius.circular(50)
+                  ),
+                  child: Center(child: Text('5', style: GoogleFonts.aBeeZee(
+                    fontSize: 12,
+                    color: theme.colorScheme.tertiary, 
+                    fontWeight: FontWeight.bold)))),
+              ],
+            ),
+            onTap: () => context.push("/settingsScreen")
+          ),
          
           const Divider(),
           ListTile(

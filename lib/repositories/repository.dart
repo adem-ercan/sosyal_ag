@@ -65,10 +65,10 @@ class Repository {
     User? user = credential?.user;
 
     if (user != null) {
-      UserModel userModel = UserModel(
+     /*  UserModel userModel = UserModel(
         userName: email.getEmailPrefix(),
         email: email,
-      );
+      ); */
       //await _firestoreService.getCurrentUserAllData(userID)
     } else {
       print("Oturum açılamadı");
@@ -134,7 +134,7 @@ class Repository {
     // Burada post'a yorum ekleniyor
     
 
-    Map<String, dynamic> commentJson = commetModel.toJson();
+    //Map<String, dynamic> commentJson = commetModel.toJson();
     //commentJson.update("createdAt", (value) => DateTime.now());
 
     await _firestoreService.addCommentToPost(postId, commetModel.toJson());
@@ -256,5 +256,9 @@ class Repository {
 
   Future<void> followRequest(String targetUserId) async {
     await _firestoreService.followRequest(targetUserId);
+  }
+
+  Future<void> followUser(String targetUserId) async {
+    await _firestoreService.followUser(targetUserId);
   }
 }

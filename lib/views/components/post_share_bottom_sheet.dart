@@ -30,7 +30,6 @@ class PostShareBottomSheet extends StatelessWidget {
     final PostViewModel postViewModel = Provider.of<PostViewModel>(context);
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
-    final TextEditingController contentController = TextEditingController();
     final List<String> selectedMediaUrls = [];
 
     return SafeArea(
@@ -79,7 +78,7 @@ class PostShareBottomSheet extends StatelessWidget {
                     ),
                     TextButton(
                       // ignore: dead_code
-                      onPressed: () => _handlePost(context, contentController.text, selectedMediaUrls),
+                      onPressed: () => _handlePost(context, postViewModel.contentController.text, selectedMediaUrls),
                       child: postViewModel.loading == Loading.loading
                           ? SizedBox(
                               height: 20,
@@ -114,7 +113,7 @@ class PostShareBottomSheet extends StatelessWidget {
                 const Divider(),
                 // İçerik
                 TextField(
-                  controller: contentController,
+                  controller: postViewModel.contentController,
                   maxLines: 5,
                   maxLength: 280,
                   decoration: InputDecoration(
@@ -124,6 +123,10 @@ class PostShareBottomSheet extends StatelessWidget {
                       color: theme.colorScheme.onSurface.withOpacity(0.6),
                     ),
                   ),
+                  onChanged: (value) {
+                    postViewModel.postContent = value;
+                    postViewModel.contentController.text = postViewModel.postContent ?? '';
+                  },
                 ),
                 // Medya önizleme
                 if (postViewModel.image != null) ...[
@@ -142,19 +145,19 @@ class PostShareBottomSheet extends StatelessWidget {
                   child: Row(
                     children: [
                       IconButton(
-                        iconSize: 50,
+                        iconSize: 40,
                         onPressed: () async => await postViewModel.mediaPick(),
                         icon: Icon(
-                          Icons.image_outlined,
+                          Icons.add_photo_alternate_rounded,
                           color: theme.colorScheme.onSecondary,
                         ),
                       ),
                       
                       
                       const Spacer(),
-                      if (contentController.text.isNotEmpty)
+                      if (postViewModel.contentController.text.isNotEmpty)
                         Text(
-                          '${contentController.text.length}/280',
+                          '${postViewModel.contentController.text.length}/280',
                           style: TextStyle(
                             color: theme.colorScheme.onSurface.withOpacity(0.6),
                           ),
