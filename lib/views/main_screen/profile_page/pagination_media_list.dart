@@ -52,8 +52,6 @@ class PaginationMediaList extends StatelessWidget {
           final data = documentSnapshot[index].data() as Map<String, dynamic>;
           final post = PostModel.fromJson(data);
           
-        
-
 
          for (var element in post.mediaUrls!) {
             return InkWell(

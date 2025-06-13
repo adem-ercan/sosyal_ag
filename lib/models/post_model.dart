@@ -17,6 +17,7 @@ class PostModel {
   final bool isEdited;
   final bool isPinned;
   final bool isFirstPost;
+  final bool hasMedia;
   final String? parentPostId; // Yanıt olarak yazıldığı post
   final String? repostedFromId; // Repost yapıldığı post
   final String? quotedPostId; // Alıntı yapıldığı post
@@ -38,6 +39,7 @@ class PostModel {
     this.isEdited = false,
     this.isPinned = false,
     this.isFirstPost = false,
+    this.hasMedia = false,
     this.parentPostId,
     this.repostedFromId,
     this.quotedPostId,
@@ -67,6 +69,7 @@ class PostModel {
       isEdited: json['isEdited'] as bool? ?? false,
       isPinned: json['isPinned'] as bool? ?? false,
       isFirstPost: json['isFirstPost'] as bool? ?? false,
+      hasMedia: json['hasMedia'] as bool? ?? false,
       parentPostId: json['parentPostId'] as String?,
       repostedFromId: json['repostedFromId'] as String?,
       quotedPostId: json['quotedPostId'] as String?,
@@ -90,6 +93,7 @@ class PostModel {
       'repostsCount': repostsCount,
       'isEdited': isEdited,
       'isPinned': isPinned,
+      'hasMedia' : hasMedia,
       'isFirstPost': isFirstPost,
       'parentPostId': parentPostId,
       'repostedFromId': repostedFromId,
@@ -114,6 +118,7 @@ class PostModel {
     int? repostsCount,
     bool? isEdited,
     bool? isPinned,
+    bool? hasMedia,
     bool? isFirstPost,
     String? parentPostId,
     String? repostedFromId,
@@ -135,6 +140,7 @@ class PostModel {
       repostsCount: repostsCount ?? this.repostsCount,
       isEdited: isEdited ?? this.isEdited,
       isPinned: isPinned ?? this.isPinned,
+      hasMedia: hasMedia ?? this.hasMedia,
       isFirstPost: isFirstPost ?? this.isFirstPost,
       parentPostId: parentPostId ?? this.parentPostId,
       repostedFromId: repostedFromId ?? this.repostedFromId,

@@ -59,6 +59,9 @@ class FirestoreService implements DataBaseCore {
         "${postJsonData['authorId']}-${postJsonData['id']}-${DateTime.now()}",
       );
       postJsonData['mediaUrls'] = [url];
+      postJsonData['hasMedia'] = true;
+    }else{
+      
     }
 
     postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
