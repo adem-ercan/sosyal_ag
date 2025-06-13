@@ -61,7 +61,7 @@ class FirestoreService implements DataBaseCore {
       postJsonData['mediaUrls'] = [url];
       postJsonData['hasMedia'] = true;
     }else{
-      
+
     }
 
     postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
@@ -493,6 +493,11 @@ class FirestoreService implements DataBaseCore {
   Future<void> followUser(String targetUserId) async {  
     await _firestore.collection('users').doc(_init.user!.uid).update({
       'following': FieldValue.arrayUnion([targetUserId]),
+    });
+
+    await _firestore.collection('users').doc(_init.user?.uid).collection('following').doc(targetUserId).set({
+      'timestamp': FieldValue.serverTimestamp(),
+      'followingId' : targetUserId 
     });
   }
 

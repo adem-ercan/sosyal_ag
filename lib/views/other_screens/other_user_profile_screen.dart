@@ -3,24 +3,23 @@ import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
+import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 
 class OtherUserProfileScreen extends StatelessWidget {
   final UserModel user;
-  final bool isFollowing;
+  final Init _init = locator<Init>();
+  late bool isFollowing;
 
-  const OtherUserProfileScreen({
-    super.key,
-    required this.user,
-    this.isFollowing = false,
-  });
+  OtherUserProfileScreen({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    isFollowing = _init.user!.following!.contains(user.uid);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: DefaultTabController(
@@ -141,10 +140,15 @@ class OtherUserProfileScreen extends StatelessWidget {
                                 ),
                               ),
                               child: Text(
-                                isFollowing ? 'Takibi Bırak' : 'Takip Et',
-                                style: GoogleFonts.aBeeZee(
+                                isFollowing
+                                    ? 'Takibi Bırak'
+                                    : 'Takip Et',
+                                style: isFollowing ? GoogleFonts.aBeeZee(
                                   fontWeight: FontWeight.bold,
-                                  color: theme.primaryColor,
+                                  color:  theme.colorScheme.onSurface,
+                                ) : GoogleFonts.aBeeZee(
+                                  fontWeight: FontWeight.bold,
+                                  color:theme.primaryColor,
                                 ),
                               ),
                             ),
@@ -235,8 +239,6 @@ class OtherUserProfileScreen extends StatelessWidget {
           .where("authorId", isEqualTo: user.uid)
           .orderBy('createdAt', descending: true),
       itemBuilder: (context, documentSnapshot, index) {
-        print(" ${index + 1} ${documentSnapshot[index].id}}");
-
         if (documentSnapshot.isEmpty) {
           return Center(child: CircularProgressIndicator());
         }
@@ -266,49 +268,51 @@ class OtherUserProfileScreen extends StatelessWidget {
 
   Widget _buildMediaGrid(BuildContext context) {
     return FirestorePagination(
-      limit: 15,
-      isLive: true,
-      viewType: ViewType.grid,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisSpacing: 1,
-        crossAxisSpacing: 1,
-      ),
-      query: FirebaseFirestore.instance
-          .collection('posts')
-          .where("authorId", isEqualTo: user.uid)
-          .where('mediaUrls')
-          .orderBy('createdAt', descending: true),
-      itemBuilder: (context, documentSnapshot, index) {
-        print("bbb ${index + 1} ${documentSnapshot[index].id}}");
+        limit: 15,
+        isLive: true,
+        viewType: ViewType.grid,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          mainAxisSpacing: 1,
+          crossAxisSpacing: 1,
+        ),
+        query: FirebaseFirestore.instance
+            .collection('posts')
+            .where("authorId", isEqualTo: user.uid)
+            .where('hasMedia', isEqualTo: true)
+            .orderBy('createdAt', descending: true),
+        itemBuilder: (context, documentSnapshot, index) {
 
-        if (documentSnapshot.isEmpty) {
-          return Center(child: CircularProgressIndicator());
-        }
+          if (documentSnapshot.isEmpty) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-        final data = documentSnapshot[index].data() as Map<String, dynamic>;
-        final post = PostModel.fromJson(data);
-        if(post.mediaUrls == null || post.mediaUrls!.isEmpty) {
-          return const SizedBox.shrink(); // Eğer mediaUrls boşsa, boş bir widget döndür
-        }
-        return InkWell(
-          onTap: () {
-            context.push(
-              "/postScreen",
-              extra: {'post': post, 'author': user},
-            );
-          },
-          child: Container(
-            decoration: BoxDecoration(),
-            child: Image.network(
-              post.mediaUrls![index].toString()
+          final data = documentSnapshot[index].data() as Map<String, dynamic>;
+          final post = PostModel.fromJson(data);
+          
+
+         for (var element in post.mediaUrls!) {
+            return InkWell(
+            onTap: () {
+              context.push(
+                "/postScreen",
+                extra: {'post': post, 'author': user!},
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(),
+              child: Image.network(element.toString()),
             ),
-          ),
-        );
-      },
-      initialLoader: const Center(child: CircularProgressIndicator()),
-      bottomLoader: const Center(child: CircularProgressIndicator()),
-    );
+          );
+          }
+
+          return const SizedBox.shrink(); // Eğer mediaUrls boşsa, boş bir widget döndür
+          
+          
+        },
+        initialLoader: const Center(child: CircularProgressIndicator()),
+        bottomLoader: const Center(child: CircularProgressIndicator()),
+      );
     /* return GridView.builder(
       padding: const EdgeInsets.all(1),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

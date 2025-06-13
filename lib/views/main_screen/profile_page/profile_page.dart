@@ -114,11 +114,18 @@ class ProfilePage extends StatelessWidget {
                               ),
                             ),
                             child: FittedBox(
-                              child: Text(
-                                'Düzenle',
-                                style: GoogleFonts.aBeeZee(
-                                  color: theme.primaryColor,
-                                ),
+                              child: Row(
+                                children: [
+                                  
+                                  Text(
+                                    'Düzenle',
+                                    style: GoogleFonts.aBeeZee(
+                                      color: theme.primaryColor,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Icon(Icons.edit, color: theme.colorScheme.primary,)
+                                ],
                               ),
                             ),
                           ),
@@ -144,7 +151,7 @@ class ProfilePage extends StatelessWidget {
                             },
                             child: _buildStatColumn(
                               'Takipçi',
-                              '${_init.user?.following?.length ?? "0"}',
+                              '${_init.user?.followers?.length ?? "0"}',
                             ),
                           ),
                           InkWell(
@@ -154,7 +161,7 @@ class ProfilePage extends StatelessWidget {
                             child: _buildStatColumn(
                               
                               'Takip',
-                              '${_init.user?.followers?.length ?? "0"}',
+                              '${_init.user?.following?.length ?? "0"}',
                             ),
                           ),
                         ],
@@ -164,7 +171,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             SliverPersistentHeader(
               delegate: _SliverAppBarDelegate(
                 TabBar(

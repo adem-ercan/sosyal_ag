@@ -2,11 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:sosyal_ag/init.dart';
-import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
-import 'package:sosyal_ag/view_models/user_view_model.dart';
 
 class FollowingScreen extends StatelessWidget {
   final Init _init = locator<Init>();
@@ -16,8 +13,7 @@ class FollowingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    UserViewModel userViewModel = Provider.of<UserViewModel>(context);
-
+    print("user id'ye bakalım: ${_init.user?.uid}");
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -29,8 +25,11 @@ class FollowingScreen extends StatelessWidget {
         query: FirebaseFirestore.instance
             .collection('users')
             .doc(_init.user?.uid)
-            .collection('following')
-            .orderBy('createdAt', descending: true),
+            .collection("following"),
+            
+            
+            
+            
         limit: 20,
         viewType: ViewType.list,
         onEmpty: Center(
@@ -46,9 +45,12 @@ class FollowingScreen extends StatelessWidget {
         ),
         itemBuilder: (context, documentSnapshot, index) {
           final followingData = documentSnapshot[index].data() as Map<String, dynamic>;
-          
-          return FutureBuilder<UserModel?>(
-            future: userViewModel.getUserDataById(followingData['userId']),
+
+          return ListTile(
+            title: Text("${followingData}")
+          );
+         /*  return FutureBuilder<UserModel?>(
+            future: userViewModel.getUserDataById(followingData['userId'] ?? ""),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const SizedBox.shrink();
@@ -106,7 +108,7 @@ class FollowingScreen extends StatelessWidget {
                     : null,
               );
             },
-          );
+          ); */
         },
       ),
     );
