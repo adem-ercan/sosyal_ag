@@ -179,33 +179,46 @@ class PostCard extends StatelessWidget {
                       if (post.mediaUrls != null &&
                           post.mediaUrls!.isNotEmpty) ...[
                         const SizedBox(height: 8),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.network(
-                            post.mediaUrls!.first,
-                            width: double.infinity,
-                            height: 200,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Container(
+                        Hero(
+                          tag: post.mediaUrls![0],
+                          child: InkWell(
+                            onTap: () {
+                              Map<String, dynamic> map = {
+                                'mediaUrl' : post.mediaUrls![0],
+                                'author' : author,
+                                'post' : post,
+                              };
+                              context.push("/mediaScreen", extra: map);
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.network(
+                                post.mediaUrls!.first,
                                 width: double.infinity,
                                 height: 200,
-                                color: theme.colorScheme.surface,
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    value:
-                                        loadingProgress.expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes!
-                                            : null,
-                                  ),
-                                ),
-                              );
-                            },
+                                fit: BoxFit.cover,
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Container(
+                                    width: double.infinity,
+                                    height: 200,
+                                    color: theme.colorScheme.surface,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        value:
+                                            loadingProgress.expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes!
+                                                : null,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
                         ),
                       ],

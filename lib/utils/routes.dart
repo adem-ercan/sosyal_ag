@@ -6,6 +6,7 @@ import 'package:sosyal_ag/views/following_screen/following_screen.dart';
 import 'package:sosyal_ag/views/init_route.dart';
 import 'package:sosyal_ag/views/login_screen/login_screen.dart';
 import 'package:sosyal_ag/views/main_screen/main_screen.dart';
+import 'package:sosyal_ag/views/media_screen/media_screen.dart';
 import 'package:sosyal_ag/views/other_screens/notification_screen.dart';
 import 'package:sosyal_ag/views/other_screens/other_user_profile_screen.dart';
 import 'package:sosyal_ag/views/post_screen/post_screen.dart';
@@ -43,6 +44,15 @@ final router = GoRouter(
         final Map<String, dynamic> mapData =
             state.extra as Map<String, dynamic>;
         return PostScreen(mapData: mapData);
+      },
+    ),
+
+    GoRoute(
+      path: '/mediaScreen',
+      builder: (context, state) {
+        final Map<String, dynamic> mapData =
+            state.extra as Map<String, dynamic>;
+        return MediaScreen(mediaUrl: mapData['mediaUrl'], author: mapData['author'], post: mapData['post']);
       },
     ),
 
