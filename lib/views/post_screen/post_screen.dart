@@ -22,7 +22,6 @@ class PostScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     PostModel postModel = mapData["post"];
-    print("gelen mapData: ${postModel.id}");
 
 
     return Scaffold(
@@ -42,8 +41,6 @@ class PostScreen extends StatelessWidget {
             icon: Icon(Icons.more_vert, color: theme.colorScheme.onSurface),
             onSelected: (value) {
               if (value == 'delete') {
-                // TODO: Silme işlemi
-                print('Post silinecek');
               }
             },
             itemBuilder:

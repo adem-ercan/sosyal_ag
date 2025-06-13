@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -179,46 +180,44 @@ class PostCard extends StatelessWidget {
                       if (post.mediaUrls != null &&
                           post.mediaUrls!.isNotEmpty) ...[
                         const SizedBox(height: 8),
-                        Hero(
-                          tag: post.mediaUrls![0],
-                          child: InkWell(
-                            onTap: () {
-                              Map<String, dynamic> map = {
-                                'mediaUrl' : post.mediaUrls![0],
-                                'author' : author,
-                                'post' : post,
-                              };
-                              context.push("/mediaScreen", extra: map);
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                post.mediaUrls!.first,
-                                width: double.infinity,
-                                height: 200,
-                                fit: BoxFit.cover,
-                                loadingBuilder: (context, child, loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return Container(
-                                    width: double.infinity,
-                                    height: 200,
-                                    color: theme.colorScheme.surface,
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                        value:
-                                            loadingProgress.expectedTotalBytes !=
-                                                    null
-                                                ? loadingProgress
-                                                        .cumulativeBytesLoaded /
-                                                    loadingProgress
-                                                        .expectedTotalBytes!
-                                                : null,
-                                      ),
+                        InkWell(
+                          onTap: () {
+                            Map<String, dynamic> map = {
+                              'mediaUrl' : post.mediaUrls![0],
+                              'author' : author,
+                              'post' : post,
+                            };
+                            context.push("/mediaScreen", extra: map);
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: CachedNetworkImage(imageUrl: post.mediaUrls!.first),
+                            /* Image.network(
+                              post.mediaUrls!.first,
+                              width: double.infinity,
+                              height: 200,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Container(
+                                  width: double.infinity,
+                                  height: 200,
+                                  color: theme.colorScheme.surface,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
                                     ),
-                                  );
-                                },
-                              ),
-                            ),
+                                  ),
+                                );
+                              },
+                            ), */
                           ),
                         ),
                       ],

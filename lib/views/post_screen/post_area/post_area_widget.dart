@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/init.dart';
@@ -13,9 +14,10 @@ class PostAreaWidget extends StatelessWidget {
   PostAreaWidget({super.key, required this.mapData});
 
   // Bu kısım View Model'e taşınacak.
-
+ 
   @override
   Widget build(BuildContext context) {
+     print("map : $mapData");
     ThemeData theme = Theme.of(context);
     PostViewModel postViewModel = Provider.of<PostViewModel>(
       context,
@@ -92,12 +94,22 @@ class PostAreaWidget extends StatelessWidget {
           // Medya içeriği
           if (mapData["post"]?.mediaUrls != null &&
                   mapData["post"]?.mediaUrls!.isNotEmpty)
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                mapData["post"]?.mediaUrls[0],
-                width: double.infinity,
-                fit: BoxFit.cover,
+            InkWell(
+              onTap: () {
+                 Map<String, dynamic> map = {
+                              'mediaUrl' : mapData["post"]?.mediaUrls![0],
+                              'author' : mapData["author"],
+                              'post' : mapData["post"],
+                            };
+              context.push("/mediaScreen", extra: map); 
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  mapData["post"]?.mediaUrls[0],
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
 

@@ -66,103 +66,105 @@ class MainPage extends StatelessWidget {
       context,
       listen: false,
     );
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-      ),
-      child: FirestorePagination(
-        limit: 20,
-        isLive: true,
-        //physics: NeverScrollableScrollPhysics(),
-        viewType: ViewType.list,
-        shrinkWrap: true,
-        query: FirebaseFirestore.instance
-            .collection('users')
-            .doc(_init.user?.uid!)
-            .collection('following'),
-
-        itemBuilder: (context, documentSnapshot, index) {
-          String followingID = documentSnapshot[index].id;
-        
-          if (documentSnapshot.isEmpty){
-            return Center(child: CircularProgressIndicator());
-          }
-         
-        // final data = documentSnapshot[index].data() as Map<String, dynamic>;
-        // final post = PostModel.fromJson(data);
-        
-        /*  return FutureBuilder<UserModel?>(
-            future: userViewModel.getUserDataById(post.authorId),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else if (!snapshot.hasData || snapshot.data == null) {
-                return const Center(child: Text('User not found'));
-              }
-              UserModel? user = snapshot.data;
-              return PostCard(
-                post: post,
-                author: user!,
-            );
-          }
-        ); */
-
-
-          return FirestorePagination(
-            shrinkWrap: true,
-            limit: 6,
-            query: FirebaseFirestore.instance
-              .collection('posts')
-              .where("authorId", whereIn: [followingID])
-              .orderBy('createdAt', descending: true),
-            itemBuilder: (context, documentSnapshotX, index){
-              if (documentSnapshotX.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              Map<String, dynamic> data = documentSnapshotX[index].data() as Map<String, dynamic>;
-              PostModel post = PostModel.fromJson(data);
-
-              return FutureBuilder<UserModel?>(
-                future: userViewModel.getUserDataById(followingID),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data == null) {
-                    return const Center(child: Text('User not found'));
-                  }
-                  return PostCard(post: post, author: snapshot.data!);
-                }
-              ); 
-
-              /* return StreamBuilder(
-                stream: userViewModel.getUserByIdStream(followingID), 
-                builder: (context, snapshot){
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data == null) {
-                    return const Center(child: Text('User not found'));
-                  }
-                  Map<String, dynamic>? map = snapshot.data;
-                  
-                  UserModel user = UserModel.fromJson(map!);
-                  return PostCard(post: post, author: user);
-                }); */
+    return SingleChildScrollView(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+        ),
+        child: FirestorePagination(
+          limit: 20,
+          isLive: true,
+          //physics: NeverScrollableScrollPhysics(),
+          viewType: ViewType.list,
+          shrinkWrap: true,
+          query: FirebaseFirestore.instance
+              .collection('users')
+              .doc(_init.user?.uid!)
+              .collection('following'),
+      
+          itemBuilder: (context, documentSnapshot, index) {
+            String followingID = documentSnapshot[index].id;
+          
+            if (documentSnapshot.isEmpty){
+              return Center(child: CircularProgressIndicator());
             }
-          );
-        },
-        initialLoader: const Center(
-          child: CircularProgressIndicator(),
+           
+          // final data = documentSnapshot[index].data() as Map<String, dynamic>;
+          // final post = PostModel.fromJson(data);
+          
+          /*  return FutureBuilder<UserModel?>(
+              future: userViewModel.getUserDataById(post.authorId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data == null) {
+                  return const Center(child: Text('User not found'));
+                }
+                UserModel? user = snapshot.data;
+                return PostCard(
+                  post: post,
+                  author: user!,
+              );
+            }
+          ); */
+      
+      
+            return FirestorePagination(
+              shrinkWrap: true,
+              limit: 6,
+              query: FirebaseFirestore.instance
+                .collection('posts')
+                .where("authorId", whereIn: [followingID])
+                .orderBy('createdAt', descending: true),
+              itemBuilder: (context, documentSnapshotX, index){
+                if (documentSnapshotX.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                Map<String, dynamic> data = documentSnapshotX[index].data() as Map<String, dynamic>;
+                PostModel post = PostModel.fromJson(data);
+      
+                return FutureBuilder<UserModel?>(
+                  future: userViewModel.getUserDataById(followingID),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return const Center(child: Text('User not found'));
+                    }
+                    return PostCard(post: post, author: snapshot.data!);
+                  }
+                ); 
+      
+                /* return StreamBuilder(
+                  stream: userViewModel.getUserByIdStream(followingID), 
+                  builder: (context, snapshot){
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return const Center(child: Text('User not found'));
+                    }
+                    Map<String, dynamic>? map = snapshot.data;
+                    
+                    UserModel user = UserModel.fromJson(map!);
+                    return PostCard(post: post, author: user);
+                  }); */
+              }
+            );
+          },
+          initialLoader: const Center(
+            child: CircularProgressIndicator(),
+          ),
+          bottomLoader: const Center(
+            child: CircularProgressIndicator(),
+          ),
+          
         ),
-        bottomLoader: const Center(
-          child: CircularProgressIndicator(),
-        ),
-        
       ),
     );
   }
