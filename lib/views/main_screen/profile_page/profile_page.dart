@@ -25,6 +25,14 @@ class ProfilePage extends StatelessWidget {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
+              backgroundColor: theme.colorScheme.tertiary,
+              title: Text( "Profil",
+                style: GoogleFonts.concertOne(
+                  fontSize: 28,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+              automaticallyImplyLeading: false,
               foregroundColor: theme.primaryColor,
               expandedHeight: 100,
               pinned: true,

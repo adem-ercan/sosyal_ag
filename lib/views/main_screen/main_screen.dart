@@ -126,8 +126,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    print("main screen tetiklendi");
-    MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context);
+    MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context, listen: false);
 
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(
       context,
@@ -144,8 +143,26 @@ class MainScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar:
-          mainScreenViewModel.isVisibleAppBar
+      appBar:  AppBar(
+                actions: [
+                  
+                ],
+                title:
+                    themeProvider.themeMode != ThemeMode.dark
+                        ? Image.asset(
+                          "assets/logo/meydan_dark.png",
+                          height: 30,
+                          //width: diaQuery.of(context).size.width * .6,
+                        )
+                        : Image.asset(
+                          "assets/logo/meydan_light.png",
+                          height: 30,
+                          //width: MediaQuery.of(context).size.width * .6,
+                        ),
+
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              ),
+         /*  mainScreenViewModel.isVisibleAppBar
               ? AppBar(
                 actions: [
                   
@@ -165,7 +182,7 @@ class MainScreen extends StatelessWidget {
 
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               )
-              : null,
+              : null, */
 
       drawer: MeydanDrawer(),
 
@@ -181,10 +198,10 @@ class MainScreen extends StatelessWidget {
 
           items: _navBarsItems(mainScreenViewModel, themeProvider.themeMode),
           handleAndroidBackButtonPress: true,
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           stateManagement: true,
           hideNavigationBarWhenKeyboardAppears: true,
-          popBehaviorOnSelectedNavBarItemPress: PopBehavior.once,
+          popBehaviorOnSelectedNavBarItemPress: PopBehavior.none,
           hideOnScrollSettings: HideOnScrollSettings(
             hideNavBarOnScroll: true,
             scrollControllers: [],

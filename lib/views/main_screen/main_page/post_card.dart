@@ -192,7 +192,7 @@ class PostCard extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
                             child: CachedNetworkImage(imageUrl: post.mediaUrls!.first),
-                            /* Image.network(
+                            /*  Image.network(
                               post.mediaUrls!.first,
                               width: double.infinity,
                               height: 200,
@@ -217,7 +217,7 @@ class PostCard extends StatelessWidget {
                                   ),
                                 );
                               },
-                            ), */
+                            ),  */
                           ),
                         ),
                       ],

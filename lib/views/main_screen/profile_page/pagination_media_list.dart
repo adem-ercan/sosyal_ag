@@ -17,13 +17,12 @@ class PaginationMediaList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     // Burada SliverAppBar scroll'unun sağlıklı olması için
     // ListView kullanıyoruz. Yani yukar doğru kaydırdığımızda
     // SliverAppBar kaybolacak. Aşağı doğru kaydırdığımızda
     // SliverAppBar açılacak.
     // FirestorePagination'ı direkt kullandığımızda bu olmuyor.
-
- 
 
     return Container(
       decoration: BoxDecoration(
@@ -62,8 +61,12 @@ class PaginationMediaList extends StatelessWidget {
               );
             },
             child: Container(
-              decoration: BoxDecoration(),
-              child: Image.network(element.toString()),
+              clipBehavior: Clip.antiAlias,
+              margin: const EdgeInsets.only(top:10, bottom: 0, left: 10, right: 0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8))
+              ),
+              child: Image.network(element.toString(), fit: BoxFit.cover, isAntiAlias: true,),
             ),
           );
           }
