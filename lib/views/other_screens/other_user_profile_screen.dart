@@ -22,7 +22,6 @@ class OtherUserProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     //isFollowing = _init.user!.following!.contains(user.uid);
-    print("kullanıcı : ${user.userName}");
     UserViewModel userViewModel = Provider.of<UserViewModel>(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -209,7 +208,6 @@ class OtherUserProfileScreen extends StatelessWidget {
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
                                       Map<String, dynamic>? data = snapshot.data;
-                                      print("dsdds ${data!['userName']}");
                                       return _buildStatColumn(
                                       context,
                                       'Takipçi',
@@ -227,7 +225,7 @@ class OtherUserProfileScreen extends StatelessWidget {
                                 _buildStatColumn(
                                   context,
                                   'Takip',
-                                  user.following!.length.toString(),
+                                  user.following != null ? user.following!.length.toString() : '0',
                                 ),
                               ],
                             ),
@@ -356,9 +354,13 @@ class OtherUserProfileScreen extends StatelessWidget {
                 extra: {'post': post, 'author': user},
               );
             },
-            child: Container(
-              decoration: BoxDecoration(),
-              child: Image.network(element.toString()),
+            child:Container(
+              clipBehavior: Clip.antiAlias,
+              margin: const EdgeInsets.only(top:10, bottom: 0, left: 10, right: 0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8))
+              ),
+              child: Image.network(element.toString(), fit: BoxFit.cover,),
             ),
           );
         }

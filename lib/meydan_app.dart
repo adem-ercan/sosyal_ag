@@ -28,7 +28,6 @@ class MeydanApp extends StatelessWidget {
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
-          
                 return StreamBuilder<bool>(
                   stream:themeProvider.getUserThemeStream(_init.user?.uid ?? " "),
                   builder: (context, snapshot) {

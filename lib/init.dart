@@ -16,7 +16,9 @@ class Init {
   Future<void> start(BuildContext context) async{
    await Future.delayed(const Duration(seconds: 3));
    if (context.mounted) {
+    print("bbbb");
     await getCurrentUserAllData(context);
+    print("cccc");
    }
 
    isFirstInit = false;

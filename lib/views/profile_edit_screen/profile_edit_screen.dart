@@ -23,11 +23,16 @@ class ProfileEditScreen extends StatelessWidget {
         title: const Text('Profili Düzenle'),
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async {
               // Kaydetme işlemi
-              pageViewModel.save();
+              pageViewModel.isEditLoadingState == IsEdittingProfileData.loaded
+                  ? await pageViewModel.save()
+                  : null;
             },
-            icon: const Icon(Icons.save),
+            icon:
+                pageViewModel.isEditLoadingState == IsEdittingProfileData.loaded
+                    ? Icon(Icons.save)
+                    : Center(child: CircularProgressIndicator(color: theme.colorScheme.tertiary,)),
           ),
         ],
       ),
@@ -102,7 +107,6 @@ class ProfileEditScreen extends StatelessWidget {
                       labelStyle: TextStyle(color: theme.colorScheme.onSurface),
                       filled: true,
                       fillColor: theme.colorScheme.primary,
-                      
                     ),
 
                     onSaved: (newValue) {

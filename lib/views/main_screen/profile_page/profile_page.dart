@@ -17,7 +17,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return DefaultTabController(
       length: 4,
       child: NestedScrollView(
@@ -26,10 +26,11 @@ class ProfilePage extends StatelessWidget {
           return [
             SliverAppBar(
               backgroundColor: theme.colorScheme.tertiary,
-              title: Text( "Profil",
+              title: Text(
+                _init.user!.name ?? "",
                 style: GoogleFonts.concertOne(
                   fontSize: 28,
-                  color: theme.colorScheme.primary,
+                  color: theme.colorScheme.surface.withOpacity(.7),
                 ),
               ),
               automaticallyImplyLeading: false,
@@ -50,6 +51,25 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 6.0),
+                  child: IconButton(
+                    onPressed: () {
+                      context.push('/profileEdit');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.colorScheme.surface,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    icon: FittedBox(
+                      child: Icon(Icons.edit, color: theme.colorScheme.onSurface),
+                    ),
+                  ),
+                ),
+              ],
             ),
 
             SliverToBoxAdapter(
@@ -83,16 +103,17 @@ class ProfilePage extends StatelessWidget {
                                   children: [
                                     FittedBox(
                                       child: Text(
-                                        _init.user?.name ?? "",
+                                        '@${_init.user?.userName}',
                                         style: GoogleFonts.aBeeZee(
-                                          //fontWeight: FontWeight.bold,
-                                          color: theme.colorScheme.onPrimary,
+                                          color: theme.colorScheme.onSurface
+                                              .withOpacity(0.6),
                                         ),
                                       ),
                                     ),
                                     const SizedBox(width: 4),
                                     Visibility(
-                                      visible: _init.user?.isVerified ?? false,
+                                      visible:
+                                          true, //_init.user?.isVerified ?? false,
                                       child: Icon(
                                         Icons.verified,
                                         color: theme.colorScheme.tertiary,
@@ -101,40 +122,16 @@ class ProfilePage extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                Text(
-                                  '@${_init.user?.userName}',
-                                  style: GoogleFonts.aBeeZee(
-                                    color: theme.colorScheme.onSurface
-                                        .withOpacity(0.6),
+                                FittedBox(
+                                  child: Text(
+                                    _init.user?.email ?? "",
+                                    style: GoogleFonts.aBeeZee(
+                                      //fontWeight: FontWeight.bold,
+                                      color: theme.colorScheme.onPrimary,
+                                    ),
                                   ),
                                 ),
                               ],
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              context.push('/profileEdit');
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: theme.colorScheme.onSurface,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: FittedBox(
-                              child: Row(
-                                children: [
-                                  
-                                  Text(
-                                    'Düzenle',
-                                    style: GoogleFonts.aBeeZee(
-                                      color: theme.primaryColor,
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  Icon(Icons.edit, color: theme.colorScheme.primary,)
-                                ],
-                              ),
                             ),
                           ),
                         ],
@@ -167,7 +164,6 @@ class ProfilePage extends StatelessWidget {
                               context.push('/followingScreen');
                             },
                             child: _buildStatColumn(
-                              
                               'Takip',
                               '${_init.user?.following?.length ?? "0"}',
                             ),
@@ -194,7 +190,6 @@ class ProfilePage extends StatelessWidget {
                   unselectedLabelColor: theme.colorScheme.onSurface,
                   tabs: [
                     Tab(
-                      
                       child: FittedBox(
                         child: Text('Gönderiler', style: GoogleFonts.aBeeZee()),
                       ),

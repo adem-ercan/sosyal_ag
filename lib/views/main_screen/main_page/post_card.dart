@@ -7,6 +7,7 @@ import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
+import 'package:sosyal_ag/view_models/main_screen_view_model.dart';
 import 'package:sosyal_ag/view_models/post_view_model.dart';
 
 class PostCard extends StatelessWidget {
@@ -36,6 +37,10 @@ class PostCard extends StatelessWidget {
       listen: false,
     );
 
+    MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(
+      context,
+    );
+
     final theme = Theme.of(context);
     return InkWell(
       onTap:
@@ -62,17 +67,27 @@ class PostCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Profil fotoğrafı
-                CircleAvatar(
-                  backgroundColor: theme.colorScheme.surface,
-                  radius: 24,
-                  backgroundImage:
-                      author.photoUrl != null
-                          ? NetworkImage(author.photoUrl!)
-                          : null,
-                  child:
-                      author.photoUrl == null
-                          ? Text(author.userName[0].toUpperCase())
-                          : null,
+                InkWell(
+                  onTap: () {
+                    if (author.uid != _init.user!.uid) {
+                      context.push('/otherUserProfile', extra: author);
+                    } else {
+                      mainScreenViewModel.controller.index = 4;
+                      mainScreenViewModel.isFloatingButtonVisible(4);
+                    }
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: theme.colorScheme.surface,
+                    radius: 24,
+                    backgroundImage:
+                        author.photoUrl != null
+                            ? NetworkImage(author.photoUrl!)
+                            : null,
+                    child:
+                        author.photoUrl == null
+                            ? Text(author.userName[0].toUpperCase())
+                            : null,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 // Kullanıcı adı ve içerik
@@ -121,50 +136,63 @@ class PostCard extends StatelessWidget {
                                     context,
                                     post.id ?? "",
                                     author.uid ?? "",
-                                   post.mediaUrls?[0],
+                                    post.mediaUrls?[0],
                                   );
                                 }
                               },
-                              itemBuilder: (BuildContext context) => 
-                                _init.user?.uid == author.uid
-                                    ? <PopupMenuItem<String>>[
-                                        PopupMenuItem<String>(
-                                          value: 'delete',
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.delete, 
-                                                color: theme.colorScheme.error,
-                                                size: 20,
+                              itemBuilder:
+                                  (BuildContext context) =>
+                                      _init.user?.uid == author.uid
+                                          ? <PopupMenuItem<String>>[
+                                            PopupMenuItem<String>(
+                                              value: 'delete',
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.delete,
+                                                    color:
+                                                        theme.colorScheme.error,
+                                                    size: 20,
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Text(
+                                                    'Sil',
+                                                    style: TextStyle(
+                                                      color:
+                                                          theme
+                                                              .colorScheme
+                                                              .error,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              const SizedBox(width: 8),
-                                              Text('Sil',
-                                                style: TextStyle(
-                                                  color: theme.colorScheme.error,
-                                                ),
+                                            ),
+                                          ]
+                                          : <PopupMenuItem<String>>[
+                                            PopupMenuItem<String>(
+                                              value: 'block',
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.block,
+                                                    color:
+                                                        theme.colorScheme.error,
+                                                    size: 20,
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Text(
+                                                    'Engelle',
+                                                    style: TextStyle(
+                                                      color:
+                                                          theme
+                                                              .colorScheme
+                                                              .error,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                      ]
-                                    : <PopupMenuItem<String>>[
-                                        PopupMenuItem<String>(
-                                          value: 'block',
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.block, 
-                                                color: theme.colorScheme.error,
-                                                size: 20,
-                                              ),
-                                              const SizedBox(width: 8),
-                                              Text('Engelle',
-                                                style: TextStyle(
-                                                  color: theme.colorScheme.error,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                                            ),
+                                          ],
                             ),
                           ],
                         ],
@@ -183,15 +211,17 @@ class PostCard extends StatelessWidget {
                         InkWell(
                           onTap: () {
                             Map<String, dynamic> map = {
-                              'mediaUrl' : post.mediaUrls![0],
-                              'author' : author,
-                              'post' : post,
+                              'mediaUrl': post.mediaUrls![0],
+                              'author': author,
+                              'post': post,
                             };
                             context.push("/mediaScreen", extra: map);
                           },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: CachedNetworkImage(imageUrl: post.mediaUrls!.first),
+                            child: CachedNetworkImage(
+                              imageUrl: post.mediaUrls!.first,
+                            ),
                             /*  Image.network(
                               post.mediaUrls!.first,
                               width: double.infinity,
@@ -242,17 +272,18 @@ class PostCard extends StatelessWidget {
                     icon: Icons.repeat_rounded,
                     count: post.repostsCount,
                     onTap: onRepost,
-                    color: Colors.green,
+                    color: theme.colorScheme.tertiary,
                   ),
                   _buildInteractionButton(
                     icon: Icons.favorite_border,
                     count: post.likesCount,
                     onTap: onLike,
-                    color: Colors.red,
+                    color: theme.colorScheme.error,
                   ),
                   IconButton(
                     onPressed: () {},
                     icon: Icon(
+                      weight: 5,
                       Icons.bookmark_border,
                       color: theme.colorScheme.onSurface.withOpacity(0.6),
                     ),
@@ -276,7 +307,7 @@ class PostCard extends StatelessWidget {
       onTap: onTap,
       child: Row(
         children: [
-          Icon(icon, size: 20, color: color.withOpacity(0.6)),
+          Icon(icon, size: 20, color: color, weight: 5,),
           const SizedBox(width: 4),
           Text(
             count.toString(),

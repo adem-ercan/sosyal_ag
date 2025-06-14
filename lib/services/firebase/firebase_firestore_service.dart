@@ -547,4 +547,11 @@ class FirestoreService implements DataBaseCore {
           print("bütün işler tamamlandı");
 
   }
+
+
+  /* Future<void> rePost() async {
+    await _firestore.collection("posts").
+  } */
+
+
 }

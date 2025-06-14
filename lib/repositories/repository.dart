@@ -88,6 +88,7 @@ class Repository {
 
   Future<UserModel?> getCurrentUserAllData() async {
     User? user = await _firebaseAuthService.currentUser();
+    print("current user: ${user?.uid}");
     if (user != null) {
       Map<String, dynamic>? mapData = await _firestoreService
           .getCurrentUserAllData(user.uid);
