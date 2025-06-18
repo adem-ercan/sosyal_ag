@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sosyal_ag/models/post_comments.dart';
 import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
@@ -58,7 +60,7 @@ class Repository {
   }
 
   // Burada iş bitmedi hala, düzeltilecek
-  Future<UserModel?> signInWithGoogle(String email, String password) async {
+  Future<UserModel?> signInWithGoogle(String email, String password, BuildContext context) async {
     UserCredential? credential = await _firebaseAuthService
         .signInWithEmailAndPassword(email, password);
     User? user = credential?.user;
@@ -69,6 +71,12 @@ class Repository {
         email: email,
       ); */
       //await _firestoreService.getCurrentUserAllData(userID)
+      
+      if (context.mounted) {
+        context.push('/');
+      }
+      return await getCurrentUserAllData();
+      
     } else {
       print("Oturum açılamadı");
     }

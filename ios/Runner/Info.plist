@@ -52,6 +52,8 @@
 		<string>Uygulamanızın galeri erişim nedeni açıklaması</string>
 	<key>NSMicrophoneUsageDescription</key>
 		<string>Video kaydı için mikrofon kullanımı açıklaması</string>
+	<key>NSLocalNetworkUsageDescription</key>
+		<string>Bu uygulama yerel ağ üzerinde bağlantı kurmak için izin istiyor.</string>
 	
 	
 </dict>

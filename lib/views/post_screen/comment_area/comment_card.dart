@@ -47,7 +47,10 @@ class CommentCard extends StatelessWidget {
       listen: false,
     );
 
-    UserViewModel userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    UserViewModel userViewModel = Provider.of<UserViewModel>(
+      context,
+      listen: false,
+    );
     print("yorum data: ${data["authorId"]}");
 
     return FutureBuilder<UserModel?>(
@@ -60,7 +63,6 @@ class CommentCard extends StatelessWidget {
         } else if (!snapshot.hasData || snapshot.data == null) {
           return const Center(child: Text('Yorum bulunamadı!'));
         } else {
-
           UserModel author = snapshot.data!;
 
           return Container(
@@ -69,17 +71,31 @@ class CommentCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Avatar
-                InkWell(
-                  onTap: () {
-                    context.push('/otherUserProfile', extra: author);
-                  },
-                  child: CircleAvatar(
-                    radius: 24,
-                    backgroundImage: NetworkImage(
-                      author.photoUrl ??
-                          "https://picsum.photos/200/200?random=$index",
-                    ),
+                FutureBuilder<UserModel?>(
+                  future: userViewModel.getUserDataById(
+                    data['comments'][index]["userId"],
                   ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return const Center(child: Text('User not found'));
+                    }
+                    return InkWell(
+                      onTap: (){
+                        context.push('/otherUserProfile', extra: snapshot.data);
+                      },
+                      child: CircleAvatar(
+                        radius: 24,
+                        backgroundImage: NetworkImage(
+                          snapshot.data!.photoUrl ??
+                              "https://picsum.photos/200/200?random=$index",
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(width: 12),
                 // İçerik
@@ -118,7 +134,8 @@ class CommentCard extends StatelessWidget {
                           Column(
                             children: [
                               StreamBuilder<
-                                DocumentSnapshot<Map<String, dynamic>>>(
+                                DocumentSnapshot<Map<String, dynamic>>
+                              >(
                                 stream:
                                     FirebaseFirestore.instance
                                         .collection("posts")
@@ -139,7 +156,7 @@ class CommentCard extends StatelessWidget {
                                       if (snapshot.data?.data() != null) {
                                         Map<String, dynamic>? dataPost =
                                             snapshot.data?.data();
-                                          return SizedBox();
+                                        return SizedBox();
                                         /* return CommentLikeButton(
                                           user: _init.user?.uid ?? "",
                                           //likedUserIds: dataPost?["comments"][index]["likedUserIds"],

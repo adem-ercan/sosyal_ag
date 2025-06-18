@@ -294,7 +294,7 @@ class PostAreaWidget extends StatelessWidget {
                                   : Icon(Icons.bookmark_border, size: 22),
                               const SizedBox(height: 4),
                               Text(
-                                "Beğen",
+                                "Kaydet",
                                 style: GoogleFonts.aBeeZee(
                                   fontSize: 12,
                                   color: Theme.of(
