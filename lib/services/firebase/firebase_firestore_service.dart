@@ -547,37 +547,30 @@ class FirestoreService implements DataBaseCore {
     print("bütün işler tamamlandı");
   }
 
-  Future<void> rePost(Map<String, dynamic> postJsonData) async {
-
+  Future<bool> rePost(Map<String, dynamic> postJsonData) async {
     DocumentSnapshot<Map<String, dynamic>> snap =
         await _firestore.collection('users').doc(_init.user!.uid).get();
 
     Map<String, dynamic>? userData = snap.data();
-
-   
 
     postJsonData['rePostCreatedAt'] = postJsonData["createdAt"];
     postJsonData['createdAt'] = FieldValue.serverTimestamp();
     postJsonData['rePostUserId'] = _init.user?.uid;
     postJsonData['isRepost'] = true;
 
-
     if (userData != null && userData['rePosts'] != null) {
-       List<dynamic>? rePosts = userData['rePosts'] as List<dynamic>?;
+      List<dynamic>? rePosts = userData['rePosts'] as List<dynamic>?;
 
-       if(rePosts != null && rePosts.isNotEmpty ){
-
+      if (rePosts != null && rePosts.isNotEmpty) {
+        
         await _firestore.collection("posts").doc(postJsonData['id']).delete();
 
-      await _firestore.collection('users').doc(_init.user?.uid).update({
-        'rePosts': FieldValue.arrayRemove([postJsonData['id']]),
-      });
-
-      print("Yeniden gönderi geri alındı");
-      return;
-       }
-
-      
+        await _firestore.collection('users').doc(_init.user?.uid).update({
+          'rePosts': FieldValue.arrayRemove([postJsonData['id']]),
+        });
+        print("gönderi geri alındı.");
+        return false;
+      }
     }
 
     CollectionReference postRef = _firestore.collection("posts");
@@ -588,7 +581,7 @@ class FirestoreService implements DataBaseCore {
     await _firestore.collection('users').doc(_init.user?.uid).update({
       'rePosts': FieldValue.arrayUnion([postJsonData['id']]),
     });
-
+    return true;
     /* 
     CollectionReference postRef = _firestore.collection("posts");
      DocumentReference docRef = postRef.doc(); // Rastgele ID oluşturur

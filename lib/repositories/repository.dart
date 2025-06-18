@@ -271,7 +271,7 @@ class Repository {
   }
 
 
-  Future<void> rePost(PostModel post) async {
-    await _firestoreService.rePost(post.toJson());
+  Future<bool> rePost(PostModel post) async {
+    return await _firestoreService.rePost(post.toJson());
   }
 }

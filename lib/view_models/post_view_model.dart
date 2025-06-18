@@ -11,6 +11,7 @@ import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/repositories/repository.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/views/components/error_handler_widget.dart';
+import 'package:sosyal_ag/views/components/repost_bottom_sheet.dart';
 import 'package:sosyal_ag/views/post_screen/comment_area/comment_bottom_sheet.dart';
 
 enum Loading { loading, loaded }
@@ -260,14 +261,64 @@ class PostViewModel extends ChangeNotifier {
 
   Future<void> rePost(PostModel post, BuildContext context) async {
     try {
-       if(context.mounted){
-        context.pop();
+      bool isReposted = await _repository.rePost(post);
+
+      if (context.mounted) {
+        if (!isReposted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              content: Text(
+                'Yeniden gönderi geri alındı.',
+                style: GoogleFonts.aBeeZee(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              content: Text(
+                'Yeniden gönderi oluşturuldu.',
+                style: GoogleFonts.aBeeZee(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              duration: Duration(seconds: 2),
+            ),
+          );
+          if (context.mounted) {
+            context.pop();
+          }
+        }
       }
-      await _repository.rePost(post);
-     
-      
     } catch (e) {
       print("Error re-posting: $e");
+    }
+  }
+
+  Future<void> showRePostSheet(
+    BuildContext context,
+    bool isRepost,
+    PostModel post,
+  ) async {
+    try {
+      await showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.5,
+        ),
+        builder: (context) => RepostBottomSheet(isRepost: isRepost, post: post),
+      );
+    } catch (e) {
+      print("Error showing repost sheet: $e");
     }
   }
 }
