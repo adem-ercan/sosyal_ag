@@ -201,7 +201,7 @@ class OtherUserProfileScreen extends StatelessWidget {
                                   context,
                                   'Gönderi',
                                   // Burası count olarak ayarlanabilir
-                                  user.posts!.length.toString(),
+                                  user.posts !=null ? user.posts!.length.toString() : '0',
                                 ),
                                 StreamBuilder<Map<String, dynamic>?>(
                                   stream: userViewModel.getUserByIdStream(user.uid.toString()),
