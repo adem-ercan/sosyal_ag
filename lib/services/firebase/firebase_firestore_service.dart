@@ -544,14 +544,95 @@ class FirestoreService implements DataBaseCore {
         .doc(_init.user?.uid)
         .delete();
 
-          print("bütün işler tamamlandı");
-
+    print("bütün işler tamamlandı");
   }
 
+  Future<void> rePost(Map<String, dynamic> postJsonData) async {
 
-  /* Future<void> rePost() async {
-    await _firestore.collection("posts").
+    DocumentSnapshot<Map<String, dynamic>> snap =
+        await _firestore.collection('users').doc(_init.user!.uid).get();
+
+    Map<String, dynamic>? userData = snap.data();
+
+   
+
+    postJsonData['rePostCreatedAt'] = postJsonData["createdAt"];
+    postJsonData['createdAt'] = FieldValue.serverTimestamp();
+    postJsonData['rePostUserId'] = _init.user?.uid;
+    postJsonData['isRepost'] = true;
+
+
+    if (userData != null && userData['rePosts'] != null) {
+       List<dynamic>? rePosts = userData['rePosts'] as List<dynamic>?;
+
+       if(rePosts != null && rePosts.isNotEmpty ){
+
+        await _firestore.collection("posts").doc(postJsonData['id']).delete();
+
+      await _firestore.collection('users').doc(_init.user?.uid).update({
+        'rePosts': FieldValue.arrayRemove([postJsonData['id']]),
+      });
+
+      print("Yeniden gönderi geri alındı");
+      return;
+       }
+
+      
+    }
+
+    CollectionReference postRef = _firestore.collection("posts");
+    DocumentReference docRef = postRef.doc(); // Rastgele ID oluşturur
+    postJsonData['id'] = docRef.id;
+    await docRef.set(postJsonData);
+
+    await _firestore.collection('users').doc(_init.user?.uid).update({
+      'rePosts': FieldValue.arrayUnion([postJsonData['id']]),
+    });
+
+    /* 
+    CollectionReference postRef = _firestore.collection("posts");
+     DocumentReference docRef = postRef.doc(); // Rastgele ID oluşturur
+
+    // Post ID'sini postJsonData'ya ekle
+    postJsonData['id'] = docRef.id;
+
+    print("repost edilen id: ${postJsonData['id']}");
+
+    await docRef.set(postJsonData); 
+
+    await _firestore.collection('users').doc(_init.user?.uid).update({
+      'posts': FieldValue.arrayUnion([postJsonData['id']]),
+      'postsCount': FieldValue.increment(1),
+    }); */
+
+    /* postJsonData.update("createdAt", (value) => FieldValue.serverTimestamp());
+    String content = postJsonData['content'];
+    List<String> splitList = content.split(' ');
+    postJsonData.update("searchKey", (value) => splitList);
+
+    print("searchKey : ${postJsonData['searchKey']}");
+
+    CollectionReference postRef = _firestore.collection("posts");
+    DocumentReference docRef = postRef.doc(); // Rastgele ID oluşturur
+
+
+    // Post ID'sini postJsonData'ya ekle
+    postJsonData['id'] = docRef.id;
+
+    await docRef.set(postJsonData);
+
+    // Muhtemelen PostModel'de sıkıntı var ki veritabanına boş yorum ekliyor.
+    // Bu sebeple eklediği yorumu direkt siliyoruz.
+    // Sonra bu düzeltilecek!!!
+    await _firestore.collection('posts').doc(docRef.id).update({
+      'comments': FieldValue.arrayRemove([{}]),
+    });
+
+    String userId = postJsonData['authorId'];
+    await _firestore.collection('users').doc(userId).update({
+      'posts': FieldValue.arrayUnion([postJsonData['id']]),
+      'postsCount': FieldValue.increment(1),
+    });
   } */
-
-
+  }
 }

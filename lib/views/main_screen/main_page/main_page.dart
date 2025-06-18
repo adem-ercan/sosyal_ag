@@ -113,7 +113,7 @@ class MainPage extends StatelessWidget {
       
             return FirestorePagination(
               shrinkWrap: true,
-              limit: 6,
+              limit: 16,
               query: FirebaseFirestore.instance
                 .collection('posts')
                 .where("authorId", whereIn: [followingID])
@@ -124,7 +124,7 @@ class MainPage extends StatelessWidget {
                 }
                 Map<String, dynamic> data = documentSnapshotX[index].data() as Map<String, dynamic>;
                 PostModel post = PostModel.fromJson(data);
-      
+               
                 return FutureBuilder<UserModel?>(
                   future: userViewModel.getUserDataById(followingID),
                   builder: (context, snapshot) {
@@ -135,6 +135,7 @@ class MainPage extends StatelessWidget {
                     } else if (!snapshot.hasData || snapshot.data == null) {
                       return const Center(child: Text('User not found'));
                     }
+
                     return PostCard(post: post, author: snapshot.data!);
                   }
                 ); 

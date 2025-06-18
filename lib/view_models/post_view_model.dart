@@ -24,7 +24,6 @@ class PostViewModel extends ChangeNotifier {
   final ImagePicker _picker = ImagePicker();
   File? _image;
   String? _postContent;
-  
 
   //GETTERS
   Loading get loading => _loading;
@@ -32,7 +31,7 @@ class PostViewModel extends ChangeNotifier {
   String? get postContent => _postContent;
 
   //SETTERS
-  set postContent(value){
+  set postContent(value) {
     _postContent = value;
     notifyListeners();
   }
@@ -162,15 +161,22 @@ class PostViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> deletePost(BuildContext context, String postId, String userId, String? mediaUrl) async {
+  Future<void> deletePost(
+    BuildContext context,
+    String postId,
+    String userId,
+    String? mediaUrl,
+  ) async {
     try {
       await _repository.deletePost(postId, userId, mediaUrl);
     } catch (e) {
       print("Error deleting post: $e");
       if (context.mounted) {
-        ErrorHandlerWidget.showError(context, "Silme işlemi gerçekleştirilemedi!");
+        ErrorHandlerWidget.showError(
+          context,
+          "Silme işlemi gerçekleştirilemedi!",
+        );
       }
-      
     }
   }
 
@@ -242,12 +248,26 @@ class PostViewModel extends ChangeNotifier {
       return null;
     }
   }
+
   Future<List<PostModel?>> searchPosts(String query) async {
     try {
       return await _repository.searchPosts(query);
     } catch (e) {
       print("ERROR on UserViewModel: $e");
       return [];
+    }
+  }
+
+  Future<void> rePost(PostModel post, BuildContext context) async {
+    try {
+       if(context.mounted){
+        context.pop();
+      }
+      await _repository.rePost(post);
+     
+      
+    } catch (e) {
+      print("Error re-posting: $e");
     }
   }
 }

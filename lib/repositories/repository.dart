@@ -6,7 +6,6 @@ import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/services/firebase/firebase_auth_service.dart';
 import 'package:sosyal_ag/services/firebase/firebase_firestore_service.dart';
-import 'package:sosyal_ag/utils/extensions/string_extensions.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 
 class Repository {
@@ -269,5 +268,10 @@ class Repository {
 
   Future<void> unFollowUser(String targetUserId) async {
     await _firestoreService.unFollowUser(targetUserId);
+  }
+
+
+  Future<void> rePost(PostModel post) async {
+    await _firestoreService.rePost(post.toJson());
   }
 }

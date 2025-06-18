@@ -31,9 +31,10 @@ class PaginationPostList extends StatelessWidget {
             .collection('posts')
             .where("authorId", isEqualTo: _init.user?.uid)
             .orderBy('createdAt', descending: true),
-        itemBuilder: (context, documentSnapshot, index) {
+
+          itemBuilder: (context, documentSnapshot, index) {
       
-          print(" ${index + 1} ${documentSnapshot[index].id}}");
+          print("Pagination post list on profile page: ${index + 1} ${documentSnapshot[index].id}}");
         
           if (documentSnapshot.isEmpty){
             return Center(child: CircularProgressIndicator());
@@ -41,7 +42,7 @@ class PaginationPostList extends StatelessWidget {
       
           final data = documentSnapshot[index].data() as Map<String, dynamic>;
           final post = PostModel.fromJson(data);
-      
+          
           return PostCard(
             post: post,
             author: _init.user!,

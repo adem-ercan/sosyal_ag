@@ -30,10 +30,6 @@ class FollowingScreen extends StatelessWidget {
             .collection('users')
             .doc(_init.user?.uid)
             .collection("following"),
-            
-            
-            
-            
         limit: 20,
         viewType: ViewType.list,
         onEmpty: Center(

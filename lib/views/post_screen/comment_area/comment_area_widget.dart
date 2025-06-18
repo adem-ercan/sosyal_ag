@@ -4,7 +4,6 @@ import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/views/post_screen/comment_area/comment_card.dart';
 
 class CommentAreaWidget extends StatelessWidget {
-
   PostModel postModel;
 
   CommentAreaWidget({super.key, required this.postModel});
@@ -20,6 +19,9 @@ class CommentAreaWidget extends StatelessWidget {
                 .doc(postModel.id)
                 .snapshots(),
         builder: (context, snapshot) {
+          if (!snapshot.hasData || !snapshot.data!.exists) {
+            return Center(child: Text('Yorum bulunamadı.'));
+          }
           if (snapshot.hasData) {
             Map<String, dynamic> data =
                 snapshot.data?.data() as Map<String, dynamic>;

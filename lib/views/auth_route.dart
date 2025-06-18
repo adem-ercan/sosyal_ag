@@ -22,7 +22,8 @@ class AuthRoute extends StatelessWidget {
         } else if (snapshot.hasData) {
           bool isUserLogin = snapshot.data!;
           if (isUserLogin) {
-            //themeProvider.setUserTheme(_init.user!.uid!, true);
+            
+            // themeProvider.setUserTheme(_init.user!.uid!, true);
            
                return MainScreen(context: context,);
           

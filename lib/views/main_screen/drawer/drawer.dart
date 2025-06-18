@@ -84,7 +84,7 @@ class MeydanDrawer extends StatelessWidget {
               
             } 
           ),
-            ListTile(
+            /* ListTile(
             leading: const Icon(Icons.person_add),
             title: Row(
               children: [
@@ -105,7 +105,7 @@ class MeydanDrawer extends StatelessWidget {
             ),
             onTap: () => context.push("/settingsScreen")
           ),
-         
+          */
           const Divider(),
           ListTile(
             leading: Icon(

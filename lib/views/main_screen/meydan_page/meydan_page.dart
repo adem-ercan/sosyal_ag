@@ -35,6 +35,7 @@ class MeydanPage extends StatelessWidget {
           query: FirebaseFirestore.instance
               .collection('posts')
               .orderBy('createdAt', descending: true),
+
           itemBuilder: (context, documentSnapshot, index) {
         
           
@@ -44,7 +45,8 @@ class MeydanPage extends StatelessWidget {
         
             final data = documentSnapshot[index].data() as Map<String, dynamic>;
             final post = PostModel.fromJson(data);
-      
+
+            
         
             return FutureBuilder<UserModel?>(
               future: userViewModel.getUserDataById(post.authorId),
@@ -57,8 +59,10 @@ class MeydanPage extends StatelessWidget {
                   return const Center(child: Text('User not found'));
                 }
                 UserModel? user = snapshot.data;
-      
+
+
                 return PostCard(
+                  rePostUser: post.rePostUserId,
                   post: post,
                   author: user!,
                 );

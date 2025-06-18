@@ -246,8 +246,10 @@ class PostAreaWidget extends StatelessWidget {
               ),
               _buildActionButton(
                 icon: Icons.repeat,
-                label: 'Paylaş',
-                onTap: () {},
+                label: 'Yeniden Gönder',
+                onTap: ()async {
+                  await postViewModel.rePost(mapData['post'], context);
+                },
               ),
               
               // Kaydet butonu

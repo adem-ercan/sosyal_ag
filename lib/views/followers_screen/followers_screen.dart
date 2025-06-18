@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/init.dart';
@@ -56,61 +57,66 @@ class FollowersScreen extends StatelessWidget {
               
               final follower = snapshot.data!;
               
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: follower.photoUrl != null 
-                      ? NetworkImage(follower.photoUrl!) 
-                      : null,
-                  child: follower.photoUrl == null 
-                      ? Text(follower.userName[0].toUpperCase())
-                      : null,
-                ),
-                title: Row(
-                  children: [
-                    Text(
-                      follower.userName,
-                      style: GoogleFonts.aBeeZee(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onTertiary,
-                      ),
-                    ),
-                    if (follower.isVerified)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 4),
-                        child: Icon(
-                          Icons.verified,
-                          size: 16,
-                          color: theme.colorScheme.tertiary,
+              return InkWell(
+                onTap: (){
+                  context.push('/otherUserProfile', extra: follower);
+                },
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: follower.photoUrl != null 
+                        ? NetworkImage(follower.photoUrl!) 
+                        : null,
+                    child: follower.photoUrl == null 
+                        ? Text(follower.userName[0].toUpperCase())
+                        : null,
+                  ),
+                  title: Row(
+                    children: [
+                      Text(
+                        follower.userName,
+                        style: GoogleFonts.aBeeZee(
+                          fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.onTertiary,
                         ),
                       ),
-                  ],
-                ),
-                subtitle: Text(
-                  '@${follower.userName.toLowerCase()}',
-                  style: GoogleFonts.aBeeZee(
-                    color: theme.colorScheme.onTertiary.withOpacity(0.6),
-                  ),
-                ),
-                trailing: follower.uid != _init.user?.uid
-                    ? TextButton(
-                        onPressed: () async {
-                          // Takip et/Takibi bırak işlemi 
-                          if (_init.user!.following!.contains(follower.uid)) {
-                             await userViewModel.unFollowUser(follower.uid.toString());
-                          }else{
-                            
-                            await userViewModel.followUser(follower.uid.toString());
-                          }
-                           
-                        },
-                        child: Text(
-                          _init.user!.following!.contains(follower.uid) ? 'Takibi Bırak' : 'Takip Et',
-                          style: GoogleFonts.aBeeZee(
-                            color: theme.colorScheme.onTertiary,
+                      if (follower.isVerified)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4),
+                          child: Icon(
+                            Icons.verified,
+                            size: 16,
+                            color: theme.colorScheme.tertiary,
                           ),
                         ),
-                      )
-                    : null,
+                    ],
+                  ),
+                  subtitle: Text(
+                    '@${follower.userName.toLowerCase()}',
+                    style: GoogleFonts.aBeeZee(
+                      color: theme.colorScheme.onTertiary.withOpacity(0.6),
+                    ),
+                  ),
+                  trailing: follower.uid != _init.user?.uid
+                      ? TextButton(
+                          onPressed: () async {
+                            // Takip et/Takibi bırak işlemi 
+                            if (_init.user!.following!.contains(follower.uid)) {
+                               await userViewModel.unFollowUser(follower.uid.toString());
+                            }else{
+                              
+                              await userViewModel.followUser(follower.uid.toString());
+                            }
+                             
+                          },
+                          child: Text(
+                            _init.user!.following!.contains(follower.uid) ? 'Takibi Bırak' : 'Takip Et',
+                            style: GoogleFonts.aBeeZee(
+                              color: theme.colorScheme.onTertiary,
+                            ),
+                          ),
+                        )
+                      : null,
+                ),
               );
             },
           );
