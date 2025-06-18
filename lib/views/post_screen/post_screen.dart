@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sosyal_ag/models/post_model.dart';
+import 'package:sosyal_ag/models/user_model.dart';
+import 'package:sosyal_ag/view_models/post_view_model.dart';
 import 'package:sosyal_ag/views/post_screen/comment_area/comment_area_widget.dart';
 import 'package:sosyal_ag/views/post_screen/post_area/post_area_widget.dart';
 
@@ -22,6 +26,8 @@ class PostScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     PostModel postModel = mapData["post"];
+    UserModel author = mapData["author"];
+    PostViewModel postViewModel = Provider.of<PostViewModel>(context, listen: false);
 
 
     return Scaffold(
@@ -39,8 +45,13 @@ class PostScreen extends StatelessWidget {
         actions: [
           PopupMenuButton<String>(
             icon: Icon(Icons.more_vert, color: theme.colorScheme.onSurface),
-            onSelected: (value) {
+            onSelected: (value)async {
               if (value == 'delete') {
+                await postViewModel.deletePost(context, postModel.id!, author.uid!, postModel.mediaUrls?[0]);
+                if (context.mounted) {
+                  context.pop();
+                }
+                
               }
             },
             itemBuilder:

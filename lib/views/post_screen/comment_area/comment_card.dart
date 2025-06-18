@@ -9,7 +9,6 @@ import 'package:sosyal_ag/utils/locator.dart';
 
 import 'package:sosyal_ag/view_models/post_view_model.dart';
 import 'package:sosyal_ag/view_models/user_view_model.dart';
-import 'package:sosyal_ag/views/post_screen/comment_area/comment_like_button.dart';
 
 class CommentCard extends StatelessWidget {
   final Init _init = locator<Init>();
@@ -119,8 +118,7 @@ class CommentCard extends StatelessWidget {
                           Column(
                             children: [
                               StreamBuilder<
-                                DocumentSnapshot<Map<String, dynamic>>
-                              >(
+                                DocumentSnapshot<Map<String, dynamic>>>(
                                 stream:
                                     FirebaseFirestore.instance
                                         .collection("posts")
@@ -141,15 +139,15 @@ class CommentCard extends StatelessWidget {
                                       if (snapshot.data?.data() != null) {
                                         Map<String, dynamic>? dataPost =
                                             snapshot.data?.data();
-
-                                        return CommentLikeButton(
+                                          return SizedBox();
+                                        /* return CommentLikeButton(
                                           user: _init.user?.uid ?? "",
                                           //likedUserIds: dataPost?["comments"][index]["likedUserIds"],
                                           commentData:
                                               dataPost?["comments"][index],
                                           postId: dataPost?["id"],
                                           index: index,
-                                        );
+                                        ); */
                                       } else {
                                         return const Text("Yorum bulunamadı");
                                       }

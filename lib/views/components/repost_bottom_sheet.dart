@@ -42,7 +42,7 @@ class RepostBottomSheet extends StatelessWidget {
 
           children: [
             ElevatedButton(onPressed: ()async{
-              await postViewModel.rePost(post, context);
+              //await postViewModel.rePost(post, context);
               if (context.mounted) {
                 context.pop();
               }

@@ -1,4 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:sosyal_ag/services/firebase/firebase_firestore_service.dart';
+import 'package:sosyal_ag/utils/locator.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
+class NotificationScreen extends StatelessWidget {
+ NotificationScreen({super.key});
+
+  FirestoreService _firestoreService = locator<FirestoreService>();
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Scaffold(
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: colorScheme.surface,
+        title: Text(
+          'Bildirimler',
+          style: TextStyle(
+            color: colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: [
+          
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: StreamBuilder<List<Map<String, dynamic>>>(stream: _firestoreService.listenMyPost(), 
+        builder: (context, snapshot){
+          print("Bura dinleniyor");
+          return Text("data $snapshot");
+        }),
+      ),
+    );
+  }
+
+  
+}
+
+
+
+
+
+/* import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationScreen extends StatelessWidget {
@@ -176,3 +222,4 @@ enum NotificationType {
   comment,
   follow,
 }
+ */

@@ -58,7 +58,7 @@ final router = GoRouter(
 
     GoRoute(
       path: '/notificationScreen',
-      builder: (context, state) => const NotificationScreen(),
+      builder: (context, state) =>  NotificationScreen(),
     ),
 
     GoRoute(

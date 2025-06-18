@@ -166,7 +166,7 @@ class Repository {
    }
 
 
-  Future<void> likePost(String postID) async {
+  Future<void> likePost(String postID, ) async {
    await _firestoreService.likePost(postID);
   }
 
@@ -271,7 +271,7 @@ class Repository {
   }
 
 
-  Future<bool> rePost(PostModel post) async {
+ /*  Future<bool> rePost(PostModel post) async {
     return await _firestoreService.rePost(post.toJson());
-  }
+  } */
 }

@@ -35,6 +35,7 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     PostViewModel postViewModel = Provider.of<PostViewModel>(
       context,
       listen: false,
@@ -56,6 +57,7 @@ class PostCard extends StatelessWidget {
         onTap:
             onTap ??
             () {
+              
               context.push(
                 "/postScreen",
                 extra: {'post': post, 'author': author},
@@ -273,7 +275,7 @@ class PostCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 60, top: 12),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildInteractionButton(
                       icon: Icons.chat_bubble_outline,
@@ -281,12 +283,12 @@ class PostCard extends StatelessWidget {
                       onTap: onComment,
                       color: Colors.grey,
                     ),
-                    _buildInteractionButton(
+                   /*  _buildInteractionButton(
                       icon: Icons.repeat_rounded,
                       count: post.repostsCount,
                       onTap: onRepost,
                       color: theme.colorScheme.tertiary,
-                    ),
+                    ), */
                     _buildInteractionButton(
                       icon: Icons.favorite_border,
                       count: post.likesCount,

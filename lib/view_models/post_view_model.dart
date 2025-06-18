@@ -26,12 +26,20 @@ class PostViewModel extends ChangeNotifier {
   File? _image;
   String? _postContent;
 
+  bool _isRepostButtonEnable = true;
+
   //GETTERS
   Loading get loading => _loading;
   File? get image => _image;
   String? get postContent => _postContent;
+  bool get isRepostButtonEnable => _isRepostButtonEnable;
 
   //SETTERS
+  set isRepostButtonEnable(value){
+    _isRepostButtonEnable = value;
+    notifyListeners();
+  }
+
   set postContent(value) {
     _postContent = value;
     notifyListeners();
@@ -259,10 +267,15 @@ class PostViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> rePost(PostModel post, BuildContext context) async {
-    try {
-      bool isReposted = await _repository.rePost(post);
+ /*  Future<void> rePost(PostModel post, BuildContext context) async {
 
+    try {
+      isRepostButtonEnable = false;
+      bool isReposted = await _repository.rePost(post);
+      if (context.mounted) {
+        context.pop();
+      } 
+    
       if (context.mounted) {
         if (!isReposted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -277,7 +290,9 @@ class PostViewModel extends ChangeNotifier {
               duration: Duration(seconds: 2),
             ),
           );
+        isRepostButtonEnable = true;
         } else {
+          isRepostButtonEnable = false;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Theme.of(context).colorScheme.tertiary,
@@ -290,16 +305,14 @@ class PostViewModel extends ChangeNotifier {
               duration: Duration(seconds: 2),
             ),
           );
-          if (context.mounted) {
-            context.pop();
-          }
+         isRepostButtonEnable = true;
         }
       }
     } catch (e) {
       print("Error re-posting: $e");
     }
   }
-
+ */
   Future<void> showRePostSheet(
     BuildContext context,
     bool isRepost,

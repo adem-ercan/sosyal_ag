@@ -267,6 +267,7 @@ class FirestoreService implements DataBaseCore {
       await postRef.update({"likesCount": FieldValue.increment(-1)});
     } else {
       // Post beğenilmemiş, beğeni ekle
+
       await userRef.update({
         "likedPosts": FieldValue.arrayUnion([postID]),
       });
@@ -547,7 +548,26 @@ class FirestoreService implements DataBaseCore {
     print("bütün işler tamamlandı");
   }
 
-  Future<bool> rePost(Map<String, dynamic> postJsonData) async {
+  Stream<List<Map<String, dynamic>>> listenMyPost() {
+    return _firestore
+        .collection('posts')
+        .where(
+          "authorId",
+          isEqualTo: _init.user!.uid,
+        ) // Bu kısım hatalıydı, doğru userId kullanılmalı
+        .snapshots()
+        .map((snapshot) {
+          // Liste boşsa boş liste döndür
+          if (snapshot.docs.isEmpty) return [];
+
+          // Her dokümanı map olarak al
+          final userData = snapshot.docs.map((doc) => doc.data()).toList();
+
+          return userData;
+        });
+  }
+
+  /*  Future<bool> rePost(Map<String, dynamic> postJsonData) async {
     DocumentSnapshot<Map<String, dynamic>> snap =
         await _firestore.collection('users').doc(_init.user!.uid).get();
 
@@ -557,11 +577,11 @@ class FirestoreService implements DataBaseCore {
     postJsonData['createdAt'] = FieldValue.serverTimestamp();
     postJsonData['rePostUserId'] = _init.user?.uid;
     postJsonData['isRepost'] = true;
+    List repostList = userData!['rePosts'] ?? [];
 
-    if (userData != null && userData['rePosts'] != null) {
-      List<dynamic>? rePosts = userData['rePosts'] as List<dynamic>?;
 
-      if (rePosts != null && rePosts.isNotEmpty) {
+    if (userData['rePosts'] != null && repostList.isNotEmpty && repostList.contains(postJsonData['id'])) {
+
         
         await _firestore.collection("posts").doc(postJsonData['id']).delete();
 
@@ -570,9 +590,10 @@ class FirestoreService implements DataBaseCore {
         });
         print("gönderi geri alındı.");
         return false;
-      }
+      
     }
 
+    
     CollectionReference postRef = _firestore.collection("posts");
     DocumentReference docRef = postRef.doc(); // Rastgele ID oluşturur
     postJsonData['id'] = docRef.id;
@@ -627,5 +648,5 @@ class FirestoreService implements DataBaseCore {
       'postsCount': FieldValue.increment(1),
     });
   } */
-  }
+  } */
 }

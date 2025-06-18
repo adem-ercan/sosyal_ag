@@ -236,6 +236,7 @@ class PostAreaWidget extends StatelessWidget {
               ),
 
               _buildActionButton(
+                enable: true,
                 icon: Icons.comment_outlined,
                 label: 'Yorum Yap',
                 onTap: () async {
@@ -244,13 +245,15 @@ class PostAreaWidget extends StatelessWidget {
                   postViewModel.showCommentSheet(context, postModel.id ?? "");
                 },
               ),
-              _buildActionButton(
+
+             /*  _buildActionButton(
+                enable: postViewModel.isRepostButtonEnable,
                 icon: Icons.repeat,
                 label: 'Yeniden Gönder',
                 onTap: ()async {
                   await postViewModel.rePost(mapData['post'], context);
                 },
-              ),
+              ), */
               
               // Kaydet butonu
               StreamBuilder<List<String>>(
@@ -344,12 +347,14 @@ class PostAreaWidget extends StatelessWidget {
   }
 
   Widget _buildActionButton({
+    required bool enable,
     required IconData icon,
     required String label,
     required VoidCallback onTap,
   }) {
     return InkWell(
-      onTap: onTap,
+      
+      onTap: enable ? onTap : null,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Column(

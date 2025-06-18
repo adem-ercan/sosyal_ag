@@ -26,7 +26,7 @@ class ProfileEditScreen extends StatelessWidget {
             onPressed: () async {
               // Kaydetme işlemi
               pageViewModel.isEditLoadingState == IsEdittingProfileData.loaded
-                  ? await pageViewModel.save()
+                  ? await pageViewModel.save(context)
                   : null;
             },
             icon:
@@ -62,7 +62,7 @@ class ProfileEditScreen extends StatelessWidget {
             TextButton(
               onPressed: () async {
                 // Profil fotoğrafı değiştirme
-                pageViewModel.mediaPick();
+                await pageViewModel.mediaPick();
               },
 
               child: Row(

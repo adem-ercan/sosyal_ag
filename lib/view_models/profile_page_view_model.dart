@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sosyal_ag/repositories/repository.dart';
 import 'package:sosyal_ag/utils/locator.dart';
@@ -67,7 +68,7 @@ class ProfilePageViewModel extends ChangeNotifier {
   }
 
 
-  Future<void> save() async {
+  Future<void> save(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       print("isim: $_bio kullanıcı adı: $_userName bio: $_bio");
@@ -81,6 +82,10 @@ class ProfilePageViewModel extends ChangeNotifier {
           image: _profilePhotoImages,
         );
         isEditLoadingState = IsEdittingProfileData.loaded;
+        if (context.mounted) {
+          context.pop();
+          
+        }
       } catch (e) {
         isEditLoadingState = IsEdittingProfileData.loaded;
         print('Profil kaydetme hatası: $e');
