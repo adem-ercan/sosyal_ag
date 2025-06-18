@@ -24,7 +24,7 @@ class AuthRoute extends StatelessWidget {
           if (isUserLogin) {
             
             // themeProvider.setUserTheme(_init.user!.uid!, true);
-           
+              
                return MainScreen(context: context,);
           
           }else{

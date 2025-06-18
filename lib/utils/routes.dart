@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:sosyal_ag/models/user_model.dart';
+import 'package:sosyal_ag/views/about_screen/about_screen.dart';
 import 'package:sosyal_ag/views/auth_route.dart';
 import 'package:sosyal_ag/views/followers_screen/followers_screen.dart';
 import 'package:sosyal_ag/views/following_screen/following_screen.dart';
@@ -9,6 +10,7 @@ import 'package:sosyal_ag/views/main_screen/main_screen.dart';
 import 'package:sosyal_ag/views/media_screen/media_screen.dart';
 import 'package:sosyal_ag/views/other_screens/notification_screen.dart';
 import 'package:sosyal_ag/views/other_screens/other_user_profile_screen.dart';
+import 'package:sosyal_ag/views/policy_screen/policy_screen.dart';
 import 'package:sosyal_ag/views/post_screen/post_screen.dart';
 import 'package:sosyal_ag/views/profile_edit_screen/profile_edit_screen.dart';
 import 'package:sosyal_ag/views/settings_screen/setting_screen.dart';
@@ -23,6 +25,8 @@ final router = GoRouter(
     GoRoute(path: '/signup', builder: (context, state) => const SignUpScreen()),
 
     GoRoute(path: '/profileEdit', builder: (context, state) =>  ProfileEditScreen()),
+    GoRoute(path: '/about', builder: (context, state) =>  AboutScreen()),
+    GoRoute(path: '/policy', builder: (context, state) =>  PolicyScreen()),
 
     GoRoute(
       path: '/mainScreen',

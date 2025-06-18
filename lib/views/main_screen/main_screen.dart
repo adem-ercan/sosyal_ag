@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+//import 'package:go_router/go_router.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/init.dart';
@@ -12,7 +13,7 @@ import 'package:sosyal_ag/views/main_screen/profile_page/profile_page.dart';
 import 'package:sosyal_ag/views/main_screen/search_page/search_page.dart';
 import 'package:sosyal_ag/views/components/post_share_bottom_sheet.dart';
 import 'package:sosyal_ag/view_models/main_screen_view_model.dart';
-import 'package:sosyal_ag/views/other_screens/notification_screen.dart';
+//import 'package:sosyal_ag/views/other_screens/notification_screen.dart';
 
 class MainScreen extends StatelessWidget {
   final BuildContext context;
@@ -24,13 +25,13 @@ class MainScreen extends StatelessWidget {
   final NavBarStyle _navBarStyle = NavBarStyle.simple;
 
   List<Widget> _buildScreens() => [
+    MeydanPage(),
+
     MainPage(),
 
     SearchPage(),
 
-    MeydanPage(),
-
-    NotificationScreen(),
+    //NotificationScreen(),
 
     //MessagesPage(),
     ProfilePage(),
@@ -41,6 +42,20 @@ class MainScreen extends StatelessWidget {
     MainScreenViewModel mainScreenViewModel,
     ThemeMode themeMode,
   ) => [
+    PersistentBottomNavBarItem(
+      icon: Image.asset(
+        themeMode == ThemeMode.dark
+            ? "assets/logo/m_light.png"
+            : "assets/logo/m_dark.png",
+        width: MediaQuery.of(context).size.width * .07,
+      ),
+
+
+      opacity: 0.7,
+      activeColorPrimary: Colors.blue,
+      activeColorSecondary: Theme.of(context).colorScheme.tertiary,
+      inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
+    ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.home),
       opacity: 0.7,
@@ -58,20 +73,7 @@ class MainScreen extends StatelessWidget {
     ),
 
 
-    PersistentBottomNavBarItem(
-      icon: Image.asset(
-        themeMode == ThemeMode.dark
-            ? "assets/logo/m_light.png"
-            : "assets/logo/m_dark.png",
-        width: MediaQuery.of(context).size.width * .07,
-      ),
-
-
-      opacity: 0.7,
-      activeColorPrimary: Colors.blue,
-      activeColorSecondary: Theme.of(context).colorScheme.tertiary,
-      inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
-    ),
+    
 
     
     /* PersistentBottomNavBarItem(
@@ -107,13 +109,13 @@ class MainScreen extends StatelessWidget {
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
     ), */
 
-    PersistentBottomNavBarItem(
+  /*   PersistentBottomNavBarItem(
       icon: Icon(Icons.notifications),
       activeColorPrimary: Colors.indigo,
       inactiveColorPrimary: Theme.of(context).colorScheme.onSurface,
       activeColorSecondary: Theme.of(context).colorScheme.tertiary,
       //scrollController: _scrollControllers.last,
-    ),
+    ), */
 
     PersistentBottomNavBarItem(
       icon: Icon(Icons.person),
@@ -188,8 +190,11 @@ class MainScreen extends StatelessWidget {
 
       body: RefreshIndicator(
         onRefresh: () async {
-          await Future.delayed(Duration(seconds: 2));
+          
+          context.push('/');
           print("main screen refreshed");
+
+          
         },
         child: PersistentTabView(
           context,

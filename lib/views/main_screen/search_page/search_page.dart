@@ -231,8 +231,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         if(user.uid != init.user!.uid){
           context.push('/otherUserProfile', extra: user);
         }else{
-          viewModel.controller.index = 4;
-          viewModel.isFloatingButtonVisible(4);
+          viewModel.controller.index = 3;
+          viewModel.isFloatingButtonVisible(3);
           
         }
         

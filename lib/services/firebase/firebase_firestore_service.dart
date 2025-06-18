@@ -434,6 +434,7 @@ class FirestoreService implements DataBaseCore {
   }
 
   Future<bool> getUserTheme(String userId) async {
+    print("usereee: $userId");
     DocumentSnapshot snapshot =
         await _firestore.collection('users').doc(userId).get();
 
@@ -566,6 +567,30 @@ class FirestoreService implements DataBaseCore {
           return userData;
         });
   }
+
+  Future<String> getAboutText() async {
+
+    DocumentSnapshot<Map<String, dynamic>> doc = await _firestore.collection("about").doc('about-project').get();
+    Map<String, dynamic>? map = doc.data();
+    if(map != null){
+      return map["about"] as String;
+    }else{
+      return "null";
+    }
+  }
+
+  Future<String> getPolicyText() async {
+
+    DocumentSnapshot<Map<String, dynamic>> doc = await _firestore.collection("policy").doc('privacy-policy').get();
+    Map<String, dynamic>? map = doc.data();
+    if(map != null){
+      return map["policy"] as String;
+    }else{
+      return "null";
+    }
+  }
+
+
 
   /*  Future<bool> rePost(Map<String, dynamic> postJsonData) async {
     DocumentSnapshot<Map<String, dynamic>> snap =

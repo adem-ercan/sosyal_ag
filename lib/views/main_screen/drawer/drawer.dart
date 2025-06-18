@@ -79,8 +79,8 @@ class MeydanDrawer extends StatelessWidget {
             title: Text('Profil', style: GoogleFonts.aBeeZee()),
             onTap: (){
              // Navigator.pop(context);
-              mainScreenViewModel.isAppBarVisible(4);
-              mainScreenViewModel.controller.index = 4;
+              mainScreenViewModel.isAppBarVisible(3);
+              mainScreenViewModel.controller.index = 3;
               
             } 
           ),
@@ -120,6 +120,16 @@ class MeydanDrawer extends StatelessWidget {
             leading: const Icon(Icons.settings_outlined),
             title: Text('Ayarlar', style: GoogleFonts.aBeeZee()),
             onTap: () => context.push("/settingsScreen")
+          ),
+          ListTile(
+            leading: const Icon(Icons.info_outlined),
+            title: Text('Hakkımızda', style: GoogleFonts.aBeeZee()),
+            onTap: () => context.push("/about")
+          ),
+          ListTile(
+            leading: const Icon(Icons.privacy_tip_outlined),
+            title: Text('Gizlilik Politikası', style: GoogleFonts.aBeeZee()),
+            onTap: () => context.push("/policy")
           ),
           ListTile(
             leading: Icon(Icons.logout, color: theme.colorScheme.error,),

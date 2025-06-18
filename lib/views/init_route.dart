@@ -16,8 +16,10 @@ class InitRoute extends StatelessWidget {
     return FutureBuilder<void>(
       future: init.start(context),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done || !init.isFirstInit) {
-          return  AuthRoute();
+        if (snapshot.hasData || !init.isFirstInit) {
+          
+            return  AuthRoute();
+              
         } else {
           return const SplashScreen();
         }

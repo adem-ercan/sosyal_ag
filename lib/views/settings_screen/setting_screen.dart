@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/utils/theme_provider.dart';
@@ -38,23 +39,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           const Divider(),
 
-          // Bildirim Ayarları
-          ListTile(
-            leading: Icon(Icons.notifications, color: theme.colorScheme.onTertiary),
-            title: Text(
-              'Bildirim Ayarları',
-              style: GoogleFonts.aBeeZee(color: theme.colorScheme.onTertiary),
-            ),
-            trailing: Icon(Icons.arrow_forward_ios, 
-              color: theme.colorScheme.onTertiary,
-              size: 16,
-            ),
-            onTap: () {
-              // Bildirim ayarları sayfasına yönlendir
-            },
-          ),
-          const Divider(),
-
+         
           // Hesap Ayarları
           ListTile(
             leading: Icon(Icons.person, color: theme.colorScheme.onTertiary),
@@ -110,7 +95,7 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.info, color: theme.colorScheme.onTertiary),
             title: Text(
-              'Hakkında',
+              'Hakkımızda',
               style: GoogleFonts.aBeeZee(color: theme.colorScheme.onTertiary),
             ),
             trailing: Icon(Icons.arrow_forward_ios,
@@ -119,6 +104,7 @@ class SettingsScreen extends StatelessWidget {
             ),
             onTap: () {
               // Hakkında sayfasına yönlendir
+              context.push("/about");
             },
           ),
           const Divider(),

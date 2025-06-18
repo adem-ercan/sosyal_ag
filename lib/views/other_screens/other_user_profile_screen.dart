@@ -211,7 +211,7 @@ class OtherUserProfileScreen extends StatelessWidget {
                                       return _buildStatColumn(
                                       context,
                                       'Takipçi',
-                                      data!['followers'].length.toString(),
+                                      data!['followers'] != null ? data['followers'].length.toString() : '0',
                                     );
                                     }
 

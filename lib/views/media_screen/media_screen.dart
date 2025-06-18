@@ -29,7 +29,7 @@ class MediaScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          IconButton(
+         /*  IconButton(
             icon: const Icon(Icons.share, color: Colors.white),
             onPressed: () {
               // Paylaşma işlemi
@@ -40,7 +40,7 @@ class MediaScreen extends StatelessWidget {
             onPressed: () {
               // Daha fazla seçenek
             },
-          ),
+          ), */
         ],
       ),
       body: Column(
@@ -69,13 +69,13 @@ class MediaScreen extends StatelessWidget {
               ),
             ),
           ),
-          Container(
+           Container(
             padding: const EdgeInsets.all(16),
             color: theme.scaffoldBackgroundColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+               /*  Row(
                   children: [
                     CircleAvatar(
                       backgroundImage: author.photoUrl != null
@@ -96,16 +96,18 @@ class MediaScreen extends StatelessWidget {
                             color: theme.colorScheme.onTertiary,
                           ),
                         ),
-                        Text(
-                          post.content,
-                          style: GoogleFonts.aBeeZee(
-                            color: theme.colorScheme.onTertiary,
+                        SingleChildScrollView(
+                          child: Text(
+                            post.content,
+                            style: GoogleFonts.aBeeZee(
+                              color: theme.colorScheme.onTertiary,
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ],
-                ),
+                ), */
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -122,17 +124,17 @@ class MediaScreen extends StatelessWidget {
                       onTap: () {},
                       theme: theme,
                     ),
-                    _buildActionButton(
+                    /* _buildActionButton(
                       icon: Icons.share,
                       label: 'Paylaş',
                       onTap: () {},
                       theme: theme,
-                    ),
+                    ), */
                   ],
                 ),
               ],
             ),
-          ),
+          ), 
         ],
       ),
     );

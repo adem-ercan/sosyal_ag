@@ -17,7 +17,6 @@ class PostAreaWidget extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
-     print("map : $mapData");
     ThemeData theme = Theme.of(context);
     PostViewModel postViewModel = Provider.of<PostViewModel>(
       context,
@@ -166,11 +165,11 @@ class PostAreaWidget extends StatelessWidget {
                 context,
               ),
               const SizedBox(width: 24),
-              _buildStatText(
+             /*  _buildStatText(
                 '${mapData["post"]?.repostsCount}',
                 'Yeniden Paylaşım',
                 context,
-              ),
+              ), */
             ],
           ),
           const Divider(),

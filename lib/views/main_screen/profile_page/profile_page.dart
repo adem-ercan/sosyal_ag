@@ -27,7 +27,7 @@ class ProfilePage extends StatelessWidget {
             SliverAppBar(
               backgroundColor: theme.colorScheme.tertiary,
               title: Text(
-                _init.user!.name ?? "",
+                _init.user?.name ?? "",
                 style: GoogleFonts.concertOne(
                   fontSize: 28,
                   color: theme.colorScheme.surface.withOpacity(.7),

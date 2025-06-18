@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/repositories/repository.dart';
@@ -35,12 +36,14 @@ class UserViewModel extends ChangeNotifier {
       //Veri tabanı işlemleri repository içerisinde yapılacak.
 
       UserModel? user = await _repository.signInWithEmailAndPassword(email, password);
+      
       if (user != null){
          if (context.mounted) {
           // Burada kullanıcı giriş yaptıktan sonra init işlemi başlatılıyor.
           // Bu sayede uygulama açılırken kullanıcı bilgileri alınıyor.
           // Eğer init işlemi yapılmazsa uygulama açıldığında kullanıcı bilgileri alınamaz.
-          await _init.start(context);        
+          context.push('/');
+          //await _init.start(context);      
           } 
        
         return user;

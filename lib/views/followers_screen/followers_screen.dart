@@ -17,7 +17,7 @@ class FollowersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    UserViewModel userViewModel = Provider.of<UserViewModel>(context);
+    UserViewModel userViewModel = Provider.of<UserViewModel>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +31,7 @@ class FollowersScreen extends StatelessWidget {
             .collection('users')
             .doc(_init.user?.uid)
             .collection('followers'),
-        limit: 20,
+        limit: 15,
         viewType: ViewType.list,
         onEmpty: Center(
           child: Text(
