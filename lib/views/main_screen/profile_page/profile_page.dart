@@ -113,7 +113,7 @@ class ProfilePage extends StatelessWidget {
                                     const SizedBox(width: 4),
                                     Visibility(
                                       visible:
-                                          true, //_init.user?.isVerified ?? false,
+                                          _init.user?.isVerified ?? false,
                                       child: Icon(
                                         Icons.verified,
                                         color: theme.colorScheme.tertiary,

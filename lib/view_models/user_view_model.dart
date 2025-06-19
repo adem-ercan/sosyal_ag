@@ -151,6 +151,15 @@ class UserViewModel extends ChangeNotifier {
     
   }
 
+
+  Future<void> toggleUserVerificationStatus(bool newStatus)async{
+    try {
+      await _repository.toggleUserVerificationStatus(newStatus);
+    } catch (e) {
+      print("ERROR on UserViewModel.toggleUserVerificationStatus: $e");
+    }
+  }
+
   
 
 }

@@ -129,20 +129,41 @@ class MeydanDrawer extends StatelessWidget {
                 if (snapshot.hasData) {
                   snapshot.data!['isMeydan'];
                   return Switch(
-                  activeColor: theme.colorScheme.tertiary,
-                  
-                  value: snapshot.data!['isMeydan'],
-                  onChanged: (value) async{
-                    await userViewModel.toggleIsMeydan();
-                  },
-                );
-                }else{
+                    activeColor: theme.colorScheme.tertiary,
+
+                    value: snapshot.data!['isMeydan'],
+                    onChanged: (value) async {
+                      await userViewModel.toggleIsMeydan();
+                    },
+                  );
+                } else {
                   return const CircularProgressIndicator();
                 }
-                
-              }
+              },
             ),
           ),
+
+          _init.user!.isVerified
+              ? ListTile(
+                leading: Icon(
+                  Icons.verified,
+                  color: theme.colorScheme.tertiary,
+                ),
+                title: Text('Hesap Onayını İptal Et', style: GoogleFonts.aBeeZee(color: theme.colorScheme.error)),
+                onTap: () {
+                  showCancelVerificationDialog(context);
+                },
+              )
+              : ListTile(
+                leading: Icon(
+                  Icons.verified,
+                  color: theme.colorScheme.tertiary,
+                ),
+                title: Text('Onaylı Hesaba Geç', style: GoogleFonts.aBeeZee()),
+                onTap: () {
+                  showVerificationRequestForm(context);
+                },
+              ),
           ListTile(
             leading: const Icon(Icons.settings_outlined),
             title: Text('Ayarlar', style: GoogleFonts.aBeeZee()),
@@ -191,6 +212,149 @@ class MeydanDrawer extends StatelessWidget {
           //const SizedBox(height: 8),
         ],
       ),
+    );
+  }
+
+  void showVerificationRequestForm(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+    String fullName = '';
+    String reason = '';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        UserViewModel userViewModel = Provider.of<UserViewModel>(
+          context,
+          listen: false,
+        );
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.verified, color: Colors.blueAccent),
+              SizedBox(width: 8),
+              Text('Mavi Tik Başvurusu'),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'Ad Soyad'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Adınızı girin';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) => fullName = value!,
+                  ),
+                  SizedBox(height: 12),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'Başvuru Nedeni'),
+                    maxLines: 3,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Başvuru nedeninizi yazın';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) => reason = value!,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'İptal',
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  await userViewModel.toggleUserVerificationStatus(true);
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Başvurunuz alınmıştır.')),
+                    );
+                  }
+                }
+              },
+              child: Text('Başvur', style: GoogleFonts.aBeeZee(color: Theme.of(context).colorScheme.onSurface)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> showCancelVerificationDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // Popup dışında tıklanınca kapanmasın
+      builder: (context) {
+        UserViewModel userViewModel = Provider.of<UserViewModel>(
+          context,
+          listen: false,
+        );
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.cancel, color: Theme.of(context).colorScheme.error),
+              SizedBox(width: 8),
+              Text('Onayı İptal Et'),
+            ],
+          ),
+          content: Text(
+            'Hesap onayınızı iptal etmek istediğinizden emin misiniz? '
+            'Bu işlem geri alınamaz ve mavi tikiniz kaldırılır.',
+            style: GoogleFonts.aBeeZee(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Sadece popup kapanır
+              },
+              child: Text(
+                'Vazgeç',
+                style: GoogleFonts.aBeeZee(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.error,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () async {
+                // Buraya onay iptal işlemini yaz
+                // Örneğin: await viewModel.cancelVerification();
+                userViewModel.toggleUserVerificationStatus(false);
+                Navigator.of(context).pop(); // Popup kapansın
+                // İstersen burada Snackbar da gösterebilirsin.
+              },
+              child: Text('Onayı İptal Et'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

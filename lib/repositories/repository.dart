@@ -282,6 +282,10 @@ class Repository {
     await _firestoreService.toggleIsMeydan();
   }
 
+  Future<void> toggleUserVerificationStatus(bool newStatus)async{
+    await _firestoreService.toggleUserVerificationStatus(newStatus);
+  }
+
 
 
  /*  Future<bool> rePost(PostModel post) async {

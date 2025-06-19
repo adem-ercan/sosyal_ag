@@ -609,6 +609,12 @@ Future<void> toggleIsMeydan() async {
 
       }
   }
+
+  Future<void> toggleUserVerificationStatus(bool newStatus)async{
+    await _firestore.collection('users')
+        .doc(_init.user?.uid)
+        .update({'isVerified': newStatus});
+  }
   /*  Future<bool> rePost(Map<String, dynamic> postJsonData) async {
     DocumentSnapshot<Map<String, dynamic>> snap =
         await _firestore.collection('users').doc(_init.user!.uid).get();
