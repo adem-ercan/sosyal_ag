@@ -141,6 +141,16 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
+
+  Future<void> toggleIsMeydan()async {
+    try {
+      await _repository.toggleIsMeydan();
+    } catch (e) {
+      print("ERROR on UserViewModel.toggleIsMeydan: $e");
+    }
+    
+  }
+
   
 
 }

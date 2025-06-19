@@ -278,6 +278,11 @@ class Repository {
     await _firestoreService.unFollowUser(targetUserId);
   }
 
+  Future<void> toggleIsMeydan()async {
+    await _firestoreService.toggleIsMeydan();
+  }
+
+
 
  /*  Future<bool> rePost(PostModel post) async {
     return await _firestoreService.rePost(post.toJson());

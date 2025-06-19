@@ -9,45 +9,44 @@ import 'package:sosyal_ag/view_models/main_screen_view_model.dart';
 import 'package:sosyal_ag/view_models/user_view_model.dart';
 
 class MeydanDrawer extends StatelessWidget {
-
   final Init _init = locator<Init>();
   final VoidCallback? onProfileTap;
   final VoidCallback? onSettingsTap;
-  
 
-   MeydanDrawer({
-    super.key,
-    this.onProfileTap,
-    this.onSettingsTap,
-  });
-
+  MeydanDrawer({super.key, this.onProfileTap, this.onSettingsTap});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
-    UserViewModel userViewModel = Provider.of<UserViewModel>(context, listen: false);
-    MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(context);
+    UserViewModel userViewModel = Provider.of<UserViewModel>(
+      context,
+      listen: false,
+    );
+    MainScreenViewModel mainScreenViewModel = Provider.of<MainScreenViewModel>(
+      context,
+    );
 
     return Drawer(
       backgroundColor: theme.scaffoldBackgroundColor,
       child: Column(
         children: [
           UserAccountsDrawerHeader(
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surface,
-            ),
+            decoration: BoxDecoration(color: theme.colorScheme.surface),
             currentAccountPicture: CircleAvatar(
               backgroundColor: theme.colorScheme.tertiary,
-              backgroundImage: _init.user?.photoUrl != null 
-                ? NetworkImage(_init.user!.photoUrl!) 
-                : null,
-              child: _init.user?.photoUrl == null
-                  ? Text(
-                      _init.user?.userName.substring(0, 1).toUpperCase() ?? 'A',
-                      style: const TextStyle(fontSize: 32),
-                    )
-                  : null,
+              backgroundImage:
+                  _init.user?.photoUrl != null
+                      ? NetworkImage(_init.user!.photoUrl!)
+                      : null,
+              child:
+                  _init.user?.photoUrl == null
+                      ? Text(
+                        _init.user?.userName.substring(0, 1).toUpperCase() ??
+                            'A',
+                        style: const TextStyle(fontSize: 32),
+                      )
+                      : null,
             ),
             accountName: Row(
               children: [
@@ -77,14 +76,13 @@ class MeydanDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.person_outline),
             title: Text('Profil', style: GoogleFonts.aBeeZee()),
-            onTap: (){
-             // Navigator.pop(context);
+            onTap: () {
+              // Navigator.pop(context);
               mainScreenViewModel.isAppBarVisible(3);
               mainScreenViewModel.controller.index = 3;
-              
-            } 
+            },
           ),
-            /* ListTile(
+          /* ListTile(
             leading: const Icon(Icons.person_add),
             title: Row(
               children: [
@@ -117,27 +115,56 @@ class MeydanDrawer extends StatelessWidget {
             onTap: () async => await themeProvider.toggleTheme(),
           ),
           ListTile(
+            leading:
+                themeProvider.themeMode == ThemeMode.dark
+                    ? Image.asset("assets/logo/m_light.png", width: 20)
+                    : Image.asset("assets/logo/m_dark.png", width: 20),
+            title: Text(
+              'Meydan Durumu',
+              style: GoogleFonts.aBeeZee(color: theme.colorScheme.onTertiary),
+            ),
+            trailing: StreamBuilder<Map<String, dynamic>?>(
+              stream: userViewModel.getUserByIdStream(_init.user!.uid ?? ""),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  snapshot.data!['isMeydan'];
+                  return Switch(
+                  activeColor: theme.colorScheme.tertiary,
+                  
+                  value: snapshot.data!['isMeydan'],
+                  onChanged: (value) async{
+                    await userViewModel.toggleIsMeydan();
+                  },
+                );
+                }else{
+                  return const CircularProgressIndicator();
+                }
+                
+              }
+            ),
+          ),
+          ListTile(
             leading: const Icon(Icons.settings_outlined),
             title: Text('Ayarlar', style: GoogleFonts.aBeeZee()),
-            onTap: () => context.push("/settingsScreen")
+            onTap: () => context.push("/settingsScreen"),
           ),
           ListTile(
             leading: const Icon(Icons.info_outlined),
             title: Text('Hakkımızda', style: GoogleFonts.aBeeZee()),
-            onTap: () => context.push("/about")
+            onTap: () => context.push("/about"),
           ),
           ListTile(
             leading: const Icon(Icons.privacy_tip_outlined),
             title: Text('Gizlilik Politikası', style: GoogleFonts.aBeeZee()),
-            onTap: () => context.push("/policy")
+            onTap: () => context.push("/policy"),
           ),
           ListTile(
-            leading: Icon(Icons.logout, color: theme.colorScheme.error,),
+            leading: Icon(Icons.logout, color: theme.colorScheme.error),
             title: Text('Oturumu Kapat', style: GoogleFonts.aBeeZee()),
-            onTap: () async => await userViewModel.signOut()
+            onTap: () async => await userViewModel.signOut(),
           ),
           const Spacer(),
-         /*  Padding(
+          /*  Padding(
             padding: const EdgeInsets.all(16.0),
             child: SizedBox(
               width: double.infinity,
