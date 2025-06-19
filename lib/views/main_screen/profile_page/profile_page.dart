@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/utils/locator.dart';
+import 'package:sosyal_ag/views/components/photo_thumbna%C4%B1il.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/paginaition_liked_list.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/pagination_favorited_post_list.dart';
 import 'package:sosyal_ag/views/main_screen/profile_page/pagination_media_list.dart';
@@ -88,12 +89,11 @@ class ProfilePage extends StatelessWidget {
                                 backgroundColor: theme.colorScheme.tertiary,
                                 child: const Icon(Icons.person, size: 40),
                               )
-                              : CircleAvatar(
-                                radius: 50,
-                                backgroundImage: NetworkImage(
-                                  '${_init.user!.photoUrl}',
+                              : 
+                                 PhotoThumbnail(
+                                  imageUrl: '${_init.user!.photoUrl}',
                                 ),
-                              ),
+                              
                           const SizedBox(width: 16),
                           Expanded(
                             child: Column(

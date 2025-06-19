@@ -9,6 +9,7 @@ import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/view_models/user_view_model.dart';
+import 'package:sosyal_ag/views/components/photo_thumbna%C4%B1il.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 
 class OtherUserProfileScreen extends StatelessWidget {
@@ -72,22 +73,14 @@ class OtherUserProfileScreen extends StatelessWidget {
                           children: [
                             Row(
                               children: [
+                                  user.photoUrl != null ? PhotoThumbnail(imageUrl: user.photoUrl!) :
+
                                 CircleAvatar(
                                   radius: 40,
                                   backgroundColor: theme.colorScheme.tertiary,
-                                  backgroundImage:
-                                      user.photoUrl != null
-                                          ? NetworkImage(user.photoUrl!)
-                                          : null,
-                                  child:
-                                      user.photoUrl == null
-                                          ? Text(
-                                            user.userName[0].toUpperCase(),
-                                            style: const TextStyle(
-                                              fontSize: 32,
-                                            ),
-                                          )
-                                          : null,
+                          
+                                      
+                                        
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(
