@@ -7,15 +7,11 @@ import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/view_models/user_view_model.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 
-
 class MeydanPage extends StatelessWidget {
-
- const MeydanPage({super.key});
+  const MeydanPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-  
-
     UserViewModel userViewModel = Provider.of<UserViewModel>(
       context,
       listen: false,
@@ -37,17 +33,13 @@ class MeydanPage extends StatelessWidget {
               .orderBy('createdAt', descending: true),
 
           itemBuilder: (context, documentSnapshot, index) {
-        
-          
-            if (documentSnapshot.isEmpty){
+            if (documentSnapshot.isEmpty) {
               return Center(child: CircularProgressIndicator());
             }
-        
+
             final data = documentSnapshot[index].data() as Map<String, dynamic>;
             final post = PostModel.fromJson(data);
 
-            
-        
             return FutureBuilder<UserModel?>(
               future: userViewModel.getUserDataById(post.authorId),
               builder: (context, snapshot) {
@@ -60,24 +52,22 @@ class MeydanPage extends StatelessWidget {
                 }
                 UserModel? user = snapshot.data;
 
-
-                return PostCard(
-                  rePostUser: post.rePostUserId,
-                  post: post,
-                  author: user!,
-                );
-              }
+                if (user!.isMeydan) {
+                  return PostCard(
+                    rePostUser: post.rePostUserId,
+                    post: post,
+                    author: user,
+                  );
+                }else{
+                  return Container();
+                }
+              },
             );
           },
-          initialLoader: const Center(
-            child: CircularProgressIndicator(),
-          ),
-          bottomLoader: const Center(
-            child: CircularProgressIndicator(),
-          ),
+          initialLoader: const Center(child: CircularProgressIndicator()),
+          bottomLoader: const Center(child: CircularProgressIndicator()),
         ),
       ),
     );
   }
 }
-

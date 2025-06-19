@@ -17,7 +17,7 @@ class InitRoute extends StatelessWidget {
       future: init.start(context),
       builder: (context, snapshot) {
         if (snapshot.hasData || !init.isFirstInit) {
-          
+
             return  AuthRoute();
               
         } else {

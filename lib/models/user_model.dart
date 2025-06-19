@@ -16,6 +16,7 @@ class UserModel {
   final int postsCount;
   final bool isVerified;
   final bool isPrivate;
+  final bool isMeydan;
   final DateTime? lastActive;
   final String? fcmToken;
   final List<String>? likedPosts;
@@ -41,6 +42,7 @@ class UserModel {
     this.postsCount = 0,
     this.isVerified = false,
     this.isPrivate = false,
+    this.isMeydan = true,
     this.lastActive,
     this.fcmToken,
     this.likedPosts,
@@ -73,6 +75,7 @@ class UserModel {
       postsCount: json['postsCount'] as int? ?? 0,
       isVerified: json['isVerified'] as bool? ?? false,
       isPrivate: json['isPrivate'] as bool? ?? false,
+      isMeydan: json['isMeydan'] as bool? ?? false,
       lastActive: json['lastActive'] != null 
           ? DateTime.parse(json['lastActive'] as String) 
           : null,
@@ -104,6 +107,7 @@ class UserModel {
       'postsCount': postsCount,
       'isVerified': isVerified,
       'isPrivate': isPrivate,
+      'isMeydan': isMeydan,
       'lastActive': lastActive?.toIso8601String(),
       'fcmToken': fcmToken,
       'likedPosts': likedPosts,
@@ -132,6 +136,7 @@ class UserModel {
     int? postsCount,
     bool? isVerified,
     bool? isPrivate,
+    bool? isMeydan,
     DateTime? lastActive,
     String? fcmToken,
     List<String>? likedPosts,
@@ -156,6 +161,7 @@ class UserModel {
       postsCount: postsCount ?? this.postsCount,
       isVerified: isVerified ?? this.isVerified,
       isPrivate: isPrivate ?? this.isPrivate,
+      isMeydan: isMeydan ?? this.isMeydan,
       lastActive: lastActive ?? this.lastActive,
       fcmToken: fcmToken ?? this.fcmToken,
       likedPosts: likedPosts ?? this.likedPosts,

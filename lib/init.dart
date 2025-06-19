@@ -5,9 +5,16 @@ import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/view_models/user_view_model.dart';
 
-class Init {
+class Init extends ChangeNotifier{
 
-  UserModel? user = locator<UserModel>();
+  UserModel? _user = locator<UserModel>();
+
+  UserModel? get user => _user;
+
+  set user(UserModel? value) {
+    _user = value;
+    notifyListeners();
+  }
 
   // Bu değişkeni navigator işlemlerinde pop olurken 
   // SplashScreen çalışmasın diye InitRoute'ta kullanıyoruz.
@@ -16,9 +23,7 @@ class Init {
   Future<void> start(BuildContext context) async{
    await Future.delayed(const Duration(seconds: 3));
    if (context.mounted) {
-    print("bbbb");
     await getCurrentUserAllData(context);
-    print("cccc");
    }
 
    isFirstInit = false;

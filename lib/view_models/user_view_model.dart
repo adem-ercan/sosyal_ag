@@ -36,18 +36,20 @@ class UserViewModel extends ChangeNotifier {
       //Veri tabanı işlemleri repository içerisinde yapılacak.
 
       UserModel? user = await _repository.signInWithEmailAndPassword(email, password);
-      
+
       if (user != null){
-         if (context.mounted) {
+
+       
+        return user;
+
+      }
+       if (context.mounted) {
           // Burada kullanıcı giriş yaptıktan sonra init işlemi başlatılıyor.
           // Bu sayede uygulama açılırken kullanıcı bilgileri alınıyor.
           // Eğer init işlemi yapılmazsa uygulama açıldığında kullanıcı bilgileri alınamaz.
           context.push('/');
           //await _init.start(context);      
           } 
-       
-        return user;
-      }
     } catch (e) {
        if (context.mounted) {
         ErrorHandlerWidget.showError(context, "HATA: $e");

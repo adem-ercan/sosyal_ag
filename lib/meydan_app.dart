@@ -25,6 +25,7 @@ class MeydanApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SignupViewModel()),
         ChangeNotifierProvider(create: (_) => PostViewModel()),
         ChangeNotifierProvider(create: (_) => ProfilePageViewModel()),
+        ChangeNotifierProvider(create: (_) => Init()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {

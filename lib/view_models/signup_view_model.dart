@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:sosyal_ag/view_models/user_view_model.dart';
+import 'package:sosyal_ag/views/components/error_handler_widget.dart';
 
 class SignupViewModel extends ChangeNotifier {
   // Form controllers
@@ -89,18 +91,27 @@ class SignupViewModel extends ChangeNotifier {
       await userViewModel.createUserWithEmailAndPassword(emailController.text, passwordController.text, nameController.text, context);
 
       isLoading = false;
+
       notifyListeners();
+
+      if (context.mounted) {
+        context.push("/");
+      }
+
     } catch (e) {
       print("ERROR on SignupViewModel: $e");
       isLoading = false;
       notifyListeners();
+      if (context.mounted) {
+        ErrorHandlerWidget.showError(context, e.toString());
+      }
+      
     }
       
     } else {
       isLoading = false;
     }
     
-   
   }
   
   // Reset form
