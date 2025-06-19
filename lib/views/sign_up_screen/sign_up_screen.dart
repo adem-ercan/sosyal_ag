@@ -158,7 +158,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              SizedBox(
+              /* SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: OutlinedButton.icon(
@@ -189,7 +189,7 @@ class SignUpScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                 ),
-              ),
+              ), */
               const SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

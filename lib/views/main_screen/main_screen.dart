@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 //import 'package:go_router/go_router.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
@@ -235,24 +236,49 @@ class MainScreen extends StatelessWidget {
             ),
           ),
           onWillPop: (final context) async {
-            await showDialog(
-              context: context ?? this.context,
-              useSafeArea: true,
-              builder:
-                  (final context) => Container(
-                    height: 50,
-                    width: 50,
-                    color: Colors.white,
-                    child: ElevatedButton(
-                      child: const Text("Close"),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-            );
-            return false;
+  bool? shouldPop = await showDialog(
+    context: context ?? this.context,
+    barrierDismissible: false, // Dışarı tıklayınca kapanmasın
+    builder: (final context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: const Text(
+        'Çıkmak istediğinize emin misiniz?',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: const Text(
+        'Yaptığınız değişiklikler kaybolabilir.',
+        style: TextStyle(fontSize: 16),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(false); // Geri dönmesin
           },
+          child: const Text(
+            'Vazgeç',
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.error,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          onPressed: () {
+            SystemNavigator.pop(); // Geri dönsün
+          },
+          child: const Text('Çık'),
+        ),
+      ],
+    ),
+  );
+
+  return shouldPop ?? false;
+},
           selectedTabScreenContext: (final context) {
             //testContext = context;
           },

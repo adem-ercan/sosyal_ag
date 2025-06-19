@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -163,40 +165,77 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     height: 50,
-                    child: OutlinedButton.icon(
-                      onPressed: () async {
-                        FirebaseAuthService firebaseAuthServices =
-                            FirebaseAuthService();
-                        await firebaseAuthServices.loginWithGoogle();
-                      },
-                      icon: Image.network(
-                        'https://www.google.com/favicon.ico',
-                        height: 24,
-                      ),
-                      label: Text(
-                        'Google ile devam et',
-                        style: GoogleFonts.aBeeZee(
-                          color: theme.colorScheme.onSurface,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        side: BorderSide(
-                          color: Colors.tealAccent.withOpacity(0.5),
-                          width: 2,
-                        ),
-                        backgroundColor: theme.colorScheme.surface.withOpacity(
-                          0.8,
-                        ),
-                        foregroundColor: Colors.white,
-                        elevation: 4,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                    ),
+                    child:
+                        Platform.isIOS
+                            ? OutlinedButton.icon(
+                              onPressed: () {
+                                // iOS'ta işlem yapma, tıklanır ama işlevsiz olacak.
+                              },
+                              icon: Icon(
+                                Icons.apple,
+                                size: 24,
+                                color: theme.colorScheme.onSurface,
+                              ),
+                              label: Text(
+                                'Apple ile devam et',
+                                style: GoogleFonts.aBeeZee(
+                                  color: theme.colorScheme.onSurface,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                side: BorderSide(
+                                  color: Colors.tealAccent.withOpacity(0.5),
+                                  width: 2,
+                                ),
+                                backgroundColor: theme.colorScheme.surface
+                                    .withOpacity(0.8),
+                                foregroundColor: Colors.white,
+                                elevation: 4,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
+                              ),
+                            )
+                            : OutlinedButton.icon(
+                              onPressed: () async {
+                                FirebaseAuthService firebaseAuthServices =
+                                    FirebaseAuthService();
+                                await firebaseAuthServices.loginWithGoogle();
+                              },
+                              icon: Image.network(
+                                'https://www.google.com/favicon.ico',
+                                height: 24,
+                              ),
+                              label: Text(
+                                'Google ile devam et',
+                                style: GoogleFonts.aBeeZee(
+                                  color: theme.colorScheme.onSurface,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                side: BorderSide(
+                                  color: Colors.tealAccent.withOpacity(0.5),
+                                  width: 2,
+                                ),
+                                backgroundColor: theme.colorScheme.surface
+                                    .withOpacity(0.8),
+                                foregroundColor: Colors.white,
+                                elevation: 4,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
+                              ),
+                            ),
                   ),
                   const SizedBox(height: 24),
                   Row(
