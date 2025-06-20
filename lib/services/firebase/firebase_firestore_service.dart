@@ -593,18 +593,14 @@ class FirestoreService implements DataBaseCore {
 
 Future<void> toggleIsMeydan() async {
 
-      // Kullanıcı dokümanını çek
       DocumentReference userRef = _firestore.collection('users').doc(_init.user?.uid);
       DocumentSnapshot userSnapshot = await userRef.get();
 
-      // Eğer kullanıcı varsa ve isMeydan alanı mevcutsa
       if (userSnapshot.exists && userSnapshot.data() != null) {
         bool currentIsMeydan = (userSnapshot.data() as Map<String, dynamic>)['isMeydan'] ?? false;
 
-        // Yeni değer
         bool newIsMeydan = !currentIsMeydan;
 
-        // Firestore güncelle
         await userRef.update({'isMeydan': newIsMeydan});
 
       }

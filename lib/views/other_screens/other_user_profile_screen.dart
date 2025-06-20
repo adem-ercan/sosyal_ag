@@ -9,7 +9,7 @@ import 'package:sosyal_ag/models/post_model.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/view_models/user_view_model.dart';
-import 'package:sosyal_ag/views/components/photo_thumbna%C4%B1il.dart';
+import 'package:sosyal_ag/views/components/photo_thumbnail.dart';
 import 'package:sosyal_ag/views/main_screen/main_page/post_card.dart';
 
 class OtherUserProfileScreen extends StatelessWidget {
