@@ -18,6 +18,7 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
   @override
   void initState() {
     super.initState();
+     
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -38,8 +39,9 @@ class _IntroScreenState extends State<SplashScreen> with SingleTickerProviderSta
         curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
       ),
     );
-
+   
     _controller.forward();
+    
   }
 
   @override

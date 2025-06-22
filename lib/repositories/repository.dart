@@ -256,11 +256,8 @@ class Repository {
 
 
   Stream<Map<String, dynamic>?> getUserByIdStream(String userId){
-    return _firestoreService.getUserByIdStream(userId);
-    
+    return _firestoreService.getUserByIdStream(userId); 
   }
-
-  
 
   Future<void> saveProfileEdit(String fullName, String userName, String bio,{File? image}) async {
     await _firestoreService.saveProfileEdit(fullName, userName, bio, imageFile: image);

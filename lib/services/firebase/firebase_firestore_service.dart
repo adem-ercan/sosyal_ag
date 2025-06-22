@@ -468,7 +468,7 @@ class FirestoreService implements DataBaseCore {
 
     String fileName = time.toString() + _init.user!.uid.toString();
     if (imageFile != null) {
-      url = await _storageService.uploadPostMedia(imageFile, fileName);
+      url = await _storageService.uploadPPMedia(imageFile, fileName);
     }
     _firestore.collection('users').doc(_init.user!.uid.toString()).update({
       'bio': bio,

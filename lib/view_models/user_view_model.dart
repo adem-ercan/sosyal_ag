@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/repositories/repository.dart';
 import 'package:sosyal_ag/utils/locator.dart';
@@ -12,7 +11,6 @@ class UserViewModel extends ChangeNotifier {
 
 
   final Repository _repository = locator<Repository>();
-  final Init _init = locator<Init>();
 
   
 
@@ -81,7 +79,6 @@ class UserViewModel extends ChangeNotifier {
     try {
      return await _repository.getCurrentUserAllData();
     } catch (e) {
-      print("bura mı?");
       ErrorHandlerWidget.showError(context, e.toString());
       return null;
     }

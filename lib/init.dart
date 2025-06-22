@@ -21,12 +21,15 @@ class Init extends ChangeNotifier{
   bool isFirstInit = true;
 
   Future<void> start(BuildContext context) async{
-   await Future.delayed(const Duration(seconds: 3));
+   
    if (context.mounted) {
     await getCurrentUserAllData(context);
    }
-
+    if (isFirstInit) {
+      await Future.delayed(const Duration(seconds: 3));
+    }
    isFirstInit = false;
+   
   }
 
 

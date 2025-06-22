@@ -82,8 +82,8 @@ class PostCard extends StatelessWidget {
                       if (author.uid != _init.user!.uid) {
                         context.push('/otherUserProfile', extra: author);
                       } else {
-                        mainScreenViewModel.controller.index = 4;
-                        mainScreenViewModel.isFloatingButtonVisible(4);
+                        mainScreenViewModel.controller.index = 3;
+                        mainScreenViewModel.isFloatingButtonVisible(3);
                       }
                     },
                     child: CircleAvatar(
