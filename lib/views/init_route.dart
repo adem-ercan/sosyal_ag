@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/utils/locator.dart';
 import 'package:sosyal_ag/views/auth_route.dart';
+import 'package:sosyal_ag/views/main_screen/main_screen.dart';
 import 'package:sosyal_ag/views/splash_screen/splash_screen.dart';
 
 class InitRoute extends StatelessWidget {
@@ -18,7 +19,7 @@ class InitRoute extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData || !init.isFirstInit) {
 
-            return  AuthRoute();
+            return  MainScreen(context: context,);
               
         } else {
           return const SplashScreen();

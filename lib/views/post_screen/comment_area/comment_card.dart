@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -6,10 +7,12 @@ import 'package:provider/provider.dart';
 import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/utils/locator.dart';
-
 import 'package:sosyal_ag/view_models/post_view_model.dart';
 import 'package:sosyal_ag/view_models/user_view_model.dart';
 
+
+
+// ignore: must_be_immutable
 class CommentCard extends StatelessWidget {
   final Init _init = locator<Init>();
 
@@ -22,6 +25,7 @@ class CommentCard extends StatelessWidget {
   CommentCard({required this.data, required this.index, super.key});
 
   String _getAyAdi(int ay) {
+
     const aylar = [
       'Ocak',
       'Şubat',
@@ -36,6 +40,7 @@ class CommentCard extends StatelessWidget {
       'Kasım',
       'Aralık',
     ];
+
     return aylar[ay - 1];
   }
 

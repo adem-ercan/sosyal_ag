@@ -35,7 +35,6 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     PostViewModel postViewModel = Provider.of<PostViewModel>(
       context,
       listen: false,
@@ -57,7 +56,6 @@ class PostCard extends StatelessWidget {
         onTap:
             onTap ??
             () {
-              
               context.push(
                 "/postScreen",
                 extra: {'post': post, 'author': author},
@@ -283,7 +281,7 @@ class PostCard extends StatelessWidget {
                       onTap: onComment,
                       color: Colors.grey,
                     ),
-                   /*  _buildInteractionButton(
+                    /*  _buildInteractionButton(
                       icon: Icons.repeat_rounded,
                       count: post.repostsCount,
                       onTap: onRepost,
@@ -351,9 +349,13 @@ class PostCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Icon(Icons.repeat, color: theme.colorScheme.tertiary,),
-                        Text("${rePostUser.name ?? rePostUser.userName} tarafından yeniden gönderi", 
-                        style: GoogleFonts.aBeeZee(color: theme.colorScheme.onSurface),),
+                        Icon(Icons.repeat, color: theme.colorScheme.tertiary),
+                        Text(
+                          "${rePostUser.name ?? rePostUser.userName} tarafından yeniden gönderi",
+                          style: GoogleFonts.aBeeZee(
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -410,7 +412,9 @@ class PostCard extends StatelessWidget {
                                   ),
                                 const Spacer(),
                                 Text(
-                                  postViewModel.formatDate1(post.rePostCreatedAt),
+                                  postViewModel.formatDate1(
+                                    post.rePostCreatedAt,
+                                  ),
                                   style: TextStyle(
                                     color: theme.colorScheme.onTertiary,
                                     fontSize: 10,
@@ -621,7 +625,6 @@ class PostCard extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _buildInteractionButtonForRepost({
     required IconData icon,

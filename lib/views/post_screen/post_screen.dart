@@ -11,14 +11,13 @@ import 'package:sosyal_ag/views/post_screen/comment_area/comment_area_widget.dar
 import 'package:sosyal_ag/views/post_screen/post_area/post_area_widget.dart';
 
 class PostScreen extends StatelessWidget {
-
   /* final PostModel post;
   final UserModel author;  */
 
   final Map<String, dynamic> mapData;
   final Init _init = locator<Init>();
 
-   PostScreen({
+  PostScreen({
     super.key,
     required this.mapData,
     /* required this.post,
@@ -30,8 +29,10 @@ class PostScreen extends StatelessWidget {
     final theme = Theme.of(context);
     PostModel postModel = mapData["post"];
     UserModel author = mapData["author"];
-    PostViewModel postViewModel = Provider.of<PostViewModel>(context, listen: false);
-
+    PostViewModel postViewModel = Provider.of<PostViewModel>(
+      context,
+      listen: false,
+    );
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -48,73 +49,65 @@ class PostScreen extends StatelessWidget {
         actions: [
           PopupMenuButton<String>(
             icon: Icon(Icons.more_vert, color: theme.colorScheme.onSurface),
-            onSelected: (value)async {
+            onSelected: (value) async {
               if (value == 'delete') {
-                await postViewModel.deletePost(context, postModel.id!, author.uid!, postModel.mediaUrls?[0]);
+                await postViewModel.deletePost(
+                  context,
+                  postModel.id!,
+                  author.uid!,
+                  postModel.mediaUrls?[0],
+                );
                 if (context.mounted) {
                   context.pop();
                 }
-                
               }
             },
             itemBuilder:
-                (BuildContext context) => _init.user?.uid == author.uid
-                                            ? <PopupMenuItem<String>>[
-                                              PopupMenuItem<String>(
-                                                value: 'delete',
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.delete,
-                                                      color:
-                                                          theme
-                                                              .colorScheme
-                                                              .error,
-                                                      size: 20,
-                                                    ),
-                                                    const SizedBox(width: 8),
-                                                    Text(
-                                                      'Sil',
-                                                      style: TextStyle(
-                                                        color:
-                                                            theme
-                                                                .colorScheme
-                                                                .error,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ]
-                                            : <PopupMenuItem<String>>[
-                                              PopupMenuItem<String>(
-                                                value: 'block',
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.block,
-                                                      color:
-                                                          theme
-                                                              .colorScheme
-                                                              .error,
-                                                      size: 20,
-                                                    ),
-                                                    const SizedBox(width: 8),
-                                                    Text(
-                                                      'Engelle',
-                                                      style: TextStyle(
-                                                        color:
-                                                            theme
-                                                                .colorScheme
-                                                                .error,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ]
+                (BuildContext context) =>
+                    _init.user?.uid == author.uid
+                        ? <PopupMenuItem<String>>[
+                          PopupMenuItem<String>(
+                            value: 'delete',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.delete,
+                                  color: theme.colorScheme.error,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Sil',
+                                  style: TextStyle(
+                                    color: theme.colorScheme.error,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ]
+                        : <PopupMenuItem<String>>[
+                          PopupMenuItem<String>(
+                            value: 'block',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.block,
+                                  color: theme.colorScheme.error,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Engelle',
+                                  style: TextStyle(
+                                    color: theme.colorScheme.error,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
           ),
-    
         ],
       ),
       body: SingleChildScrollView(

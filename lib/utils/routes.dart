@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:sosyal_ag/init.dart';
 import 'package:sosyal_ag/models/user_model.dart';
 import 'package:sosyal_ag/views/about_screen/about_screen.dart';
 import 'package:sosyal_ag/views/auth_route.dart';
@@ -18,7 +19,7 @@ import 'package:sosyal_ag/views/sign_up_screen/sign_up_screen.dart';
 
 final router = GoRouter(
   routes: [
-    GoRoute(path: '/', builder: (context, state) => InitRoute()),
+    GoRoute(path: '/', builder: (context, state) => AuthRoute()),
 
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
 
@@ -33,7 +34,7 @@ final router = GoRouter(
       builder: (context, state) => MainScreen(context: context),
     ),
 
-    GoRoute(path: '/authRoute', builder: (context, state) =>  AuthRoute()),
+    GoRoute(path: '/initRoute', builder: (context, state) =>  InitRoute()),
     GoRoute(
       path: '/otherUserProfile',
       builder: (context, state) {
